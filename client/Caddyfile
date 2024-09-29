@@ -3,6 +3,10 @@
   admin off
 }
 
+http://api.tasknote.local {
+  reverse_proxy localhost:8585
+}
+
 :5000 {
   root * /app/dist
 
