@@ -3,13 +3,9 @@
   admin off
 }
 
-http://api.tasknote.local {
-  reverse_proxy localhost:8585
-}
-
-:5000 {
+tasknoteapp.dev.br {
+  tls /etc/letsencrypt/live/tasknoteapp.dev.br/fullchain.pem /etc/letsencrypt/live/tasknoteapp.dev.br/privkey.pem
   root * /app/dist
-
   encode gzip
 
   log {
