@@ -3,6 +3,7 @@ import { Button, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../../context/AuthContext';
 import './styles.scss';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Landing page component.
@@ -16,6 +17,7 @@ import './styles.scss';
 function Landing(): JSX.Element {
   const { signed, checkCurrentAuthUser } = useContext(AuthContext);
   const navigate = useNavigate();
+  const { i18n, t } = useTranslation();
 
   /**
    * Navigates to the specified page.
@@ -40,6 +42,10 @@ function Landing(): JSX.Element {
     }
   };
 
+  const handleLanguage = (lang: string) => {
+    i18n.changeLanguage(lang);
+  };
+
   useEffect(() => {
     checkCurrentAuthUser(window.location.pathname);
   }, []);
@@ -47,9 +53,11 @@ function Landing(): JSX.Element {
   return (
     <Container fluid className="vh-100 d-flex justify-content-center align-items-center landing-page">
       <div>
-        <h1 className="display-4">Welcome to TaskNote</h1>
+        <h1 className="display-4">
+          {t("landing_title")}
+        </h1>
         <p className="lead">
-          Your best friend to keep up with notes and tasks!
+          {t("landing_subtitle")}
         </p>
 
         <Button
@@ -69,6 +77,37 @@ function Landing(): JSX.Element {
         >
           Register
         </Button>
+
+        <br />
+
+        <div className="my-3">
+          <Button
+            type="button"
+            variant="outline-primary"
+            className="btn-sm me-3"
+            onClick={() => handleLanguage('en')}
+          >
+            EN English
+          </Button>
+
+          <Button
+            type="button"
+            variant="outline-primary"
+            className="btn-sm me-3"
+            onClick={() => handleLanguage('pt_br')}
+          >
+            PT-BR Português
+          </Button>
+
+          <Button
+            type="button"
+            variant="outline-primary"
+            className="btn-sm me-3"
+            onClick={() => handleLanguage('es')}
+          >
+            ES Español
+          </Button>
+        </div>
       </div>
     </Container>
   );
