@@ -75,7 +75,7 @@ async function authenticateUser(email: string, password: string): Promise<Signin
     if (response.status === 403) {
       throw new Error('Wrong username or password!');
     } else if (response.status === 404) {
-      throw new Error('Username not found!');
+      throw new Error('Wrong username or password!');
     }
   } catch (error) {
     if (typeof error === 'string') {

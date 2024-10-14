@@ -5,8 +5,10 @@ import {
   Alert, Button, Card, Col, Container, Form, Row
 } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import AuthContext from '../../context/AuthContext';
 import './styles.scss';
+import { translateMessage } from '../../utils/TranslatorUtils';
 
 /**
  * Login page component.
@@ -18,6 +20,7 @@ import './styles.scss';
  */
 function Login(): JSX.Element {
   const { signIn } = useContext(AuthContext);
+  const { i18n, t } = useTranslation();
   const navigate = useNavigate();
   const [validated, setValidated] = useState<boolean>(true);
   const [formInvalid, setFormInvalid] = useState<boolean>(false);
@@ -46,7 +49,7 @@ function Login(): JSX.Element {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       setFormInvalid(true);
-      setErrorMessage('Please fill in your username and password!');
+      setErrorMessage(translateMessage('Please fill in your username and password!', i18n.language));
       return;
     }
 
@@ -57,9 +60,9 @@ function Login(): JSX.Element {
     } catch (e) {
       setFormInvalid(true);
       if (typeof e === 'string') {
-        setErrorMessage(e);
+        setErrorMessage(translateMessage(e, i18n.language));
       } else if (e instanceof Error) {
-        setErrorMessage(e.message);
+        setErrorMessage(translateMessage(e.message, i18n.language));
       }
     }
   };
@@ -72,7 +75,7 @@ function Login(): JSX.Element {
         <Col xs={12} md={6} lg={4}>
           <Card>
             <Card.Body className="p-4">
-              <h2 className="text-center">Login</h2>
+              <h2 className="text-center">{t('login_title')}</h2>
 
               {formInvalid ? (
                 <Alert variant="danger">
@@ -82,22 +85,22 @@ function Login(): JSX.Element {
 
               <Form noValidate validated={validated} onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label>Email</Form.Label>
+                  <Form.Label>{t('login_email_label')}</Form.Label>
                   <Form.Control
                     required
                     type="email"
                     name="email"
-                    placeholder="Type your email here"
+                    placeholder={t('login_email_placeholder')}
                   />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicPassword">
-                  <Form.Label>Password</Form.Label>
+                  <Form.Label>{t('login_password_label')}</Form.Label>
                   <Form.Control
                     required
                     type="password"
                     name="password"
-                    placeholder="Type your password here"
+                    placeholder={t('login_password_placeholder')}
                   />
                 </Form.Group>
 
@@ -106,20 +109,20 @@ function Login(): JSX.Element {
                   type="submit"
                   className="w-100"
                 >
-                  Login
+                  {t('login_btn_submit')}
                 </Button>
               </Form>
 
               <div className="text-center mt-3">
-                Don&apos;t have an account yet?&nbsp;
+                {`${t('login_no_account')} `}
                 <Link to="/register" className="text-decoration-none">
-                  Register here
+                  {t('login_register_here')}
                 </Link>
               </div>
 
               <div className="text-center mt-3">
                 <Link to="/" className="text-decoration-none">
-                  Back to home
+                  {t('login_back_home')}
                 </Link>
               </div>
             </Card.Body>

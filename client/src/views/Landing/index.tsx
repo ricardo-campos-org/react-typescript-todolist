@@ -1,9 +1,9 @@
 import React, { useCallback, useContext, useEffect } from 'react';
 import { Button, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import AuthContext from '../../context/AuthContext';
 import './styles.scss';
-import { useTranslation } from 'react-i18next';
 
 /**
  * Landing page component.
@@ -54,10 +54,10 @@ function Landing(): JSX.Element {
     <Container fluid className="vh-100 d-flex justify-content-center align-items-center landing-page">
       <div>
         <h1 className="display-4">
-          {t("landing_title")}
+          {t('landing_title')}
         </h1>
         <p className="lead">
-          {t("landing_subtitle")}
+          {t('landing_subtitle')}
         </p>
 
         <Button
@@ -66,7 +66,7 @@ function Landing(): JSX.Element {
           className="btn-lg me-3"
           onClick={handleLogin}
         >
-          Login
+          {t('landing_btn_login')}
         </Button>
 
         <Button
@@ -75,7 +75,7 @@ function Landing(): JSX.Element {
           type="button"
           onClick={() => goTo('/register')}
         >
-          Register
+          {t('landing_btn_register')}
         </Button>
 
         <br />
@@ -87,7 +87,7 @@ function Landing(): JSX.Element {
             className="btn-sm me-3"
             onClick={() => handleLanguage('en')}
           >
-            EN English
+            {t('landing_btn_english')}
           </Button>
 
           <Button
@@ -96,7 +96,7 @@ function Landing(): JSX.Element {
             className="btn-sm me-3"
             onClick={() => handleLanguage('pt_br')}
           >
-            PT-BR Português
+            {t('landing_btn_portuguese')}
           </Button>
 
           <Button
@@ -105,7 +105,7 @@ function Landing(): JSX.Element {
             className="btn-sm me-3"
             onClick={() => handleLanguage('es')}
           >
-            ES Español
+            {t('landing_btn_spanish')}
           </Button>
         </div>
       </div>

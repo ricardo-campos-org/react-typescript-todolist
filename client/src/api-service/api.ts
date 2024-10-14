@@ -35,7 +35,7 @@ function handleError(httpStatusCode: number) {
     throw new Error('Wrong or missing information!');
   }
   if (httpStatusCode === 403) {
-    throw new Error('Forbidden! Access denied');
+    throw new Error('Forbidden! Access denied!');
   }
   if (httpStatusCode === 500) {
     throw new Error('Internal Server Error!');

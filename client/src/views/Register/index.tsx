@@ -5,7 +5,9 @@ import {
   Alert, Button, Card, Col, Container, Form, Row
 } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import AuthContext from '../../context/AuthContext';
+import { translateMessage } from '../../utils/TranslatorUtils';
 
 /**
  * Register page component.
@@ -17,6 +19,7 @@ import AuthContext from '../../context/AuthContext';
  */
 function Register(): JSX.Element {
   const { register } = useContext(AuthContext);
+  const { i18n, t } = useTranslation();
   const navigate = useNavigate();
   const [validated, setValidated] = useState<boolean>(true);
   const [formInvalid, setFormInvalid] = useState<boolean>(false);
@@ -45,7 +48,7 @@ function Register(): JSX.Element {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       setFormInvalid(true);
-      setErrorMessage('Please fill in your username and password!');
+      setErrorMessage(translateMessage('Please fill in your username and password!', i18n.language));
       return;
     }
 
@@ -56,9 +59,9 @@ function Register(): JSX.Element {
     } catch (e) {
       setFormInvalid(true);
       if (typeof e === 'string') {
-        setErrorMessage(e);
+        setErrorMessage(translateMessage(e, i18n.language));
       } else if (e instanceof Error) {
-        setErrorMessage(e.message);
+        setErrorMessage(translateMessage(e.message, i18n.language));
       }
     }
   };
@@ -71,7 +74,7 @@ function Register(): JSX.Element {
         <Col xs={12} md={6} lg={4}>
           <Card>
             <Card.Body className="p-4">
-              <h2 className="text-center">Create account</h2>
+              <h2 className="text-center">{t('register_title')}</h2>
 
               {formInvalid ? (
                 <Alert variant="danger">
@@ -81,22 +84,22 @@ function Register(): JSX.Element {
 
               <Form noValidate validated={validated} onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label>Email</Form.Label>
+                  <Form.Label>{t('register_email_label')}</Form.Label>
                   <Form.Control
                     required
                     type="email"
                     name="email"
-                    placeholder="Type your email here"
+                    placeholder={t('register_email_placeholder')}
                   />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicPassword">
-                  <Form.Label>Password</Form.Label>
+                  <Form.Label>{t('register_password_label')}</Form.Label>
                   <Form.Control
                     required
                     type="password"
                     name="password"
-                    placeholder="Type your password here"
+                    placeholder={t('register_password_placeholder')}
                   />
                 </Form.Group>
 
@@ -105,20 +108,20 @@ function Register(): JSX.Element {
                   type="submit"
                   className="w-100"
                 >
-                  Sign-up and register
+                  {t('register_btn_submit')}
                 </Button>
               </Form>
 
               <div className="text-center mt-3">
-                Already have an account?&nbsp;
+                {`${t('register_has_account')} `}
                 <Link to="/login" className="text-decoration-none">
-                  Go to Login
+                  {t('register_go_login')}
                 </Link>
               </div>
 
               <div className="text-center mt-3">
                 <Link to="/" className="text-decoration-none">
-                  Back to home
+                  {t('register_back_home')}
                 </Link>
               </div>
             </Card.Body>

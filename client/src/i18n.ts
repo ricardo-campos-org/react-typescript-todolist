@@ -1,34 +1,28 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import enTranslations from './constants/english';
+import esTranslations from './constants/spanish';
+import ptBrTranslations from './constants/portuguese';
 
 i18n
   .use(initReactI18next)
   .init({
-    lng: "en",
-    fallbackLng: "en",
+    lng: 'en',
+    fallbackLng: 'en',
     interpolation: {
-      escapeValue: false,
+      escapeValue: false
     },
     resources: {
       en: {
-        translation: {
-          landing_title: 'Welcome to TaskNote',
-          landing_subtitle: 'Your best friend to keep up with notes and tasks!'
-        }
+        translation: enTranslations
       },
       es: {
-        translation: {
-          landing_title: 'Bienvenido a TaskNote',
-          landing_subtitle: 'Your best friend to keep up with notes and tasks!'
-        }
+        translation: esTranslations
       },
       pt_br: {
-        translation: {
-          landing_title: 'Bem vindo ao TaskNote',
-          landing_subtitle: 'Seu melhor amigo para manter notas e tarefas!'
-        }
+        translation: ptBrTranslations
       }
-    },
+    }
   });
 
 export default i18n;
