@@ -1,5 +1,5 @@
 const ptBrTranslations = {
-  landing_title: 'Bem vinvo ao TaskNote',
+  landing_title: 'Bem vindo ao TaskNote',
   landing_subtitle: 'Seu melhor aliado para organizar tarefas e notas!',
   landing_btn_login: 'Entrar',
   landing_btn_register: 'Criar conta',
@@ -14,7 +14,7 @@ const ptBrTranslations = {
   login_password_placeholder: 'Digite sua senha',
   login_btn_submit: 'Entrar',
   login_no_account: 'Não possui uma conta ainda?',
-  login_register_here: 'Cadastre-se',
+  login_register_here: 'Criar conta',
   login_back_home: 'Voltar para o início',
 
   register_title: 'Criar conta',

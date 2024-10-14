@@ -3,6 +3,8 @@ import { Button, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import AuthContext from '../../context/AuthContext';
+import { getDefaultLang, setDefaultLang } from '../../storage-service/storage';
+import USER_LANG from '../../types/UserLangs';
 import './styles.scss';
 
 /**
@@ -44,10 +46,19 @@ function Landing(): JSX.Element {
 
   const handleLanguage = (lang: string) => {
     i18n.changeLanguage(lang);
+    setDefaultLang(lang);
+  };
+
+  const handleDefaultLang = () => {
+    const lang = getDefaultLang();
+    if (lang !== 'en') {
+      handleLanguage(lang);
+    }
   };
 
   useEffect(() => {
     checkCurrentAuthUser(window.location.pathname);
+    handleDefaultLang();
   }, []);
 
   return (
@@ -85,7 +96,7 @@ function Landing(): JSX.Element {
             type="button"
             variant="outline-primary"
             className="btn-sm me-3"
-            onClick={() => handleLanguage('en')}
+            onClick={() => handleLanguage(USER_LANG.ENGLISH)}
           >
             {t('landing_btn_english')}
           </Button>
@@ -94,7 +105,7 @@ function Landing(): JSX.Element {
             type="button"
             variant="outline-primary"
             className="btn-sm me-3"
-            onClick={() => handleLanguage('pt_br')}
+            onClick={() => handleLanguage(USER_LANG.PORTUGUESE)}
           >
             {t('landing_btn_portuguese')}
           </Button>
@@ -103,7 +114,7 @@ function Landing(): JSX.Element {
             type="button"
             variant="outline-primary"
             className="btn-sm me-3"
-            onClick={() => handleLanguage('es')}
+            onClick={() => handleLanguage(USER_LANG.SPANISH)}
           >
             {t('landing_btn_spanish')}
           </Button>

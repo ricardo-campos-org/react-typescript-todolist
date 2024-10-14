@@ -14,7 +14,7 @@ const enTranslations = {
   login_password_placeholder: 'Type your password',
   login_btn_submit: 'Login',
   login_no_account: 'Don\'t have an account yet?',
-  login_register_here: 'Register',
+  login_register_here: 'Create account',
   login_back_home: 'Back to home',
 
   register_title: 'Create account',
@@ -24,7 +24,7 @@ const enTranslations = {
   register_password_placeholder: 'Type your password',
   register_btn_submit: 'Create account',
   register_has_account: 'Already have an account?',
-  register_go_login: 'Go to Login',
+  register_go_login: 'Login',
   register_back_home: 'Back to home',
 
   home_nav_home: 'Home',

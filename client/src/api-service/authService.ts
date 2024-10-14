@@ -81,10 +81,10 @@ async function authenticateUser(email: string, password: string): Promise<Signin
       throw new Error(data.message);
     }
     if (response.status === 403) {
-      throw new Error('Wrong username or password!');
+      throw new Error('Wrong user or password');
     }
     if (response.status === 404) {
-      throw new Error('Wrong username or password!');
+      throw new Error('Wrong user or password');
     }
   } catch (error) {
     if (typeof error === 'string') {
