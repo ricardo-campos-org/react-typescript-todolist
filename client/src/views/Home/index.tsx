@@ -6,15 +6,21 @@ import {
 } from 'react-bootstrap';
 import './style.css';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { SummaryResponse } from '../../types/SummaryResponse';
 import { HomeSearchResponse } from '../../types/HomeSearchResponse';
 import { TaskResponse } from '../../types/TaskResponse';
 import { NoteResponse } from '../../types/NoteResponse';
 import api from '../../api-service/api';
 import ApiConfig from '../../api-service/apiConfig';
+import { handleDefaultLang } from '../../lang-service/LangHandler';
 
 /**
+ * Home page component.
  *
+ * This component displays the home page of the application,
+ *
+ * @returns {JSX.Element} The Home page component.
  */
 function Home(): JSX.Element {
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -23,6 +29,7 @@ function Home(): JSX.Element {
   const [formInvalid, setFormInvalid] = useState<boolean>(false);
   const [searchResults, setSearchResults] = useState<HomeSearchResponse | null>(null);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleError = (e: unknown): void => {
     if (typeof e === 'string') {
@@ -73,17 +80,18 @@ function Home(): JSX.Element {
 
   useEffect(() => {
     getSummary();
+    handleDefaultLang();
   }, []);
 
   return (
     <Container>
-      <h1 className="mt-5 mb-4">Welcome to Your Dashboard</h1>
+      <h1 className="mt-5 mb-4">{t('home_welcome_title')}</h1>
 
       <Row className="mb-4">
         <Col xs={12} md={6}>
           <Card className="text-center h-100">
             <Card.Header className="bg-primary text-white">
-              Tasks Summary
+              {t('home_card_task_title')}
             </Card.Header>
             <Card.Body className="d-flex flex-column align-items-center justify-content-center">
               <Card.Title className="display-4">
@@ -91,19 +99,19 @@ function Home(): JSX.Element {
               </Card.Title>
               <Card.Text>
                 {summary?.pendingTaskCount && summary?.pendingTaskCount > 0
-                  ? 'Pending Tasks'
-                  : 'No pending tasks!'}
+                  ? t('home_card_task_pending')
+                  : t('home_card_task_empty')}
                 <br />
                 {summary?.doneTaskCount && summary?.doneTaskCount > 0
-                  ? ` ${summary?.doneTaskCount} done tasks!`
-                  : 'No done tasks!'}
+                  ? ` ${summary?.doneTaskCount} ${t('home_card_task_done')}`
+                  : t('home_card_task_done_empty')}
               </Card.Text>
               <Button
                 variant="primary"
                 type="button"
                 onClick={() => navigate('/tasks')}
               >
-                Go to Tasks
+                {t('home_card_task_btn')}
               </Button>
             </Card.Body>
           </Card>

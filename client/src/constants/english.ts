@@ -36,6 +36,7 @@ const enTranslations = {
   home_card_task_pending: 'Pending tasks',
   home_card_task_empty: 'No pending tasks',
   home_card_task_done: '{X} done tasks!',
+  home_card_task_done_empty: 'No done tasks!',
   home_card_task_btn: 'Go to Tasks',
   home_card_note_title: 'Notes Summary',
   home_card_note_count: 'Notes',
