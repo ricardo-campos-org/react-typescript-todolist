@@ -3,8 +3,9 @@ import { Button, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import AuthContext from '../../context/AuthContext';
-import { getDefaultLang, setDefaultLang } from '../../storage-service/storage';
 import USER_LANG from '../../types/UserLangs';
+import { handleDefaultLang } from '../../lang-service/LangHandler';
+import { setDefaultLang } from '../../storage-service/storage';
 import './styles.scss';
 
 /**
@@ -47,13 +48,6 @@ function Landing(): JSX.Element {
   const handleLanguage = (lang: string) => {
     i18n.changeLanguage(lang);
     setDefaultLang(lang);
-  };
-
-  const handleDefaultLang = () => {
-    const lang = getDefaultLang();
-    if (lang !== 'en') {
-      handleLanguage(lang);
-    }
   };
 
   useEffect(() => {

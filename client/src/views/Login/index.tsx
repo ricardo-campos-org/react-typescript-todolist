@@ -7,8 +7,9 @@ import {
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import AuthContext from '../../context/AuthContext';
-import './styles.scss';
 import { translateMessage } from '../../utils/TranslatorUtils';
+import { handleDefaultLang } from '../../lang-service/LangHandler';
+import './styles.scss';
 
 /**
  * Login page component.
@@ -67,7 +68,9 @@ function Login(): JSX.Element {
     }
   };
 
-  useEffect(() => {}, [formInvalid]);
+  useEffect(() => {
+    handleDefaultLang();
+  }, [formInvalid]);
 
   return (
     <Container fluid className="login-page">
