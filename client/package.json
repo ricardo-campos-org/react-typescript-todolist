@@ -74,7 +74,7 @@
     "globals": "^15.11.0",
     "jsdom": "^25.0.0",
     "prettier": "^3.3.3",
-    "sass": "^1.80.3",
+    "sass": "^1.80.4",
     "source-map-support": "^0.5.21",
     "vitest": "^2.0.5"
   }
