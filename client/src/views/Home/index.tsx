@@ -14,6 +14,7 @@ import { NoteResponse } from '../../types/NoteResponse';
 import api from '../../api-service/api';
 import ApiConfig from '../../api-service/apiConfig';
 import { handleDefaultLang } from '../../lang-service/LangHandler';
+import { translateMessage } from '../../utils/TranslatorUtils';
 
 /**
  * Home page component.
@@ -29,13 +30,13 @@ function Home(): JSX.Element {
   const [formInvalid, setFormInvalid] = useState<boolean>(false);
   const [searchResults, setSearchResults] = useState<HomeSearchResponse | null>(null);
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { i18n, t } = useTranslation();
 
   const handleError = (e: unknown): void => {
     if (typeof e === 'string') {
-      setErrorMessage(e);
+      setErrorMessage(translateMessage(e, i18n.language));
     } else if (e instanceof Error) {
-      setErrorMessage(e.message);
+      setErrorMessage(translateMessage(e.message, i18n.language));
     }
   };
 
@@ -67,7 +68,7 @@ function Home(): JSX.Element {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       setFormInvalid(true);
-      setErrorMessage('Please type at least 3 characters');
+      setErrorMessage(translateMessage('Please type at least 3 characters', i18n.language));
       return;
     }
 
@@ -120,19 +121,19 @@ function Home(): JSX.Element {
         <Col xs={12} md={6}>
           <Card className="text-center h-100">
             <Card.Header className="bg-primary text-white">
-              Notes Summary
+              {t('home_card_note_title')}
             </Card.Header>
             <Card.Body className="d-flex flex-column align-items-center justify-content-center">
               <Card.Title className="display-4">
                 {summary?.notesCount}
               </Card.Title>
-              <Card.Text>Notes</Card.Text>
+              <Card.Text>{t('home_card_note_count')}</Card.Text>
               <Button
                 variant="primary"
                 type="button"
                 onClick={() => navigate('/notes')}
               >
-                Go to Notes
+                {t('home_card_note_btn')}
               </Button>
             </Card.Body>
           </Card>
@@ -143,7 +144,7 @@ function Home(): JSX.Element {
         <Col xs={12}>
           <Card>
             <Card.Body>
-              <Card.Title>Search Tasks and Notes</Card.Title>
+              <Card.Title>{t('home_card_search_label')}</Card.Title>
 
               {formInvalid ? (
                 <Alert variant="danger">
@@ -159,10 +160,10 @@ function Home(): JSX.Element {
                     type="text"
                     id="search_term"
                     name="search_term"
-                    placeholder="Enter your search term..."
+                    placeholder={t('home_card_search_placeholder')}
                   />
                   <Button type="submit" variant="primary" id="button-search">
-                    Search
+                    {t('home_card_search_btn')}
                   </Button>
                 </InputGroup>
               </Form>
@@ -173,7 +174,7 @@ function Home(): JSX.Element {
 
       <Row>
         <Col xs={12}>
-          <h2>Search Results</h2>
+          <h2>{t('home_card_search_result_label')}</h2>
 
           <Accordion defaultActiveKey="0">
             {searchResults && searchResults.tasks.length > 0 && (
@@ -209,7 +210,7 @@ function Home(): JSX.Element {
               ))
             )}
             {searchResults?.tasks.length === 0 && searchResults?.notes.length === 0 && (
-              <h3>No results</h3>
+              <h3>{t('home_card_search_empty_result')}</h3>
             )}
           </Accordion>
         </Col>

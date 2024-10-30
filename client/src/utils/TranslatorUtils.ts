@@ -60,6 +60,11 @@ function translateMessage(message: string, target: string): string {
         ? 'Por favor informe seu e-mail e senha!'
         : '¡Por favor, ingresa tu nombre de usuario y contraseña!';
     }
+    case 'Please type at least 3 characters': {
+      return lang === USER_LANG.PORTUGUESE
+        ? 'Por favor digite pelo menos 3 letras'
+        : '¡Por favor, escriba al menos 3 caracteres';
+    }
     case 'Unknown error': {
       return lang === USER_LANG.PORTUGUESE
         ? 'Erro desconhecido'
