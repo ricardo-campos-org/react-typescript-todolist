@@ -27,7 +27,7 @@ const ptBrTranslations = {
   register_go_login: 'Entrar',
   register_back_home: 'Voltar para o início',
 
-  home_nav_home: 'Inicio',
+  home_nav_home: 'Início',
   home_nav_tasks: 'Tarefas',
   home_nav_notes: 'Notas',
   home_nav_about: 'Sobre',
@@ -42,7 +42,7 @@ const ptBrTranslations = {
   home_card_note_count: 'Nota(s)',
   home_card_note_btn: 'Ir para Notas',
   home_card_search_label: 'Buscar tarefas e notas',
-  home_card_search_placeholder: 'Digite o termo de busca...',
+  home_card_search_placeholder: 'Digite o termo de basca...',
   home_card_search_btn: 'Buscar',
   home_card_search_result_label: 'Resultados da busca',
   home_card_search_empty_result: 'Nenhum resultado',
@@ -70,42 +70,40 @@ const ptBrTranslations = {
   note_form_err_invalid: 'Por favor, preencha todos os campos',
 
   about_app_title: 'Sobre o TaskNote',
-  about_app_description: `TaskNote es tu aplicación ideal para gestionar
-    tareas y notas en un solo lugar. Ya sea que estés organizando tareas diarias
-    o tomando notas de reuniones importantes, TaskNote te ayuda a mantenerte
-    organizado y productivo.`,
-  about_app_features: 'Características',
-  about_app_features_list: [
-    'Añade y gestiona tareas y notas de manera rápida',
-    'Busca y filtra notas fácilmente',
-    'Interfaz intuitiva y limpia'
-  ],
-  about_app_help_title: 'Ayuda & Cómo usar',
-  about_app_help_description: `Para empezar, regístrate o inicia sesión,
-    y tendrás acceso a tu panel personalizado. Desde allí, podrás crear, 
-    editar y eliminar tareas y notas, organizándolas como desees. ¿Necesitas
-    ayuda? Visita nuestra página de ayuda (próximamente) para tutoriales y
-    preguntas frecuentes.`,
+  about_app_description: `TaskNote é sua aplicação ideal para gerenciamento
+    de tarefas e notas em apenas um lugar. Esteja você buscando registrar sua
+    lista de tarefas ou organizar suas notas de reuniões importantes, TaskNote
+    te ajuda a se manter organizado(a) e produtivo(a).`,
 
-  about_tech_title: 'Acerca de la Tecnología',
-  about_tech_description: `TaskNote está construido con tecnologías web modernas
-    que garantizan velocidad, fiabilidad y seguridad.`,
-  about_tech_list: [
-    'React con TypeScript para el desarrollo del frontend',
-    'Bootstrap 5 para diseño y componentes responsivos',
-    'Spring Boot para los servicios backend',
-    'PostgreSQL para la gestión de bases de datos',
-    'Docker para la contenedorización y despliegue',
-    'GitHub Actions para CI/CD, pruebas y control de calidad',
-    'SonarCloud y GitHub QL para chequeos de seguridad y mejoras'
-  ],
+  about_app_features: 'Funções',
+  about_app_features_one: 'Adicionar e gerenciar tarefas e notas rapidamente',
+  about_app_features_two: 'Buscar e filtrar notas para fácil acesso',
+  about_app_features_three: 'Interface limpa e intuitiva',
+  about_app_help_title: 'Ajuda & Como usar',
+  about_app_help_description: `Para começar, simplemente crie sua conta ou entre,
+    e você terá acesso ao seu painel personalizado. A partir daí, você pode criar,
+    alterar, e apagar tarefas e notas, e organizá-las da forma que preferir. Precisa
+    de alguma ajuda? Visite nossa página de ajuda (em breve) para tutoriais e perguntas
+    frequentes.`,
 
-  about_dev_title: 'Acerca del Desarrollador',
-  about_dev_description: `¡Hola! Soy Ricardo, el desarrollador de TaskNote. 
-    Me apasiona crear aplicaciones que faciliten la vida y ayuden a organizarse.
-    Puedes contactarme en {N} para cualquier duda o comentario.`,
+  about_tech_title: 'Tecnologia',
+  about_tech_description: `TaskNote foi contruído com tecnologia web atual
+    que garante velocidade, confiabilidade e segurança.`,
+  about_tech_list_one: 'React com TypeScript para o desenvolvimento do front-end',
+  about_tech_list_two: 'Bootstrap 5 para os componentes e design responsivo',
+  about_tech_list_three: 'Java e Spring Boot mais GraalVM para o back-end Nativo em Cloud',
+  about_tech_list_four: 'PostgreSQL para gestão do banco de dados',
+  about_tech_list_five: 'Docker para isolamento em containers e lançamentos',
+  about_tech_list_six: 'GitHub Actions para integração contínua, testes e controle de qualidade',
+  about_tech_list_seven: 'SonarCloud e GitHub QL para reforço de qualidade e melhorias',
 
-  logout: 'Cerrar sesión'
+  about_dev_title: 'Sobre o Desenvolvedor',
+  about_dev_description: `Olá! Sou o Ricardo, o desenvolvedor do TaskNote. 
+    Sou apaixonado por criar aplicações que fazem a vida mais fácil e organizada.
+    Você pode me contactar em `,
+  about_dev_description_two: ' para qualquer dúvida ou comentário.',
+
+  logout: 'Sair'
 };
 
 export default ptBrTranslations;

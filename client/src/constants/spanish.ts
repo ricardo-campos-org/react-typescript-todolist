@@ -75,11 +75,9 @@ const esTranslations = {
     o tomando notas de reuniones importantes, TaskNote te ayuda a mantenerte
     organizado y productivo.`,
   about_app_features: 'Características',
-  about_app_features_list: [
-    'Añade y gestiona tareas y notas de manera rápida',
-    'Busca y filtra notas fácilmente',
-    'Interfaz intuitiva y limpia'
-  ],
+  about_app_features_one: 'Añade y gestiona tareas y notas de manera rápida',
+  about_app_features_two: 'Busca y filtra notas fácilmente',
+  about_app_features_three: 'Interfaz intuitiva y limpia',
   about_app_help_title: 'Ayuda & Cómo usar',
   about_app_help_description: `Para empezar, regístrate o inicia sesión,
     y tendrás acceso a tu panel personalizado. Desde allí, podrás crear, 
@@ -88,17 +86,15 @@ const esTranslations = {
     preguntas frecuentes.`,
 
   about_tech_title: 'Acerca de la Tecnología',
-  about_tech_description: `TaskNote está construido con tecnologías web modernas
+  about_tech_description: `TaskNote fue construido con tecnologías web modernas
     que garantizan velocidad, fiabilidad y seguridad.`,
-  about_tech_list: [
-    'React con TypeScript para el desarrollo del frontend',
-    'Bootstrap 5 para diseño y componentes responsivos',
-    'Spring Boot para los servicios backend',
-    'PostgreSQL para la gestión de bases de datos',
-    'Docker para la contenedorización y despliegue',
-    'GitHub Actions para CI/CD, pruebas y control de calidad',
-    'SonarCloud y GitHub QL para chequeos de seguridad y mejoras'
-  ],
+  about_tech_list_one: 'React con TypeScript para el desarrollo del frontend',
+  about_tech_list_two: 'Bootstrap 5 para diseño y componentes responsivos',
+  about_tech_list_three: 'Java y Spring Boot más GraalVM para el back-end y Cloud Nativo',
+  about_tech_list_four: 'PostgreSQL para la gestión de bases de datos',
+  about_tech_list_five: 'Docker para la contenedorización y despliegue',
+  about_tech_list_six: 'GitHub Actions para CI/CD, pruebas y control de calidad',
+  about_tech_list_seven: 'SonarCloud y GitHub QL para chequeos de seguridad y mejoras',
 
   about_dev_title: 'Acerca del Desarrollador',
   about_dev_description: `¡Hola! Soy Ricardo, el desarrollador de TaskNote. 

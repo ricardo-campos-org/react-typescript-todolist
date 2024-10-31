@@ -75,11 +75,9 @@ const enTranslations = {
     daily to-dos or organizing notes from important meetings, TaskNote helps
     you stay organized and productive.`,
   about_app_features: 'Features',
-  about_app_features_list: [
-    'Quickly add and manage tasks and notes',
-    'Search and filter notes for easy access',
-    'Intuitive and clean user interface'
-  ],
+  about_app_features_one: 'Quickly add and manage tasks and notes',
+  about_app_features_two: 'Search and filter notes for easy access',
+  about_app_features_three: 'Intuitive and clean user interface',
   about_app_help_title: 'Help & How to Use',
   about_app_help_description: `To get started, simply sign up or log in, and
     you'll have access to your personalized dashboard. From there, you can
@@ -87,23 +85,22 @@ const enTranslations = {
     like. Need assistance? Visit our Help page (in the future) for tutorials
     and FAQs.`,
 
-  about_tech_title: 'About the Technology',
-  about_tech_description: `TaskNote is built using modern web technologies
+  about_tech_title: 'Technology',
+  about_tech_description: `TaskNote was built using modern web technologies
     that ensure speed, reliability, and security.`,
-  about_tech_list: [
-    'React with TypeScript for front-end development',
-    'Bootstrap 5 for responsive design and components',
-    'Spring Boot for backend services',
-    'PostgreSQL for database management',
-    'Docker for containerization and deployment',
-    'GitHub Actions for CI/CD, testing and linting enforcement',
-    'SonarCloud, and GitHub QL for security and improvements checks'
-  ],
+  about_tech_list_one: 'React with TypeScript for the front-end',
+  about_tech_list_two: 'Bootstrap 5 for components and responsive design',
+  about_tech_list_three: 'Java and Spring Boot plus GraalVM for the back-end and Cloud Native',
+  about_tech_list_four: 'PostgreSQL for database management',
+  about_tech_list_five: 'Docker for containerization and deployment',
+  about_tech_list_six: 'GitHub Actions for CI/CD, testing and linting enforcement',
+  about_tech_list_seven: 'SonarCloud, and GitHub QL for security and improvements checks',
 
   about_dev_title: 'About the Developer',
   about_dev_description: `Hi! I'm Ricardo, the developer of TaskNote. I'm
     passionate about building applications that make life easier and more
-    organized. You can reach out to me at {N} for any questions or feedback.`,
+    organized. You can reach out to me at `,
+    about_dev_description_two: ' for any questions or feedback.',
 
   logout: 'Logout'
 };
