@@ -55,14 +55,19 @@ function translateMessage(message: string, target: string): string {
         ? 'Limite máximo de tentativas atingido. Por favor aguarde 30 minutos'
         : 'Has alcanzado el límite máximo de intentos de inicio de sesión. Por favor, espera 30 minutos';
     }
+    case 'Please fill in all the fields': {
+      return lang === USER_LANG.PORTUGUESE
+      ? 'Por ravor, preencha todos os campos'
+      : 'Por favor, completa todos los campos';
+    }
     case 'Please fill in your username and password!': {
       return lang === USER_LANG.PORTUGUESE
-        ? 'Por favor informe seu e-mail e senha!'
+        ? 'Por favor, informe seu e-mail e senha!'
         : '¡Por favor, ingresa tu nombre de usuario y contraseña!';
     }
     case 'Please type at least 3 characters': {
       return lang === USER_LANG.PORTUGUESE
-        ? 'Por favor digite pelo menos 3 letras'
+        ? 'Por favor, digite pelo menos 3 letras'
         : '¡Por favor, escriba al menos 3 caracteres';
     }
     case 'Unknown error': {

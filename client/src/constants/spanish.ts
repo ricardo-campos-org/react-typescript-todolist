@@ -53,12 +53,14 @@ const esTranslations = {
   task_form_url_label: 'URL adicional',
   task_form_url_placeholder: 'URL adicional (opcional)',
   task_form_submit: 'Guardar tarea',
-  task_form_err_invalid: 'Por favor, completa todos los campos',
   task_table_description: 'Descripción',
   task_table_done: 'Completada',
   task_table_actions: 'Acciones',
   task_table_action_done: 'Completada',
   task_table_action_undone: 'Deshacer',
+  task_table_action_done_yes: 'Sí',
+  task_table_action_done_no: 'No',
+  task_table_action_edit: 'Editar',
   task_table_action_delete: 'Eliminar',
 
   note_form_title: 'Añadir nota',
@@ -99,7 +101,8 @@ const esTranslations = {
   about_dev_title: 'Acerca del Desarrollador',
   about_dev_description: `¡Hola! Soy Ricardo, el desarrollador de TaskNote. 
     Me apasiona crear aplicaciones que faciliten la vida y ayuden a organizarse.
-    Puedes contactarme en {N} para cualquier duda o comentario.`,
+    Puedes contactarme en `,
+  about_dev_description_two: ' para cualquier duda o comentario.',
 
   logout: 'Cerrar sesión'
 };
