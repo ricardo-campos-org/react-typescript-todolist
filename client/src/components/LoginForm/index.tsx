@@ -23,7 +23,7 @@ import { handleDefaultLang } from '../../lang-service/LangHandler';
  * @returns {JSX.Element} The form component for Login and Register pages.
  */
 function LoginForm({ prefix }: { prefix: string }): JSX.Element {
-  const { register } = useContext(AuthContext);
+  const { signIn, register } = useContext(AuthContext);
   const { i18n, t } = useTranslation();
   const navigate = useNavigate();
   const [validated, setValidated] = useState<boolean>(true);
@@ -59,7 +59,12 @@ function LoginForm({ prefix }: { prefix: string }): JSX.Element {
 
     setFormInvalid(false);
     try {
-      await register(form.email.value, form.password.value);
+      if (prefix === 'login') {
+        await signIn(form.email.value, form.password.value);
+      }
+      else {
+        await register(form.email.value, form.password.value);
+      }
       goTo('/home');
     }
     catch (e) {
