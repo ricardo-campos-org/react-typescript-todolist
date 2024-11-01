@@ -26,7 +26,8 @@ function translateMessage(message: string, target: string): string {
   let lang = USER_LANG.ENGLISH;
   if (target === USER_LANG.PORTUGUESE) {
     lang = USER_LANG.PORTUGUESE;
-  } else if (target === USER_LANG.SPANISH) {
+  }
+  else if (target === USER_LANG.SPANISH) {
     lang = USER_LANG.SPANISH;
   }
   if (lang === USER_LANG.ENGLISH) {
@@ -134,8 +135,8 @@ function translateMessage(message: string, target: string): string {
     }
     case 'Please fill in all the fields': {
       return lang === USER_LANG.PORTUGUESE
-      ? 'Por ravor, preencha todos os campos'
-      : 'Por favor, completa todos los campos';
+        ? 'Por ravor, preencha todos os campos'
+        : 'Por favor, completa todos los campos';
     }
     case 'Please fill in your username and password!': {
       return lang === USER_LANG.PORTUGUESE

@@ -30,7 +30,8 @@ function Note(): JSX.Element {
     if (typeof e === 'string') {
       setErrorMessage(translateMessage(e, i18n.language));
       setFormInvalid(true);
-    } else if (e instanceof Error) {
+    }
+    else if (e instanceof Error) {
       setErrorMessage(translateMessage(e.message, i18n.language));
       setFormInvalid(true);
     }
@@ -40,7 +41,8 @@ function Note(): JSX.Element {
     try {
       const notesFetched: NoteResponse[] = await api.getJSON(ApiConfig.notesUrl);
       setNotes(notesFetched);
-    } catch (e) {
+    }
+    catch (e) {
       handleError(e);
     }
   };
@@ -50,7 +52,8 @@ function Note(): JSX.Element {
       await api.postJSON(ApiConfig.notesUrl, payload);
       loadNotes();
       return true;
-    } catch (e) {
+    }
+    catch (e) {
       handleError(e);
     }
 
@@ -62,7 +65,8 @@ function Note(): JSX.Element {
       await api.patchJSON(`${ApiConfig.notesUrl}/${payload.id}`, payload);
       loadNotes();
       return true;
-    } catch (e) {
+    }
+    catch (e) {
       handleError(e);
     }
     return false;
@@ -100,7 +104,8 @@ function Note(): JSX.Element {
         setNoteDescription('');
         setAction('add');
       }
-    } else if (action === 'edit') {
+    }
+    else if (action === 'edit') {
       const payload: NoteResponse = {
         id: noteId,
         title,
@@ -123,7 +128,8 @@ function Note(): JSX.Element {
     try {
       await api.deleteNoContent(`${ApiConfig.notesUrl}/${noteIdParam}`);
       loadNotes();
-    } catch (e) {
+    }
+    catch (e) {
       handleError(e);
     }
   };
@@ -147,11 +153,13 @@ function Note(): JSX.Element {
             <Card.Body>
               <Card.Title>{t('note_form_title')}</Card.Title>
 
-              {formInvalid ? (
-                <Alert variant="danger">
-                  { errorMessage }
-                </Alert>
-              ) : null}
+              {formInvalid
+                ? (
+                    <Alert variant="danger">
+                      { errorMessage }
+                    </Alert>
+                  )
+                : null}
 
               <Form noValidate validated={validated} onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="form_noteTitle">

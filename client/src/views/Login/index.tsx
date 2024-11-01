@@ -11,7 +11,7 @@ import LoginForm from '../../components/LoginForm';
  * @returns {JSX.Element} The Login page component.
  */
 function Login(): JSX.Element {
-  return <LoginForm prefix='login' />
+  return <LoginForm prefix="login" />;
 }
 
 export default Login;

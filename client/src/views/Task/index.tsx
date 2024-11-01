@@ -32,7 +32,8 @@ function Task(): JSX.Element {
     if (typeof e === 'string') {
       setErrorMessage(translateMessage(e, i18n.language));
       setFormInvalid(true);
-    } else if (e instanceof Error) {
+    }
+    else if (e instanceof Error) {
       setErrorMessage(translateMessage(e.message, i18n.language));
       setFormInvalid(true);
     }
@@ -48,7 +49,8 @@ function Task(): JSX.Element {
         return t1.done ? 1 : -1;
       });
       setTasks(translateTaskResponse(tasksFetched, i18n.language));
-    } catch (e) {
+    }
+    catch (e) {
       handleError(e);
     }
   };
@@ -63,7 +65,8 @@ function Task(): JSX.Element {
       await api.postJSON(ApiConfig.tasksUrl, payload);
       loadTasks();
       return true;
-    } catch (e) {
+    }
+    catch (e) {
       handleError(e);
     }
 
@@ -75,7 +78,8 @@ function Task(): JSX.Element {
       await api.patchJSON(`${ApiConfig.tasksUrl}/${payload.id}`, payload);
       loadTasks();
       return true;
-    } catch (e) {
+    }
+    catch (e) {
       handleError(e);
     }
     return false;
@@ -110,7 +114,8 @@ function Task(): JSX.Element {
         form.reset();
         resetInputs();
       }
-    } else if (action === 'edit') {
+    }
+    else if (action === 'edit') {
       const urls: TaskUrlResponse[] = [];
       if (taskUrlId) {
         urls.push({ url: '', id: taskUrlId });
@@ -143,7 +148,8 @@ function Task(): JSX.Element {
       };
       await api.patchJSON(`${ApiConfig.tasksUrl}/${task.id}`, updatedTask);
       loadTasks();
-    } catch (e) {
+    }
+    catch (e) {
       handleError(e);
     }
   };
@@ -161,7 +167,8 @@ function Task(): JSX.Element {
     try {
       await api.deleteNoContent(`${ApiConfig.tasksUrl}/${taskIdParam}`);
       loadTasks();
-    } catch (e) {
+    }
+    catch (e) {
       handleError(e);
     }
   };
@@ -178,11 +185,13 @@ function Task(): JSX.Element {
             <Card.Body>
               <Card.Title>{t('task_form_title')}</Card.Title>
 
-              {formInvalid ? (
-                <Alert variant="danger">
-                  { errorMessage }
-                </Alert>
-              ) : null}
+              {formInvalid
+                ? (
+                    <Alert variant="danger">
+                      { errorMessage }
+                    </Alert>
+                  )
+                : null}
 
               <Form noValidate validated={validated} onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -250,14 +259,16 @@ function Task(): JSX.Element {
                   <td className={task.done ? 'text-done' : ''}>
                     {
                       task.done
-                      ? t('task_table_action_done_yes')
-                      : t('task_table_action_done_no')
+                        ? t('task_table_action_done_yes')
+                        : t('task_table_action_done_no')
                     }
                   </td>
                   <td className={task.done ? 'text-done' : ''}>
-                    {task.urls.length > 0 ? (
-                      <a href={`${task.urls[0].url}`}>Link</a>
-                    ) : '-'}
+                    {task.urls.length > 0
+                      ? (
+                          <a href={`${task.urls[0].url}`}>Link</a>
+                        )
+                      : '-'}
                   </td>
                   <td className={task.done ? 'text-done' : ''}>
                     <Button

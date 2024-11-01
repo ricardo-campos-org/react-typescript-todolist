@@ -61,11 +61,13 @@ function LoginForm({ prefix }: { prefix: string }): JSX.Element {
     try {
       await register(form.email.value, form.password.value);
       goTo('/home');
-    } catch (e) {
+    }
+    catch (e) {
       setFormInvalid(true);
       if (typeof e === 'string') {
         setErrorMessage(translateMessage(e, i18n.language));
-      } else if (e instanceof Error) {
+      }
+      else if (e instanceof Error) {
         setErrorMessage(translateMessage(e.message, i18n.language));
       }
     }
@@ -83,11 +85,13 @@ function LoginForm({ prefix }: { prefix: string }): JSX.Element {
             <Card.Body className="p-4">
               <h2 className="text-center">{t(`${prefix}_title`)}</h2>
 
-              {formInvalid ? (
-                <Alert variant="danger">
-                  { errorMessage }
-                </Alert>
-              ) : null}
+              {formInvalid
+                ? (
+                    <Alert variant="danger">
+                      { errorMessage }
+                    </Alert>
+                  )
+                : null}
 
               <Form noValidate validated={validated} onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -120,10 +124,12 @@ function LoginForm({ prefix }: { prefix: string }): JSX.Element {
               </Form>
 
               <div className="text-center mt-3">
-                {prefix === 'login' ? (
-                  `${t('login_account')} `
-                ) : `${t('register_account')} `}
-                <Link to={prefix === 'login'? "/register" : "/login"} className="text-decoration-none">
+                {prefix === 'login'
+                  ? (
+                      `${t('login_account')} `
+                    )
+                  : `${t('register_account')} `}
+                <Link to={prefix === 'login' ? '/register' : '/login'} className="text-decoration-none">
                   {t(`${prefix}_go_other`)}
                 </Link>
               </div>

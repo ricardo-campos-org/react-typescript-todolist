@@ -40,7 +40,8 @@ function Landing(): JSX.Element {
   const handleLogin = (): void => {
     if (signed) {
       goTo('/home');
-    } else {
+    }
+    else {
       goTo('/login');
     }
   };

@@ -35,7 +35,8 @@ function Home(): JSX.Element {
   const handleError = (e: unknown): void => {
     if (typeof e === 'string') {
       setErrorMessage(translateMessage(e, i18n.language));
-    } else if (e instanceof Error) {
+    }
+    else if (e instanceof Error) {
       setErrorMessage(translateMessage(e.message, i18n.language));
     }
   };
@@ -44,7 +45,8 @@ function Home(): JSX.Element {
     try {
       const response: SummaryResponse = await api.getJSON(`${ApiConfig.homeUrl}/summary`);
       setSummary(response);
-    } catch (e) {
+    }
+    catch (e) {
       handleError(e);
     }
   };
@@ -54,7 +56,8 @@ function Home(): JSX.Element {
       const response: HomeSearchResponse = await api.getJSON(`${ApiConfig.homeUrl}/search?term=${term}`);
       setSearchResults(response);
       return true;
-    } catch (e) {
+    }
+    catch (e) {
       handleError(e);
     }
     return false;
@@ -146,11 +149,13 @@ function Home(): JSX.Element {
             <Card.Body>
               <Card.Title>{t('home_card_search_label')}</Card.Title>
 
-              {formInvalid ? (
-                <Alert variant="danger">
-                  { errorMessage }
-                </Alert>
-              ) : null}
+              {formInvalid
+                ? (
+                    <Alert variant="danger">
+                      { errorMessage }
+                    </Alert>
+                  )
+                : null}
 
               <Form noValidate validated={validated} onSubmit={handleSearch}>
                 <InputGroup className="mb-3">
@@ -186,9 +191,11 @@ function Home(): JSX.Element {
                     {task.description}
                   </Accordion.Header>
                   <Accordion.Body>
-                    {task.urls.length > 0 ? (
-                      <a href={`${task.urls[0].url}`}>{task.urls[0].url}</a>
-                    ) : 'No URL!'}
+                    {task.urls.length > 0
+                      ? (
+                          <a href={`${task.urls[0].url}`}>{task.urls[0].url}</a>
+                        )
+                      : 'No URL!'}
                   </Accordion.Body>
                 </Accordion.Item>
               ))

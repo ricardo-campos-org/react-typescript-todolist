@@ -103,7 +103,7 @@ const enTranslations = {
   about_dev_description: `Hi! I'm Ricardo, the developer of TaskNote. I'm
     passionate about building applications that make life easier and more
     organized. You can reach out to me at `,
-    about_dev_description_two: ' for any questions or feedback.',
+  about_dev_description_two: ' for any questions or feedback.',
 
   logout: 'Logout'
 };

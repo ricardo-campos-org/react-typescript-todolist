@@ -20,7 +20,7 @@ function getHeaders(): Headers {
 
   return new Headers({
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${getToken()}`,
+    'Authorization': `Bearer ${getToken()}`,
     'X-XSRF-TOKEN': csrfToken || ''
   });
 }
@@ -51,7 +51,7 @@ const api = {
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${getToken()}`
+        'Authorization': `Bearer ${getToken()}`
       }
     });
     if (response.ok) {

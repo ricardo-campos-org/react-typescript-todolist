@@ -10,7 +10,7 @@ import LoginForm from '../../components/LoginForm';
  * @returns {JSX.Element} The Register page component.
  */
 function Register(): JSX.Element {
-  return <LoginForm prefix='register' />;
+  return <LoginForm prefix="register" />;
 }
 
 export default Register;
