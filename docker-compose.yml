@@ -63,20 +63,3 @@ services:
       timeout: 15s
       retries: 3
       start_period: 10s
-
-  caddy:
-    container_name: caddy
-    profiles: 
-      - "caddy"
-    build:
-      context: .
-      args:
-        BUILD: nightly
-    ports: 
-      - "80:5000"
-    volumes: 
-      - "./Caddyfile:/etc/caddy/Caddyfile"
-    environment:
-      LOG_LEVEL: debug
-    healthcheck:
-      test: timeout 10s bash -c 'true > /dev/tcp/127.0.0.1/3000'
