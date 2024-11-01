@@ -13,8 +13,8 @@ const ptBrTranslations = {
   login_password_label: 'Senha',
   login_password_placeholder: 'Digite sua senha',
   login_btn_submit: 'Entrar',
-  login_no_account: 'Não possui uma conta ainda?',
-  login_register_here: 'Criar conta',
+  login_account: 'Não possui uma conta ainda?',
+  login_go_other: 'Criar conta',
   login_back_home: 'Voltar para o início',
 
   register_title: 'Criar conta',
@@ -23,8 +23,8 @@ const ptBrTranslations = {
   register_password_label: 'Senha',
   register_password_placeholder: 'Digite sua senha',
   register_btn_submit: 'Criar conta',
-  register_has_account: 'Já possui conta?',
-  register_go_login: 'Entrar',
+  register_account: 'Já possui conta?',
+  register_go_other: 'Entrar',
   register_back_home: 'Voltar para o início',
 
   home_nav_home: 'Início',

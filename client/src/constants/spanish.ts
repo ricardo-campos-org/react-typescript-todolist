@@ -13,8 +13,8 @@ const esTranslations = {
   login_password_label: 'Contraseña',
   login_password_placeholder: 'Escribe tu contraseña aquí',
   login_btn_submit: 'Iniciar sesión',
-  login_no_account: '¿No tienes una cuenta?',
-  login_register_here: 'Regístrate aquí',
+  login_account: '¿No tienes una cuenta?',
+  login_go_other: 'Regístrate aquí',
   login_back_home: 'Volver a inicio',
 
   register_title: 'Crear cuenta',
@@ -23,8 +23,8 @@ const esTranslations = {
   register_password_label: 'Contraseña',
   register_password_placeholder: 'Escribe tu contraseña aquí',
   register_btn_submit: 'Crear cuenta',
-  register_has_account: '¿Ya tienes una cuenta?',
-  register_go_login: 'Ir a iniciar sesión',
+  register_account: '¿Ya tienes una cuenta?',
+  register_go_other: 'Ir a iniciar sesión',
   register_back_home: 'Volver a inicio',
 
   home_nav_home: 'Inicio',
