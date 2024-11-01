@@ -9,7 +9,7 @@ import USER_LANG from '../types/UserLangs';
  * @returns {TaskResponse[]} Array of tasks translated into the target language.
  */
 function translateTaskResponse(tasks: TaskResponse[], target: string): TaskResponse[] {
-  tasks.map((task: TaskResponse) => {
+  tasks.forEach((task: TaskResponse) => {
     task.lastUpdate = translateMessage(task.lastUpdate, target);
   });
   return tasks;
