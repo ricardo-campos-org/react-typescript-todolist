@@ -69,7 +69,8 @@ const ptBrTranslations = {
   note_form_content_label: 'Conteúdo da nota',
   note_form_content_placeholder: 'Digite o conteúdo da nota',
   note_form_submit: 'Salvar nota',
-  note_form_err_invalid: 'Por favor, preencha todos os campos',
+  note_table_btn_edit: 'Alterar',
+  note_table_btn_delete: 'Excluir',
 
   about_app_title: 'Sobre o TaskNote',
   about_app_description: `TaskNote é sua aplicação ideal para gerenciamento

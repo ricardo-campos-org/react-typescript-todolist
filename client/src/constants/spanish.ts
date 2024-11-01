@@ -69,7 +69,8 @@ const esTranslations = {
   note_form_content_label: 'Contenido de la nota',
   note_form_content_placeholder: 'Introduce el contenido de la nota',
   note_form_submit: 'Guardar nota',
-  note_form_err_invalid: 'Por favor, completa todos los campos',
+  note_table_btn_edit: 'Editar',
+  note_table_btn_delete: 'Eliminar',
 
   about_app_title: 'Acerca de TaskNote',
   about_app_description: `TaskNote es tu aplicación ideal para gestionar

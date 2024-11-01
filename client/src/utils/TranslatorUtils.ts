@@ -1,7 +1,21 @@
+import { TaskResponse } from '../types/TaskResponse';
 import USER_LANG from '../types/UserLangs';
 
 /**
-Email already exists!/**
+ * Translates all responses from tasks server API.
+ *
+ * @param {TaskResponse[]} tasks The tasks to be translated.
+ * @param {string} target The target language.
+ * @returns {TaskResponse[]} Array of tasks translated into the target language.
+ */
+function translateTaskResponse(tasks: TaskResponse[], target: string): TaskResponse[] {
+  tasks.map((task: TaskResponse) => {
+    task.lastUpdate = translateMessage(task.lastUpdate, target);
+  });
+  return tasks;
+}
+
+/**
  * Translates a given message to a given language
  *
  * @param {string} message The message to be translated.
@@ -17,6 +31,69 @@ function translateMessage(message: string, target: string): string {
   }
   if (lang === USER_LANG.ENGLISH) {
     return message;
+  }
+
+  if (message.includes(' ago')) {
+    const firstSpace = message.indexOf(' ');
+    const numberValue = message.substring(0, firstSpace);
+    const textvalue = message.substring(firstSpace).trim();
+    switch (textvalue) {
+      case 'years ago': {
+        return lang === USER_LANG.PORTUGUESE
+          ? `${numberValue} anos atrás`
+          : `Hace ${numberValue} años`;
+      }
+      case 'year ago': {
+        return lang === USER_LANG.PORTUGUESE
+          ? `${numberValue} ano atrás`
+          : `Hace ${numberValue} año`;
+      }
+      case 'months ago': {
+        return lang === USER_LANG.PORTUGUESE
+          ? `${numberValue} meses atrás`
+          : `Hace ${numberValue} meses`;
+      }
+      case 'month ago': {
+        return lang === USER_LANG.PORTUGUESE
+          ? `${numberValue} mês atrás`
+          : `Hace ${numberValue} mes`;
+      }
+      case 'days ago': {
+        return lang === USER_LANG.PORTUGUESE
+          ? `${numberValue} dias atrás`
+          : `Hace ${numberValue} días`;
+      }
+      case 'day ago': {
+        return lang === USER_LANG.PORTUGUESE
+          ? `${numberValue} dia atrás`
+          : `Hace ${numberValue} día`;
+      }
+      case 'hours ago': {
+        return lang === USER_LANG.PORTUGUESE
+          ? `${numberValue} horas atrás`
+          : `Hace ${numberValue} horas`;
+      }
+      case 'hour ago': {
+        return lang === USER_LANG.PORTUGUESE
+          ? `${numberValue} hora atrás`
+          : `Hace ${numberValue} hora`;
+      }
+      case 'minutes ago': {
+        return lang === USER_LANG.PORTUGUESE
+          ? `${numberValue} minutos atrás`
+          : `Hace ${numberValue} minutos`;
+      }
+      case 'minute ago': {
+        return lang === USER_LANG.PORTUGUESE
+          ? `${numberValue} minuto atrás`
+          : `Hace ${numberValue} minuto`;
+      }
+      case 'seconds ago': {
+        return lang === USER_LANG.PORTUGUESE
+          ? `${numberValue} segundos atrás`
+          : `Hace ${numberValue} segundos`;
+      }
+    }
   }
 
   switch (message) {
@@ -89,4 +166,4 @@ function translateMessage(message: string, target: string): string {
   }
 }
 
-export { translateMessage };
+export { translateTaskResponse, translateMessage };

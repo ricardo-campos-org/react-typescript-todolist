@@ -7,7 +7,7 @@ import { TaskResponse, TaskUrlResponse } from '../../types/TaskResponse';
 import { useTranslation } from 'react-i18next';
 import api from '../../api-service/api';
 import ApiConfig from '../../api-service/apiConfig';
-import { translateMessage } from '../../utils/TranslatorUtils';
+import { translateMessage, translateTaskResponse } from '../../utils/TranslatorUtils';
 import './style.css';
 
 type TaskAction = 'add' | 'edit';
@@ -47,7 +47,7 @@ function Task(): JSX.Element {
         }
         return t1.done ? 1 : -1;
       });
-      setTasks(tasksFetched);
+      setTasks(translateTaskResponse(tasksFetched, i18n.language));
     } catch (e) {
       handleError(e);
     }

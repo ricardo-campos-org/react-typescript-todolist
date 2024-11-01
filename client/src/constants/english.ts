@@ -69,7 +69,8 @@ const enTranslations = {
   note_form_content_label: 'Note content',
   note_form_content_placeholder: 'Enter the note content',
   note_form_submit: 'Save note',
-  note_form_err_invalid: 'Please fill all fields',
+  note_table_btn_edit: 'Edit',
+  note_table_btn_delete: 'Delete',
 
   about_app_title: 'About TaskNote',
   about_app_description: `TaskNote is your go-to application for managing
