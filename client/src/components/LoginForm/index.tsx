@@ -26,7 +26,7 @@ function LoginForm({ prefix }: { prefix: string }): JSX.Element {
   const { signIn, register } = useContext(AuthContext);
   const { i18n, t } = useTranslation();
   const navigate = useNavigate();
-  const [validated, setValidated] = useState<boolean>(true);
+  const [validated, setValidated] = useState<boolean>(false);
   const [formInvalid, setFormInvalid] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
 
