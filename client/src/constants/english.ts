@@ -19,7 +19,7 @@ const enTranslations = {
 
   register_title: 'Create account',
   register_email_label: 'Email',
-  register_email_placeholder: 'Type your password',
+  register_email_placeholder: 'Type your email',
   register_password_label: 'Password',
   register_password_placeholder: 'Type your password',
   register_btn_submit: 'Create account',
