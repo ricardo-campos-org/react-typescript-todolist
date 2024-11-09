@@ -10,6 +10,8 @@ const ApiConfig = {
 
   csrfTokenUrl: `${server}/rest/user-sessions/csrf`,
 
+  deleteAccountUrl: `${server}/rest/user-session/delete-account`,
+
   tasksUrl: `${server}/rest/tasks`,
 
   homeUrl: `${server}/rest/home`,

@@ -105,6 +105,25 @@ const enTranslations = {
     organized. You can reach out to me at `,
   about_dev_description_two: ' for any questions or feedback.',
 
+  account_my_account_tittle: 'My Account',
+  account_my_account_hello: 'Hello! This is where you can manage your preferences.',
+  account_my_account_logged: 'You\'re logged in as: ',
+  account_app_lang_tittle: 'App Language',
+  account_app_lang_description: 'You can choose one of these languages:',
+  account_privacy_little: 'Your Privacy Matters',
+  account_privacy_text: `We're committed to protecting your privacy and
+    giving you full control over your data. You can request complete account
+    deletion at any time. Once processed, all your personal information will be
+    permanently removed from our servers.`,
+  account_privacy_delete_btn: 'Delete all my data',
+  account_delete_tittle: 'You are about to delete your account!',
+  account_delete_description: `This action cannot be undone. If you really want to
+    delete all your data, click the button below. If not, close this message and your
+    data will be safe.`,
+  account_delete_btn: 'Yes, delete everything',
+
+  footer_my_account: 'My Account ',
+
   logout: 'Logout'
 };
 
