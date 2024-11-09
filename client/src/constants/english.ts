@@ -9,7 +9,7 @@ const enTranslations = {
 
   login_title: 'Login',
   login_email_label: 'Email',
-  login_email_placeholder: 'Type your password',
+  login_email_placeholder: 'Type your email',
   login_password_label: 'Password',
   login_password_placeholder: 'Type your password',
   login_btn_submit: 'Login',
@@ -35,7 +35,7 @@ const enTranslations = {
   home_card_task_title: 'Tasks Summary',
   home_card_task_pending: 'Pending tasks',
   home_card_task_empty: 'No pending tasks',
-  home_card_task_done: '{X} done tasks!',
+  home_card_task_done: 'done tasks!',
   home_card_task_done_empty: 'No done tasks!',
   home_card_task_btn: 'Go to Tasks',
   home_card_note_title: 'Notes Summary',
