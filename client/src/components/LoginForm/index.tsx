@@ -106,6 +106,7 @@ function LoginForm({ prefix }: { prefix: string }): JSX.Element {
                     type="email"
                     name="email"
                     placeholder={t(`${prefix}_email_placeholder`)}
+                    data-testid={`${prefix}_email_input`}
                   />
                 </Form.Group>
 

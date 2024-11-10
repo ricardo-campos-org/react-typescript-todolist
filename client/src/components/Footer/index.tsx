@@ -49,6 +49,7 @@ function Footer(): JSX.Element {
               variant="link"
               type="button"
               onClick={() => navigate('/account')}
+              data-testid="footer-user-text"
             >
               {t('footer_my_account')}
               (
