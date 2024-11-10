@@ -92,6 +92,8 @@ function Task(): JSX.Element {
     setTaskUrl('');
     setTaskUrlId(0);
     setAction('add');
+    setValidated(false);
+    setFormInvalid(false);
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {

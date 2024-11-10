@@ -198,6 +198,30 @@ public class AuthService {
     return token;
   }
 
+  /**
+   * Delete current user account.
+   *
+   * @return {@link UserResponse} with user data.
+   */
+  public UserResponse deleteUserAccount() {
+    Optional<String> currentUserEmail = authUtil.getCurrentUserEmail();
+    String email = currentUserEmail.orElseThrow();
+    UserEntity currentUser = findByEmail(email).orElseThrow();
+
+    log.info("Deleting account for user {}", currentUser.getId());
+
+    currentUser.setInactivatedAt(LocalDateTime.now());
+    userPwdLimitRepository.deleteAllForUser(currentUser.getId());
+    userRepository.delete(currentUser);
+
+    return new UserResponse(
+        currentUser.getId(),
+        currentUser.getEmail(),
+        currentUser.getAdmin(),
+        currentUser.getCreatedAt(),
+        currentUser.getInactivatedAt());
+  }
+
   private void checkLoginAttemptLimit(Long userId) {
     Sort sort = Sort.by(Direction.DESC, "whenHappened");
     List<UserPwdLimitEntity> userPwdList = userPwdLimitRepository.findAllByUser_id(userId, sort);

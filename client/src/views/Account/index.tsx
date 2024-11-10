@@ -3,7 +3,7 @@ import { Alert, Button, Card, Col, Container, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { FileText, Person, ShieldCheck } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
-import { setDefaultLang } from '../../storage-service/storage';
+import { clearStorage, setDefaultLang } from '../../storage-service/storage';
 import AuthContext from '../../context/AuthContext';
 import { LangAvailable, languages } from '../../constants/languages_available';
 import api from '../../api-service/api';
@@ -31,6 +31,7 @@ function Account(): JSX.Element {
     setShowAlert(false);
     await api.postJSON(ApiConfig.deleteAccountUrl, {});
     signOut();
+    clearStorage();
     navigate('/');
   };
 

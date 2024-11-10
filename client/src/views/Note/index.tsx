@@ -103,6 +103,8 @@ function Note(): JSX.Element {
         setNoteTitle('');
         setNoteDescription('');
         setAction('add');
+        setValidated(false);
+        setFormInvalid(false);
       }
     }
     else if (action === 'edit') {
@@ -120,6 +122,8 @@ function Note(): JSX.Element {
         setNoteTitle('');
         setNoteDescription('');
         setAction('add');
+        setValidated(false);
+        setFormInvalid(false);
       }
     }
   };

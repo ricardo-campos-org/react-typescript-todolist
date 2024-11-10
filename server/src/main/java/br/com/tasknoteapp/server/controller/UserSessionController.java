@@ -2,7 +2,8 @@ package br.com.tasknoteapp.server.controller;
 
 import br.com.tasknoteapp.server.exception.UserNotFoundException;
 import br.com.tasknoteapp.server.response.JwtAuthenticationResponse;
-import br.com.tasknoteapp.server.service.AuthService;
+import br.com.tasknoteapp.server.response.UserResponse;
+import br.com.tasknoteapp.server.service.UserSessionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "User Sessions", description = "Resources to handle user sessions.")
 public class UserSessionController {
 
-  private final AuthService authService;
+  private final UserSessionService userSessionService;
 
   /**
    * Refresh an existing user session, generating a new token.
@@ -47,12 +48,30 @@ public class UserSessionController {
             content = @Content(schema = @Schema(implementation = Void.class)))
       })
   public JwtAuthenticationResponse refresh() {
-    String token = authService.refreshCurrentUserToken();
-    return new JwtAuthenticationResponse(token);
+    return userSessionService.refreshUserSession();
   }
 
+  /**
+   * Delete all the user data and information from the server.
+   * 
+   * @returns {@link UserResponse} with the user information.
+   */
   @PostMapping("/delete-account")
-  public void deteleAccount() {
-    //
+  @Operation(
+      summary = "Delete the user account.",
+      description = "Delete all the user data and information from the server.",
+      responses = {
+        @ApiResponse(responseCode = "200", description = "Account successfully deleted"),
+        @ApiResponse(
+            responseCode = "403",
+            description = "Forbidden. Access Denied",
+            content = @Content(schema = @Schema(implementation = Void.class))),
+        @ApiResponse(
+            responseCode = "404",
+            description = "User not found",
+            content = @Content(schema = @Schema(implementation = Void.class)))
+      })
+  public UserResponse deteleAccount() {
+    return userSessionService.deleteCurrentUserAccount();
   }
 }
