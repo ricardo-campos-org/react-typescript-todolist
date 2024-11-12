@@ -79,7 +79,7 @@
     "prettier": "^3.3.3",
     "sass": "^1.80.4",
     "source-map-support": "^0.5.21",
-    "typescript-eslint": "^8.12.2",
+    "typescript-eslint": "^8.14.0",
     "vitest": "^2.0.5"
   }
 }
