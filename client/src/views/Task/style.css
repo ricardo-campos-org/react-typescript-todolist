@@ -10,13 +10,22 @@
   margin-right: 0.5rem;
 }
 
+.priority-done {
+  font-size: 10px;
+  font-weight: 700;
+  background-color: #ccc;
+  padding: 3px 5px;
+  border-radius: 6px;
+  margin-right: 0.5rem;
+}
+
 .priority-normal {
   font-size: 10px;
   font-weight: 700;
   background-color: lightgreen;
-  padding: 6px;
+  padding: 3px 5px;
   border-radius: 6px;
-  margin-left: 2.1rem;
+  margin-right: 0.5rem;
 }
 
 .task-pipe {
@@ -29,8 +38,7 @@
   color: #868181;
 }
 
-.card-body svg {
-  margin-top: -3px;
+.task-icon {
   margin-right: 1rem;
   cursor: pointer;
 }

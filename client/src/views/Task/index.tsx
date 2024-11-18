@@ -282,28 +282,48 @@ function Task(): JSX.Element {
       <Row className="mt-3">
         <Col xs={12}>
           {tasks.map((task: TaskResponse) => (
-            <Card key={task.id.toString()}>
+            <Card key={task.id.toString()} className="my-2">
               <Card.Body>
                 <Card.Title>
                   {!task.highPriority && (
-                    task.done
-                      ? <ArrowUpSquareFill onClick={() => markAsDone(task)} />
-                      : <ArrowUpSquare onClick={() => markAsDone(task)} />
+                    <>
+                      {task.done
+                        ? <ArrowUpSquareFill onClick={() => markAsDone(task)} className="task-icon" />
+                        : <ArrowUpSquare onClick={() => markAsDone(task)} className="task-icon" />}
+                      <span className="priority-normal">
+                        NORMAL
+                      </span>
+                    </>
                   )}
                   {task.highPriority && (
-                    task.done
-                      ? <CheckSquare onClick={() => markAsDone(task)} />
-                      : <Square onClick={() => markAsDone(task)} />
+                    <>
+                      {task.done
+                        ? <CheckSquare onClick={() => markAsDone(task)} className="task-icon" />
+                        : <Square onClick={() => markAsDone(task)} className="task-icon" />}
+                      <span className="priority-high">
+                        HIGH
+                      </span>
+                    </>
+                  )}
+                  {task.done && (
+                    <span className="priority-done">DONE</span>
                   )}
                   {task.description}
                 </Card.Title>
-                <Card.Text className="">
-                  <span className="priority-normal">
-                    NORMAL
-                  </span>
-                  <span className="task-pipe">|</span>
-                  <span className="task-last-update">{task.lastUpdate}</span>
-                </Card.Text>
+                <Row>
+                  <Col xs={6}>
+                    <span className="task-last-update">Tomorrow</span>
+                    <span className="task-pipe">|</span>
+                    <span className="task-last-update">URL</span>
+                    <span className="task-pipe">|</span>
+                    <span className="task-last-update">{task.lastUpdate}</span>
+                  </Col>
+                  <Col xs={6} className="text-end">
+                    <span className="task-link">Edit</span>
+                    <span className="task-pipe">|</span>
+                    <span className="task-link">Delete</span>
+                  </Col>
+                </Row>
               </Card.Body>
             </Card>
           ))}
