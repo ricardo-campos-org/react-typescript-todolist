@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Accordion,
-  Alert, Button, Card, Col, Container, Form, InputGroup, Row, Table
+  Alert, Badge, Button, Card, Col, Container, Form, InputGroup, ListGroup, Row, Table
 } from 'react-bootstrap';
 import TaskNoteRequest from '../../types/TaskNoteRequest';
 import { TaskResponse, TaskUrlResponse } from '../../types/TaskResponse';
@@ -9,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import api from '../../api-service/api';
 import ApiConfig from '../../api-service/apiConfig';
 import { translateMessage, translateTaskResponse } from '../../utils/TranslatorUtils';
-import { CalendarCheck, Check2Square, CheckSquare, PencilFill, Square } from 'react-bootstrap-icons';
+import { ArrowUpSquare, ArrowUpSquareFill, CalendarCheck, CheckSquare, PencilFill, Square } from 'react-bootstrap-icons';
 import './style.css';
 
 type TaskAction = 'add' | 'edit';
@@ -282,26 +281,32 @@ function Task(): JSX.Element {
       {/* Tasks added */}
       <Row className="mt-3">
         <Col xs={12}>
-          <Accordion defaultActiveKey="0">
-            {tasks.map((task: TaskResponse) => (
-              <Accordion.Item key={task.id.toString()} eventKey={task.id.toString()}>
-                <Accordion.Header>
-                  <div className="task-header-icon">
-                    {task.done ? <CheckSquare /> : <Square />}
-                  </div>
+          {tasks.map((task: TaskResponse) => (
+            <Card key={task.id.toString()}>
+              <Card.Body>
+                <Card.Title>
+                  {!task.highPriority && (
+                    task.done
+                      ? <ArrowUpSquareFill onClick={() => markAsDone(task)} />
+                      : <ArrowUpSquare onClick={() => markAsDone(task)} />
+                  )}
+                  {task.highPriority && (
+                    task.done
+                      ? <CheckSquare onClick={() => markAsDone(task)} />
+                      : <Square onClick={() => markAsDone(task)} />
+                  )}
                   {task.description}
-                  {' !!!'}
-                </Accordion.Header>
-                <Accordion.Body>
-                  <small>
-                    Last update:
-                    {' '}
-                    {task.lastUpdate}
-                  </small>
-                </Accordion.Body>
-              </Accordion.Item>
-            ))}
-          </Accordion>
+                </Card.Title>
+                <Card.Text className="">
+                  <span className="priority-normal">
+                    NORMAL
+                  </span>
+                  <span className="task-pipe">|</span>
+                  <span className="task-last-update">{task.lastUpdate}</span>
+                </Card.Text>
+              </Card.Body>
+            </Card>
+          ))}
 
           <Table striped bordered hover responsive className="mt-3">
             <thead>

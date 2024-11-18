@@ -7,6 +7,7 @@ type TaskResponse = {
   id: number;
   description: string;
   done: boolean;
+  highPriority: boolean;
   lastUpdate: string;
   urls: TaskUrlResponse[];
 };

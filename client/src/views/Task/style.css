@@ -6,15 +6,31 @@
   color: #ccc!important;
 }
 
-.time-ago {
-  font-size: 0.775em;
-  color: #868181;
-}
-
 .btn-action {
   margin-right: 0.5rem;
 }
 
-.task-header-icon {
+.priority-normal {
+  font-size: 10px;
+  font-weight: 700;
+  background-color: lightgreen;
+  padding: 6px;
+  border-radius: 6px;
+  margin-left: 2.1rem;
+}
+
+.task-pipe {
+  color: #868181;
+  margin: 0 0.5rem;
+}
+
+.task-last-update {
+  font-size: 11px;
+  color: #868181;
+}
+
+.card-body svg {
+  margin-top: -3px;
   margin-right: 1rem;
+  cursor: pointer;
 }
