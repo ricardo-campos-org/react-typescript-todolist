@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Alert, Button, Card, Col, Container, Form, Row, Table
+  Accordion,
+  Alert, Button, Card, Col, Container, Form, InputGroup, Row, Table
 } from 'react-bootstrap';
 import TaskNoteRequest from '../../types/TaskNoteRequest';
 import { TaskResponse, TaskUrlResponse } from '../../types/TaskResponse';
@@ -8,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import api from '../../api-service/api';
 import ApiConfig from '../../api-service/apiConfig';
 import { translateMessage, translateTaskResponse } from '../../utils/TranslatorUtils';
+import { CalendarCheck, Check2Square, CheckSquare, PencilFill, Square } from 'react-bootstrap-icons';
 import './style.css';
 
 type TaskAction = 'add' | 'edit';
@@ -181,6 +183,7 @@ function Task(): JSX.Element {
 
   return (
     <Container>
+      {/* Form to add, edit and save tasks */}
       <Row className="mt-3">
         <Col xs={12}>
           <Card>
@@ -196,50 +199,111 @@ function Task(): JSX.Element {
                 : null}
 
               <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label>{t('task_form_desc_label')}</Form.Label>
-                  <Form.Control
-                    required
-                    type="test"
-                    name="description"
-                    placeholder={t('task_form_desc_placeholder')}
-                    value={taskDescription}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      setTaskDescription(e.target.value);
-                    }}
-                  />
-                </Form.Group>
+                <Row>
+                  <Col xs={12} sm={6}>
+                    <Form.Group className="mb-3" controlId="task-form-description">
+                      <Form.Label>{t('task_form_desc_label')}</Form.Label>
+                      <InputGroup className="mb-3">
+                        <InputGroup.Text>
+                          <PencilFill />
+                        </InputGroup.Text>
+                        <Form.Control
+                          required
+                          type="text"
+                          name="description"
+                          placeholder={t('task_form_desc_placeholder')}
+                          value={taskDescription}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            setTaskDescription(e.target.value);
+                          }}
+                        />
+                      </InputGroup>
+                    </Form.Group>
+                  </Col>
 
-                <Form.Group className="mb-3" controlId="input-url">
-                  <Form.Label>{t('task_form_url_label')}</Form.Label>
-                  <Form.Control
-                    required={false}
-                    type="text"
-                    name="url"
-                    placeholder={t('task_form_url_placeholder')}
-                    value={taskUrl}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      setTaskUrl(e.target.value);
-                    }}
-                  />
-                </Form.Group>
+                  <Col xs={12} sm={6}>
+                    <Form.Group className="mb-3" controlId="task-form-url">
+                      <Form.Label>{t('task_form_url_label')}</Form.Label>
+                      <InputGroup className="mb-3">
+                        <InputGroup.Text>@</InputGroup.Text>
+                        <Form.Control
+                          required={false}
+                          type="text"
+                          name="url"
+                          placeholder={t('task_form_url_placeholder')}
+                          value={taskUrl}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            setTaskUrl(e.target.value);
+                          }}
+                        />
+                      </InputGroup>
+                    </Form.Group>
+                  </Col>
+                </Row>
 
-                <Button
-                  variant="primary"
-                  type="submit"
-                  className="w-100"
-                >
+                <Row>
+                  <Col xs={12} sm={6}>
+                    <Form.Group className="mb-3" controlId="task-form-due-date">
+                      <Form.Label>{t('task_form_duedate_label')}</Form.Label>
+                      <InputGroup className="mb-3">
+                        <InputGroup.Text>
+                          <CalendarCheck />
+                        </InputGroup.Text>
+                        <Form.Control
+                          required={false}
+                          type="text"
+                          name="url"
+                          placeholder={t('task_form_duedate_placeholder')}
+                          value={taskUrl}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            setTaskUrl(e.target.value);
+                          }}
+                        />
+                      </InputGroup>
+                    </Form.Group>
+                  </Col>
+                </Row>
+
+                <Form.Check
+                  type="switch"
+                  id="high-priority-input"
+                  label="High priority"
+                  className="mb-3"
+                />
+
+                <Button variant="primary" type="submit">
                   {t('task_form_submit')}
                 </Button>
               </Form>
-
             </Card.Body>
           </Card>
         </Col>
       </Row>
+      {/* Tasks added */}
       <Row className="mt-3">
         <Col xs={12}>
-          <Table striped bordered hover responsive>
+          <Accordion defaultActiveKey="0">
+            {tasks.map((task: TaskResponse) => (
+              <Accordion.Item key={task.id.toString()} eventKey={task.id.toString()}>
+                <Accordion.Header>
+                  <div className="task-header-icon">
+                    {task.done ? <CheckSquare /> : <Square />}
+                  </div>
+                  {task.description}
+                  {' !!!'}
+                </Accordion.Header>
+                <Accordion.Body>
+                  <small>
+                    Last update:
+                    {' '}
+                    {task.lastUpdate}
+                  </small>
+                </Accordion.Body>
+              </Accordion.Item>
+            ))}
+          </Accordion>
+
+          <Table striped bordered hover responsive className="mt-3">
             <thead>
               <tr>
                 <th scope="col" style={{ width: '5%' }}>#</th>
