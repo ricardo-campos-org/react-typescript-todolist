@@ -1,14 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Alert, Badge, Button, Card, Col, Container, Form, InputGroup, ListGroup, Row, Table
+  Alert,
+  Button,
+  Card,
+  Col,
+  Container,
+  Form,
+  InputGroup,
+  Row
 } from 'react-bootstrap';
+import {
+  ArrowUpSquare,
+  ArrowUpSquareFill,
+  CalendarCheck,
+  CheckSquare,
+  PencilFill,
+  Square
+} from 'react-bootstrap-icons';
 import TaskNoteRequest from '../../types/TaskNoteRequest';
 import { TaskResponse, TaskUrlResponse } from '../../types/TaskResponse';
 import { useTranslation } from 'react-i18next';
 import api from '../../api-service/api';
 import ApiConfig from '../../api-service/apiConfig';
 import { translateMessage, translateTaskResponse } from '../../utils/TranslatorUtils';
-import { ArrowUpSquare, ArrowUpSquareFill, CalendarCheck, CheckSquare, PencilFill, Square } from 'react-bootstrap-icons';
 import './style.css';
 
 type TaskAction = 'add' | 'edit';
@@ -27,6 +41,8 @@ function Task(): JSX.Element {
   const [taskUrlId, setTaskUrlId] = useState<number>(0);
   const [taskDone, setTaskDone] = useState<boolean>(false);
   const [action, setAction] = useState<TaskAction>('add');
+  const [dueDate, setDueDate] = useState<string>('');
+  const [highPriority, setHighPriority] = useState<boolean>(false);
   const { i18n, t } = useTranslation();
 
   const handleError = (e: unknown): void => {
@@ -56,12 +72,7 @@ function Task(): JSX.Element {
     }
   };
 
-  const addTask = async (desc: string, url?: string): Promise<boolean> => {
-    const payload: TaskNoteRequest = {
-      description: desc,
-      urls: url ? [url] : []
-    };
-
+  const addTask = async (payload: TaskNoteRequest): Promise<boolean> => {
     try {
       await api.postJSON(ApiConfig.tasksUrl, payload);
       loadTasks();
@@ -92,6 +103,9 @@ function Task(): JSX.Element {
     setTaskDone(false);
     setTaskUrl('');
     setTaskUrlId(0);
+    setDueDate('');
+    setHighPriority(false);
+
     setAction('add');
     setValidated(false);
     setFormInvalid(false);
@@ -112,7 +126,14 @@ function Task(): JSX.Element {
     setFormInvalid(false);
 
     if (action === 'add') {
-      const added: boolean = await addTask(form.description.value, form.url.value);
+      const addPayload: TaskNoteRequest = {
+        description: form.description.value.trim(),
+        urls: form.url.value ? [form.url.value] : [],
+        dueDate: form.dueDate.value,
+        highPriority: highPriority
+      };
+
+      const added: boolean = await addTask(addPayload);
       if (added) {
         form.reset();
         resetInputs();
@@ -127,15 +148,17 @@ function Task(): JSX.Element {
         urls.push({ url: taskUrl, id: null });
       }
 
-      const payload: TaskResponse = {
+      const editPayload: TaskResponse = {
         id: taskId,
-        description: taskDescription,
+        description: form.description.value.trim(),
         done: taskDone,
+        highPriority: highPriority,
+        dueDate: form.dueDate.value,
         lastUpdate: '',
         urls
       };
 
-      const edited: boolean = await submitEditTask(payload);
+      const edited: boolean = await submitEditTask(editPayload);
       if (edited) {
         form.reset();
         resetInputs();
@@ -179,6 +202,9 @@ function Task(): JSX.Element {
   useEffect(() => {
     loadTasks();
   }, []);
+
+  // next step: send due-date from db to be sent back when editing.
+  // fix edit feature
 
   return (
     <Container>
@@ -251,11 +277,11 @@ function Task(): JSX.Element {
                         <Form.Control
                           required={false}
                           type="text"
-                          name="url"
+                          name="dueDate"
                           placeholder={t('task_form_duedate_placeholder')}
-                          value={taskUrl}
+                          value={dueDate}
                           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            setTaskUrl(e.target.value);
+                            setDueDate(e.target.value);
                           }}
                         />
                       </InputGroup>
@@ -268,6 +294,9 @@ function Task(): JSX.Element {
                   id="high-priority-input"
                   label="High priority"
                   className="mb-3"
+                  name="highPriority"
+                  checked={highPriority}
+                  onChange={() => setHighPriority(!highPriority)}
                 />
 
                 <Button variant="primary" type="submit">
@@ -285,23 +314,23 @@ function Task(): JSX.Element {
             <Card key={task.id.toString()} className="my-2">
               <Card.Body>
                 <Card.Title>
-                  {!task.highPriority && (
+                  {task.highPriority && (
                     <>
                       {task.done
                         ? <ArrowUpSquareFill onClick={() => markAsDone(task)} className="task-icon" />
                         : <ArrowUpSquare onClick={() => markAsDone(task)} className="task-icon" />}
-                      <span className="priority-normal">
-                        NORMAL
+                      <span className={`${task.done ? '' : 'priority-high'}`}>
+                        {task.done ? '' : 'HIGH'}
                       </span>
                     </>
                   )}
-                  {task.highPriority && (
+                  {!task.highPriority && (
                     <>
                       {task.done
                         ? <CheckSquare onClick={() => markAsDone(task)} className="task-icon" />
                         : <Square onClick={() => markAsDone(task)} className="task-icon" />}
-                      <span className="priority-high">
-                        HIGH
+                      <span className={`${task.done ? '' : 'priority-normal'}`}>
+                        {task.done ? '' : 'NORMAL'}
                       </span>
                     </>
                   )}
@@ -312,87 +341,41 @@ function Task(): JSX.Element {
                 </Card.Title>
                 <Row>
                   <Col xs={6}>
-                    <span className="task-last-update">Tomorrow</span>
-                    <span className="task-pipe">|</span>
+                    {task.dueDate && (
+                      <>
+                        <span className="task-last-update">
+                          {task.dueDate}
+                        </span>
+                        <span className="task-pipe">|</span>
+                      </>
+                    )}
                     <span className="task-last-update">URL</span>
                     <span className="task-pipe">|</span>
                     <span className="task-last-update">{task.lastUpdate}</span>
                   </Col>
                   <Col xs={6} className="text-end">
-                    <span className="task-link">Edit</span>
-                    <span className="task-pipe">|</span>
-                    <span className="task-link">Delete</span>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
-          ))}
-
-          <Table striped bordered hover responsive className="mt-3">
-            <thead>
-              <tr>
-                <th scope="col" style={{ width: '5%' }}>#</th>
-                <th scope="col" style={{ width: '50%' }}>{t('task_table_description')}</th>
-                <th scope="col" style={{ width: '10%' }}>{t('task_table_done')}</th>
-                <th scope="col" style={{ width: '10%' }}>URL</th>
-                <th scope="col" style={{ width: '25%' }}>{t('task_table_actions')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {tasks.map((task: TaskResponse) => (
-                <tr key={`task-${task.id}`}>
-                  <th scope="row" className={task.done ? 'text-done' : ''}>{task.id}</th>
-                  <td className={task.done ? 'text-done' : ''}>
-                    {task.description}
-                    <br />
-                    <small className={task.done ? '' : 'time-ago'}>{task.lastUpdate}</small>
-                  </td>
-                  <td className={task.done ? 'text-done' : ''}>
-                    {
-                      task.done
-                        ? t('task_table_action_done_yes')
-                        : t('task_table_action_done_no')
-                    }
-                  </td>
-                  <td className={task.done ? 'text-done' : ''}>
-                    {task.urls.length > 0
-                      ? (
-                          <a href={`${task.urls[0].url}`}>Link</a>
-                        )
-                      : '-'}
-                  </td>
-                  <td className={task.done ? 'text-done' : ''}>
                     <Button
                       type="button"
-                      variant="primary"
-                      onClick={() => markAsDone(task)}
-                      className="btn-action"
-                    >
-                      {task.done ? t('task_table_action_undone') : t('task_table_action_done')}
-                    </Button>
-
-                    <Button
-                      type="button"
-                      variant="outline-primary"
+                      variant="link"
                       onClick={() => editTask(task)}
-                      className="btn-action"
+                      className=""
                     >
                       {t('task_table_action_edit')}
                     </Button>
-
+                    <span className="task-pipe">|</span>
                     <Button
                       type="button"
-                      variant="danger"
+                      variant="link"
                       onClick={() => deleteTask(task.id)}
                       className="btn-action"
                     >
                       {t('task_table_action_delete')}
                     </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>
+          ))}
         </Col>
       </Row>
     </Container>
