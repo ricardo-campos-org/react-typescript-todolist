@@ -9,6 +9,7 @@ type TaskResponse = {
   done: boolean;
   highPriority: boolean;
   dueDate: string;
+  dueDateFmt: string;
   lastUpdate: string;
   urls: TaskUrlResponse[];
 };

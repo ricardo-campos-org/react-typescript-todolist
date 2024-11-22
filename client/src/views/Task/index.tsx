@@ -129,7 +129,7 @@ function Task(): JSX.Element {
       const addPayload: TaskNoteRequest = {
         description: form.description.value.trim(),
         urls: form.url.value ? [form.url.value] : [],
-        dueDate: form.dueDate.value,
+        dueDate: form.dueDate.value ? form.dueDate.value : null,
         highPriority: highPriority
       };
 
@@ -154,6 +154,7 @@ function Task(): JSX.Element {
         done: taskDone,
         highPriority: highPriority,
         dueDate: form.dueDate.value,
+        dueDateFmt: '',
         lastUpdate: '',
         urls
       };
@@ -186,6 +187,8 @@ function Task(): JSX.Element {
     setTaskUrl(task.urls.length ? task.urls[0].url : '');
     setTaskUrlId(task.urls.length ? task.urls[0].id || 0 : 0);
     setTaskDone(task.done);
+    setDueDate(task.dueDate);
+    setHighPriority(task.highPriority);
     setAction('edit');
   };
 
@@ -341,16 +344,22 @@ function Task(): JSX.Element {
                 </Card.Title>
                 <Row>
                   <Col xs={6}>
-                    {task.dueDate && (
+                    {task.dueDateFmt && (
                       <>
                         <span className="task-last-update">
-                          {task.dueDate}
+                          {task.dueDateFmt}
                         </span>
                         <span className="task-pipe">|</span>
                       </>
                     )}
-                    <span className="task-last-update">URL</span>
-                    <span className="task-pipe">|</span>
+                    {task.urls.length > 0 && (
+                      <>
+                        <span className="task-last-update">
+                          <a href={task.urls[0].url}>URL</a>
+                        </span>
+                        <span className="task-pipe">|</span>
+                      </>
+                    )}
                     <span className="task-last-update">{task.lastUpdate}</span>
                   </Col>
                   <Col xs={6} className="text-end">
