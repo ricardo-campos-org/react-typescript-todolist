@@ -153,7 +153,7 @@ function Task(): JSX.Element {
         description: form.description.value.trim(),
         done: taskDone,
         highPriority: highPriority,
-        dueDate: form.dueDate.value,
+        dueDate: form.dueDate.value ? form.dueDate.value : null,
         dueDateFmt: '',
         lastUpdate: '',
         urls
@@ -205,9 +205,6 @@ function Task(): JSX.Element {
   useEffect(() => {
     loadTasks();
   }, []);
-
-  // next step: send due-date from db to be sent back when editing.
-  // fix edit feature
 
   return (
     <Container>
@@ -363,15 +360,19 @@ function Task(): JSX.Element {
                     <span className="task-last-update">{task.lastUpdate}</span>
                   </Col>
                   <Col xs={6} className="text-end">
-                    <Button
-                      type="button"
-                      variant="link"
-                      onClick={() => editTask(task)}
-                      className=""
-                    >
-                      {t('task_table_action_edit')}
-                    </Button>
-                    <span className="task-pipe">|</span>
+                    {!task.done && (
+                      <>
+                        <Button
+                          type="button"
+                          variant="link"
+                          onClick={() => editTask(task)}
+                          className=""
+                        >
+                          {t('task_table_action_edit')}
+                        </Button>
+                        <span className="task-pipe">|</span>
+                      </>
+                    )}
                     <Button
                       type="button"
                       variant="link"

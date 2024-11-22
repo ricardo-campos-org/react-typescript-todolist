@@ -109,9 +109,11 @@ public class TaskService {
     if (!Objects.isNull(patch.done())) {
       taskEntity.setDone(patch.done());
     }
+    taskEntity.setDueDate(null);
     if (!Objects.isNull(patch.dueDate())) {
       taskEntity.setDueDate(LocalDate.parse(patch.dueDate()));
     }
+    taskEntity.setHighPriority(false);
     if (!Objects.isNull(patch.highPriority())) {
       taskEntity.setHighPriority(patch.highPriority());
     }
