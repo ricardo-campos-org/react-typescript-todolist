@@ -45,7 +45,7 @@ public class TimeAgoUtil {
     } else if (duration.toSeconds() > 1L) {
       return String.format("%d seconds ago", duration.toSeconds());
     } else {
-      return "moments ago";
+      return "Moments ago";
     }
   }
 
