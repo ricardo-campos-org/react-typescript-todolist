@@ -259,6 +259,7 @@
           <skip>${jacoco.skip}</skip>
           <excludes>
             <exclude>**/config/**</exclude>
+            <exclude>**/entity/**</exclude>
             <exclude>**/exception/**</exclude>
             <exclude>**/filter/**</exclude>
             <exclude>**/*$*Builder*</exclude>
@@ -350,7 +351,7 @@
                     <limit>
                       <counter>LINE</counter>
                       <value>COVEREDRATIO</value>
-                      <minimum>10%</minimum>
+                      <minimum>90%</minimum>
                     </limit>
                   </limits>
                 </rule>
