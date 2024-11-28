@@ -1,17 +1,24 @@
 package br.com.tasknoteapp.server.controller;
 
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import br.com.tasknoteapp.server.entity.TaskEntity;
 import br.com.tasknoteapp.server.exception.TaskNotFoundException;
 import br.com.tasknoteapp.server.request.TaskPatchRequest;
+import br.com.tasknoteapp.server.request.TaskRequest;
 import br.com.tasknoteapp.server.response.TaskResponse;
 import br.com.tasknoteapp.server.response.TaskUrlResponse;
 import br.com.tasknoteapp.server.service.TaskService;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
@@ -186,6 +193,145 @@ class TaskControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .content(payloadJson))
         .andExpect(status().isForbidden())
+        .andReturn();
+  }
+
+  @Test
+  @DisplayName("Post create task happy path should succeed and return 201")
+  @WithMockUser(username = "user@domain.com", password = "abcde123456A@")
+  void postTasks_happyPath_shouldSucceed() throws Exception {
+    TaskRequest request = new TaskRequest("Test task", List.of(), null, true);
+
+    TaskEntity entity = new TaskEntity();
+    entity.setId(222L);
+    entity.setDescription(request.description());
+    entity.setDone(false);
+    entity.setUrls(List.of());
+    entity.setLastUpdate(LocalDateTime.now());
+    entity.setDueDate(null);
+    entity.setHighPriority(request.highPriority());
+    when(taskService.createTask(request)).thenReturn(entity);
+
+    final String payloadJson =
+        """
+        {
+          "description": "Test task",
+          "done": false,
+          "urls": [],
+          "highPriority": true
+        }
+        """;
+
+    mockMvc
+        .perform(
+            post("/rest/tasks")
+                .with(csrf().asHeader())
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(payloadJson))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.id").value(entity.getId()))
+        .andExpect(jsonPath("$.description").value(request.description()))
+        .andExpect(jsonPath("$.done", Matchers.is(false)))
+        .andExpect(jsonPath("$.highPriority", Matchers.is(request.highPriority())))
+        .andExpect(jsonPath("$.dueDate", Matchers.nullValue()))
+        .andExpect(jsonPath("$.dueDateFmt", Matchers.nullValue()))
+        .andExpect(jsonPath("$.lastUpdate").value("Moments ago"))
+        .andExpect(jsonPath("$.urls", Matchers.empty()))
+        .andReturn();
+  }
+
+  @Test
+  @DisplayName("Post create task with missing information should fail with 400 bad request")
+  @WithMockUser(username = "user@domain.com", password = "abcde123456A@")
+  void postTasks_missingInformation_shouldFail() throws Exception {
+    final String payloadJson =
+        """
+        {
+          "description": ""
+        }
+        """;
+
+    mockMvc
+        .perform(
+            post("/rest/tasks")
+                .with(csrf().asHeader())
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(payloadJson))
+        .andExpect(status().isBadRequest())
+        .andReturn();
+  }
+
+  @Test
+  @DisplayName("Post create task with 403 forbidden request should fail")
+  void postTasks_forbidden_shouldFail() throws Exception {
+    final String payloadJson =
+        """
+        {
+          "description": "Forbidden"
+        }
+        """;
+
+    mockMvc
+        .perform(
+            post("/rest/tasks")
+                .with(csrf().asHeader())
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(payloadJson))
+        .andExpect(status().isForbidden())
+        .andReturn();
+  }
+
+  @Test
+  @DisplayName("Delete task request happy path should succeed")
+  @WithMockUser(username = "user@domain.com", password = "abcde123456A@")
+  void deleteTask_happyPath_shouldSucceed() throws Exception {
+    final Long taskId = 333L;
+
+    doNothing().when(taskService).deleteTask(taskId);
+
+    mockMvc
+        .perform(
+            delete("/rest/tasks/{id}", taskId)
+                .with(csrf().asHeader())
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNoContent())
+        .andReturn();
+  }
+
+  @Test
+  @DisplayName("Delete task with 403 request forbidden should fail")
+  void deleteTask_forbidden_shouldFail() throws Exception {
+    final Long taskId = 533L;
+
+    mockMvc
+        .perform(
+            delete("/rest/tasks/{id}", taskId)
+                .with(csrf().asHeader())
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden())
+        .andReturn();
+  }
+
+  @Test
+  @DisplayName("Delete task with 404 request not found should fail")
+  @WithMockUser(username = "user@domain.com", password = "abcde123456A@")
+  void deleteTask_notFound_shouldFail() throws Exception {
+    final Long taskId = 433L;
+
+    doThrow(new TaskNotFoundException()).when(taskService).deleteTask(taskId);
+
+    mockMvc
+        .perform(
+            delete("/rest/tasks/{id}", taskId)
+                .with(csrf().asHeader())
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNotFound())
         .andReturn();
   }
 }

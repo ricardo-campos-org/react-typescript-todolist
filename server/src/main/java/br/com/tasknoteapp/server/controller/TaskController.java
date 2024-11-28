@@ -172,7 +172,7 @@ public class TaskController {
             description = "Task not found",
             content = @Content(schema = @Schema(implementation = Void.class)))
       })
-  public ResponseEntity<Void> deleteTasks(
+  public ResponseEntity<Void> deleteTask(
       @Parameter(
               name = "id",
               in = ParameterIn.PATH,
