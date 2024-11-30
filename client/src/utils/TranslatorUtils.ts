@@ -1,5 +1,8 @@
 import { TaskResponse } from '../types/TaskResponse';
 import USER_LANG from '../types/UserLangs';
+import { translateTimeAgoPtBr, translateTimeLeftPtBr } from './PortugueseUtils';
+import { translateTimeAgoRu } from './RussianUtils';
+import { translateTimeAgoEs, translateTimeLeftEs } from './SpanishUtils';
 
 /**
  * Translates all responses from tasks server API.
@@ -26,245 +29,69 @@ function translateTaskResponse(tasks: TaskResponse[], target: string): TaskRespo
  * @returns {string} The translated message.
  */
 function translateMessage(message: string, target: string): string {
-  let lang = USER_LANG.ENGLISH;
-  if (target === USER_LANG.PORTUGUESE) {
-    lang = USER_LANG.PORTUGUESE;
-  }
-  else if (target === USER_LANG.SPANISH) {
-    lang = USER_LANG.SPANISH;
-  }
-  else if (target === USER_LANG.RUSSIAN) {
-    lang = USER_LANG.RUSSIAN;
-  }
-  if (lang === USER_LANG.ENGLISH) {
+  if (target === USER_LANG.ENGLISH) {
     return message;
   }
 
   if (message.includes(' ago')) {
     const firstSpace = message.indexOf(' ');
-    const numberValue = message.substring(0, firstSpace);
+    const numberValue = parseInt(message.substring(0, firstSpace));
     const textValue = message.substring(firstSpace).trim();
-    switch (textValue) {
-      case 'years ago': {
-        if (lang === USER_LANG.PORTUGUESE) {
-          return `${numberValue} anos atrás`;
-        }
-        else if (lang === USER_LANG.SPANISH) {
-          return `Hace ${numberValue} años`;
-        }
-        else if (lang === USER_LANG.RUSSIAN) {
-          return `${numberValue} года назад`;
-        }
-        break;
-      }
-      case 'year ago': {
-        if (lang === USER_LANG.PORTUGUESE) {
-          return `${numberValue} ano atrás`;
-        }
-        else if (lang === USER_LANG.SPANISH) {
-          return `Hace ${numberValue} año`;
-        }
-        else if (lang === USER_LANG.RUSSIAN) {
-          return `${numberValue} год назад`;
-        }
-        break;
-      }
-      case 'months ago': {
-        if (lang === USER_LANG.PORTUGUESE) {
-          return `${numberValue} meses atrás`;
-        }
-        else if (lang === USER_LANG.SPANISH) {
-          return `Hace ${numberValue} meses`;
-        }
-        else if (lang === USER_LANG.RUSSIAN) {
-          return `${numberValue} месяца назад`;
-        }
-        // here
-        break;
-      }
-      case 'month ago': {
-        if (lang === USER_LANG.PORTUGUESE) {
-          return `${numberValue} mês atrás`;
-        }
-        else if (lang === USER_LANG.SPANISH) {
-          return `Hace ${numberValue} mes`;
-        }
-        else if (lang === USER_LANG.RUSSIAN) {
-          return `${numberValue} месяц назад`;
-        }
-        break;
-      }
-      case 'days ago': {
-        if (lang === USER_LANG.PORTUGUESE) {
-          return `${numberValue} dias atrás`;
-        }
-        else if (lang === USER_LANG.SPANISH) {
-          return `Hace ${numberValue} días`;
-        }
-        else if (lang === USER_LANG.RUSSIAN) {
-          return `${numberValue} дня назад`;
-        }
-        break;
-      }
-      case 'day ago': {
-        if (lang === USER_LANG.PORTUGUESE) {
-          return `${numberValue} dia atrás`;
-        }
-        else if (lang === USER_LANG.SPANISH) {
-          return `Hace ${numberValue} día`;
-        }
-        else if (lang === USER_LANG.RUSSIAN) {
-          return `${numberValue} день назад`;
-        }
-        break;
-      }
-      case 'hours ago': {
-        if (lang === USER_LANG.PORTUGUESE) {
-          return `${numberValue} horas atrás`;
-        }
-        else if (lang === USER_LANG.SPANISH) {
-          return `Hace ${numberValue} horas`;
-        }
-        else if (lang === USER_LANG.RUSSIAN) {
-          return `${numberValue} часа назад`;
-        }
-        break;
-      }
-      case 'hour ago': {
-        if (lang === USER_LANG.PORTUGUESE) {
-          return `${numberValue} hora atrás`;
-        }
-        else if (lang === USER_LANG.SPANISH) {
-          return `Hace ${numberValue} hora`;
-        }
-        else if (lang === USER_LANG.RUSSIAN) {
-          return `${numberValue} час назад`;
-        }
-        break;
-      }
-      case 'minutes ago': {
-        if (lang === USER_LANG.PORTUGUESE) {
-          return `${numberValue} minutos atrás`;
-        }
-        else if (lang === USER_LANG.SPANISH) {
-          return `Hace ${numberValue} minutos`;
-        }
-        else if (lang === USER_LANG.RUSSIAN) {
-          return `${numberValue} минуты назад`;
-        }
-        break;
-      }
-      case 'minute ago': {
-        if (lang === USER_LANG.PORTUGUESE) {
-          return `${numberValue} minuto atrás`;
-        }
-        else if (lang === USER_LANG.SPANISH) {
-          return `Hace ${numberValue} minuto`;
-        }
-        else if (lang === USER_LANG.RUSSIAN) {
-          return `${numberValue} минуту назад`;
-        }
-        break;
-      }
-      case 'seconds ago': {
-        if (lang === USER_LANG.PORTUGUESE) {
-          return `${numberValue} segundos atrás`;
-        }
-        else if (lang === USER_LANG.SPANISH) {
-          return `Hace ${numberValue} segundos`;
-        }
-        else if (lang === USER_LANG.RUSSIAN) {
-          return `${numberValue} секунд назад`;
-        }
-        break;
-      }
-      case 'Moments ago': {
-        if (lang === USER_LANG.PORTUGUESE) {
-          return 'Momentos atrás';
-        }
-        else if (lang === USER_LANG.SPANISH) {
-          return 'Hace momentos';
-        }
-        else if (lang === USER_LANG.RUSSIAN) {
-          return 'Несколько минут назад';
-        }
-      }
+
+    if (target === USER_LANG.PORTUGUESE) {
+      return translateTimeAgoPtBr(textValue, numberValue);
     }
+    if (target === USER_LANG.SPANISH) {
+      return translateTimeAgoEs(textValue, numberValue);
+    }
+
+    return translateTimeAgoRu(textValue, numberValue);
   }
 
   if (message.includes(' left')) {
     const firstSpace = message.indexOf(' ');
-    const numberValue = message.substring(0, firstSpace);
+    const numberValue = parseInt(message.substring(0, firstSpace));
     const textValue = message.substring(firstSpace).trim();
+
+    if (target === USER_LANG.PORTUGUESE) {
+      return translateTimeLeftPtBr(textValue, numberValue);
+    }
+    if (target === USER_LANG.SPANISH) {
+      return translateTimeLeftEs(textValue, numberValue);
+    }
     switch (textValue) {
       case 'years left': {
-        if (lang === USER_LANG.PORTUGUESE) {
-          return `${numberValue} anos restantes`;
-        }
-        else if (lang === USER_LANG.SPANISH) {
-          return `Faltan ${numberValue} años`;
-        }
-        else if (lang === USER_LANG.RUSSIAN) {
+        if (lang === USER_LANG.RUSSIAN) {
           return `осталось ${numberValue} лет`;
         }
         break;
       }
       case 'year left': {
-        if (lang === USER_LANG.PORTUGUESE) {
-          return `${numberValue} ano restante`;
-        }
-        else if (lang === USER_LANG.SPANISH) {
-          return `Falta ${numberValue} año`;
-        }
-        else if (lang === USER_LANG.RUSSIAN) {
+        if (lang === USER_LANG.RUSSIAN) {
           return `Остался ${numberValue} год`;
         }
         break;
       }
       case 'months left': {
-        if (lang === USER_LANG.PORTUGUESE) {
-          return `${numberValue} meses restantes`;
-        }
-        else if (lang === USER_LANG.SPANISH) {
-          return `Faltan ${numberValue} meses`;
-        }
-        else if (lang === USER_LANG.RUSSIAN) {
+        if (lang === USER_LANG.RUSSIAN) {
           return `осталось ${numberValue} месяцев`;
         }
         break;
       }
       case 'month left': {
-        if (lang === USER_LANG.PORTUGUESE) {
-          return `${numberValue} mês restante`;
-        }
-        else if (lang === USER_LANG.SPANISH) {
-          return `Falta ${numberValue} mes`;
-        }
-        else if (lang === USER_LANG.RUSSIAN) {
+        if (lang === USER_LANG.RUSSIAN) {
           return `Остался ${numberValue} месяц`;
         }
         break;
       }
       case 'days left': {
-        if (lang === USER_LANG.PORTUGUESE) {
-          return `${numberValue} dias restantes`;
-        }
-        else if (lang === USER_LANG.SPANISH) {
-          return `Faltan ${numberValue} días`;
-        }
-        else if (lang === USER_LANG.RUSSIAN) {
+        if (lang === USER_LANG.RUSSIAN) {
           return `осталось ${numberValue} дней`;
         }
         break;
       }
       case 'day left': {
-        if (lang === USER_LANG.PORTUGUESE) {
-          return `${numberValue} dia restante`;
-        }
-        else if (lang === USER_LANG.SPANISH) {
-          return `Falta ${numberValue} día`;
-        }
-        else if (lang === USER_LANG.RUSSIAN) {
+        if (lang === USER_LANG.RUSSIAN) {
           return `Остался ${numberValue} день`;
         }
         break;
