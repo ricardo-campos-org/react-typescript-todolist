@@ -62,3 +62,20 @@ export const timeAgoTranslations: Record<string, string> = {
   'days left_ru': 'осталось {X} дней',
   'day left_ru': 'Остался {X} день'
 };
+
+export const serverResponsesTranslations: Record<string, string> = {
+  BAD_PASSWORD_3_pt_br: 'Senha fraca: Senha deve possuir pelo menos 8 letras, 1 maiúscula, 1 caracter especial',
+  BAD_PASSWORD_2_pt_br: 'Senha fraca: Senha deve possuir pelo menos 1 maiúscula, 1 caracter especial',
+  BAD_PASSWORD_1_pt_br: 'Senha fraca: Senha deve possuir pelo menos 1 caracter especial',
+  EMAIL_EXISTS_pt_br: 'E-mail já cadastrado!',
+  FORBIDDEN_pt_br: 'Proibido! Acesso negado',
+  INTERNAL_ERROR_pt_br: 'Erro Interno do Servidor!',
+  MAX_LOGIN_ATTEMPT_pt_br: 'Limite máximo de tentativas atingido. Por favor aguarde 30 minutos',
+  FILL_ALL_FIELDS_pt_br: 'Por ravor, preencha todos os campos',
+  FILL_USER_AND_PASS_pt_br: 'Por favor, informe seu e-mail e senha!',
+  FILL_AT_LEAST_3_pt_br: 'Por favor, digite pelo menos 3 letras',
+  MAX_TEXT_LENGTH_2000_pt_br: 'O tamanho máximo do texto é 2000',
+  UNKNOWN_pt_br: 'Erro desconhecido',
+  WRONG_OR_MISSING_INFO_pt_br: 'Informação errada ou incompleta!',
+  WRONG_USER_OR_PASS_pt_br: 'E-mail ou senha inválidos!'
+};

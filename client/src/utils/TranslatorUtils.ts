@@ -1,9 +1,7 @@
-import { timeAgoTranslations } from '../constants/languageConstants';
+import { serverResponsesTranslations, timeAgoTranslations } from '../constants/languageConstants';
+import { serverResponses } from '../constants/serverResponses';
 import { TaskResponse } from '../types/TaskResponse';
 import USER_LANG from '../types/UserLangs';
-import { translateServerResponsePtBr } from './PortugueseUtils';
-import { translateServerResponseRu } from './RussianUtils';
-import { translateServerResponseEs } from './SpanishUtils';
 
 /**
  * Translates a given message to a given language
@@ -41,14 +39,16 @@ function translateTimeMessage(message: string, target: string): string {
  * @returns The translated message.
  */
 function translateServerResponse(message: string, target: string): string {
-  if (target === USER_LANG.PORTUGUESE) {
-    return translateServerResponsePtBr(message);
+  const serverResponseKeys: string[] = Object.keys(serverResponses);
+  if (serverResponseKeys.includes(message)) {
+    const value = serverResponses[message];
+    const key = `${value}_${target}`;
+    const valueTranslated: string = serverResponsesTranslations[key];
+    return valueTranslated
+      ? valueTranslated
+      : message;
   }
-  if (target === USER_LANG.SPANISH) {
-    return translateServerResponseEs(message);
-  }
-
-  return translateServerResponseRu(message);
+  return message;
 }
 
 /**
