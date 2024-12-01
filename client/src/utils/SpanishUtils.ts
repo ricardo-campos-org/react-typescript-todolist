@@ -18,7 +18,7 @@ function translateTimeAgoEs(textValue: string, numberValue: number): string {
       ? `Hace ${numberValue} meses`
       : `Hace ${numberValue} mes`;
   }
-  else if (textValue.includes('days')) {
+  else if (textValue.includes('day')) {
     return textValue.includes('s ')
       ? `Hace ${numberValue} días`
       : `Hace ${numberValue} día`;
@@ -28,12 +28,12 @@ function translateTimeAgoEs(textValue: string, numberValue: number): string {
       ? `Hace ${numberValue} horas`
       : `Hace ${numberValue} hora`;
   }
-  else if (textValue.includes('minutes')) {
+  else if (textValue.includes('minute')) {
     return textValue.includes('s ')
       ? `Hace ${numberValue} minutos`
       : `Hace ${numberValue} minuto`;
   }
-  else if (textValue.includes('seconds')) {
+  else if (textValue.includes('second')) {
     return textValue.includes('s ')
       ? `Hace ${numberValue} segundos`
       : `Hace ${numberValue} segundo`;
@@ -104,7 +104,7 @@ function translateServerResponseEs(message: string): string {
       return '¡Por favor, ingresa tu nombre de usuario y contraseña!';
     }
     case SERVER_RESPONSES.FILL_AT_LEAST_3: {
-      return '¡Por favor, escriba al menos 3 caracteres';
+      return '¡Por favor, escriba al menos 3 caracteres!';
     }
     case SERVER_RESPONSES.MAX_TEXT_LENGTH_2000: {
       return 'La longitud máxima del texto es 2000';
