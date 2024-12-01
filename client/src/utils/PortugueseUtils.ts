@@ -1,3 +1,5 @@
+import { SERVER_RESPONSES } from '../constants/serverResponses';
+
 /**
  * Translates a time ago message from English to Brazilian Portuguese.
  *
@@ -74,46 +76,46 @@ function translateTimeLeftPtBr(textValue: string, numberValue: number): string {
  */
 function translateServerResponsePtBr(message: string): string {
   switch (message) {
-    case 'Bad password: Password must have at least at least 8 characters, 1 uppercase, 1 special character': {
+    case SERVER_RESPONSES.BAD_PASSWORD_3: {
       return 'Senha fraca: Senha deve possuir pelo menos 8 letras, 1 maiúscula, 1 caracter especial';
     }
-    case 'Bad password: Password must have at least 1 uppercase, 1 special character': {
+    case SERVER_RESPONSES.BAD_PASSWORD_2: {
       return 'Senha fraca: Senha deve possuir pelo menos 1 maiúscula, 1 caracter especial';
     }
-    case 'Bad password: Password must have at least 1 special character': {
+    case SERVER_RESPONSES.BAD_PASSWORD_1: {
       return 'Senha fraca: Senha deve possuir pelo menos 1 caracter especial';
     }
-    case 'Email already exists!': {
+    case SERVER_RESPONSES.EMAIL_EXISTS: {
       return 'E-mail já cadastrado!';
     }
-    case 'Forbidden! Access denied!': {
+    case SERVER_RESPONSES.FORBIDDEN: {
       return 'Proibido! Acesso negado';
     }
-    case 'Internal Server Error!': {
+    case SERVER_RESPONSES.INTERNAL_ERROR: {
       return 'Erro Interno do Servidor!';
     }
-    case 'Max login attempt limit reached. Please wait 30 minutes': {
+    case SERVER_RESPONSES.MAX_LOGIN_ATTEMPT: {
       return 'Limite máximo de tentativas atingido. Por favor aguarde 30 minutos';
     }
-    case 'Please fill in all the fields': {
+    case SERVER_RESPONSES.FILL_ALL_FIELDS: {
       return 'Por ravor, preencha todos os campos';
     }
-    case 'Please fill in your username and password!': {
+    case SERVER_RESPONSES.FILL_USER_AND_PASS: {
       return 'Por favor, informe seu e-mail e senha!';
     }
-    case 'Please type at least 3 characters': {
+    case SERVER_RESPONSES.FILL_AT_LEAST_3: {
       return 'Por favor, digite pelo menos 3 letras';
     }
-    case 'The maximum text length is 2000': {
+    case SERVER_RESPONSES.MAX_TEXT_LENGTH_2000: {
       return 'O tamanho máximo do texto é 2000';
     }
-    case 'Unknown error': {
+    case SERVER_RESPONSES.UNKNOWN: {
       return 'Erro desconhecido';
     }
-    case 'Wrong or missing information!': {
+    case SERVER_RESPONSES.WRONG_OR_MISSING_INFO: {
       return 'Informação errada ou incompleta!';
     }
-    case 'Wrong user or password': {
+    case SERVER_RESPONSES.WRONG_USER_OR_PASS: {
       return 'E-mail ou senha inválidos!';
     }
     default: return message;
