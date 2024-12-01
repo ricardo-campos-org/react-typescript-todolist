@@ -8,38 +8,40 @@ import { SERVER_RESPONSES } from '../constants/serverResponses';
  * @returns The translated message.
  */
 function translateTimeAgoPtBr(textValue: string, numberValue: number): string {
-  if (textValue.includes('year')) {
-    return textValue.includes('s ')
-      ? `${numberValue} anos atrás`
-      : `${numberValue} ano atrás`;
+  switch (textValue) {
+    case 'years ago':
+    case 'year ago':
+      return textValue.includes('s ')
+        ? `${numberValue} anos atrás`
+        : `${numberValue} ano atrás`;
+    case 'months ago':
+    case 'month ago':
+      return textValue.includes('s ')
+        ? `${numberValue} meses atrás`
+        : `${numberValue} mês atrás`;
+    case 'days ago':
+    case 'day ago':
+      return textValue.includes('s ')
+        ? `${numberValue} dias atrás`
+        : `${numberValue} dia atrás`;
+    case 'hours ago':
+    case 'hour ago':
+      return textValue.includes('s ')
+        ? `${numberValue} horas atrás`
+        : `${numberValue} hora atrás`;
+    case 'minutes ago':
+    case 'minute ago':
+      return textValue.includes('s ')
+        ? `${numberValue} minutos atrás`
+        : `${numberValue} minuto atrás`;
+    case 'seconds ago':
+    case 'second ago':
+      return textValue.includes('s ')
+        ? `${numberValue} segundos atrás`
+        : `${numberValue} segundo atrás`;
+    default:
+      return 'Momentos atrás';
   }
-  else if (textValue.includes('month')) {
-    return textValue.includes('s ')
-      ? `${numberValue} meses atrás`
-      : `${numberValue} mês atrás`;
-  }
-  else if (textValue.includes('day')) {
-    return textValue.includes('s ')
-      ? `${numberValue} dias atrás`
-      : `${numberValue} dia atrás`;
-  }
-  else if (textValue.includes('hour')) {
-    return textValue.includes('s ')
-      ? `${numberValue} horas atrás`
-      : `${numberValue} hora atrás`;
-  }
-  else if (textValue.includes('minute')) {
-    return textValue.includes('s ')
-      ? `${numberValue} minutos atrás`
-      : `${numberValue} minuto atrás`;
-  }
-  else if (textValue.includes('second')) {
-    return textValue.includes('s ')
-      ? `${numberValue} segundos atrás`
-      : `${numberValue} segundo atrás`;
-  }
-
-  return 'Momentos atrás';
 }
 
 /**
@@ -50,22 +52,25 @@ function translateTimeAgoPtBr(textValue: string, numberValue: number): string {
  * @returns The translated message.
  */
 function translateTimeLeftPtBr(textValue: string, numberValue: number): string {
-  if (textValue.includes('year')) {
-    return textValue.includes('s ')
-      ? `${numberValue} anos restantes`
-      : `${numberValue} ano restante`;
+  switch (textValue) {
+    case 'years left':
+    case 'year left':
+      return textValue.includes('s ')
+        ? `${numberValue} anos restantes`
+        : `${numberValue} ano restante`;
+    case 'months left':
+    case 'month left':
+      return textValue.includes('s ')
+        ? `${numberValue} meses restantes`
+        : `${numberValue} mês restante`;
+    case 'days left':
+    case 'day left':
+      return textValue.includes('s ')
+        ? `${numberValue} dias restantes`
+        : `${numberValue} dia restante`;
+    default:
+      return textValue;
   }
-  else if (textValue.includes('month')) {
-    return textValue.includes('s ')
-      ? `${numberValue} meses restantes`
-      : `${numberValue} mês restante`;
-  }
-  else if (textValue.includes('day')) {
-    return textValue.includes('s ')
-      ? `${numberValue} dias restantes`
-      : `${numberValue} dia restante`;
-  }
-  return textValue;
 }
 
 /**

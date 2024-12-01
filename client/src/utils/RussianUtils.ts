@@ -8,38 +8,40 @@ import { SERVER_RESPONSES } from '../constants/serverResponses';
  * @returns The translated message.
  */
 function translateTimeAgoRu(textValue: string, numberValue: number): string {
-  if (textValue.includes('year')) {
-    return textValue.includes('s ')
-      ? `${numberValue} года назад`
-      : `${numberValue} год назад`;
+  switch (textValue) {
+    case 'years ago':
+    case 'year ago':
+      return textValue.includes('s ')
+        ? `${numberValue} года назад`
+        : `${numberValue} год назад`;
+    case 'months ago':
+    case 'month ago':
+      return textValue.includes('s ')
+        ? `${numberValue} месяца назад`
+        : `${numberValue} месяц назад`;
+    case 'days ago':
+    case 'day ago':
+      return textValue.includes('s ')
+        ? `${numberValue} дня назад`
+        : `${numberValue} день назад`;
+    case 'hours ago':
+    case 'hour ago':
+      return textValue.includes('s ')
+        ? `${numberValue} часа назад`
+        : `${numberValue} час назад`;
+    case 'minutes ago':
+    case 'minute ago':
+      return textValue.includes('s ')
+        ? `${numberValue} минуты назад`
+        : `${numberValue} минуту назад`;
+    case 'seconds ago':
+    case 'second ago':
+      return textValue.includes('s ')
+        ? `${numberValue} секунд назад`
+        : `${numberValue} секунду назад`;
+    default:
+      return 'Несколько минут назад';
   }
-  else if (textValue.includes('month')) {
-    return textValue.includes('s ')
-      ? `${numberValue} месяца назад`
-      : `${numberValue} месяц назад`;
-  }
-  else if (textValue.includes('day')) {
-    return textValue.includes('s ')
-      ? `${numberValue} дня назад`
-      : `${numberValue} день назад`;
-  }
-  else if (textValue.includes('hour')) {
-    return textValue.includes('s ')
-      ? `${numberValue} часа назад`
-      : `${numberValue} час назад`;
-  }
-  else if (textValue.includes('minute')) {
-    return textValue.includes('s ')
-      ? `${numberValue} минуты назад`
-      : `${numberValue} минуту назад`;
-  }
-  else if (textValue.includes('second')) {
-    return textValue.includes('s ')
-      ? `${numberValue} секунд назад`
-      : `${numberValue} секунду назад`;
-  }
-
-  return 'Несколько минут назад';
 }
 
 /**
@@ -50,22 +52,25 @@ function translateTimeAgoRu(textValue: string, numberValue: number): string {
  * @returns The translated message.
  */
 function translateTimeLeftRu(textValue: string, numberValue: number): string {
-  if (textValue.includes('year')) {
-    return textValue.includes('s ')
-      ? `осталось ${numberValue} лет`
-      : `Остался ${numberValue} год`;
+  switch (textValue) {
+    case 'years left':
+    case 'year left':
+      return textValue.includes('s ')
+        ? `осталось ${numberValue} лет`
+        : `Остался ${numberValue} год`;
+    case 'months left':
+    case 'month left':
+      return textValue.includes('s ')
+        ? `осталось ${numberValue} месяцев`
+        : `Остался ${numberValue} месяц`;
+    case 'days left':
+    case 'day left':
+      return textValue.includes('s ')
+        ? `осталось ${numberValue} дней`
+        : `Остался ${numberValue} день`;
+    default:
+      return textValue;
   }
-  else if (textValue.includes('month')) {
-    return textValue.includes('s ')
-      ? `осталось ${numberValue} месяцев`
-      : `Остался ${numberValue} месяц`;
-  }
-  else if (textValue.includes('day')) {
-    return textValue.includes('s ')
-      ? `осталось ${numberValue} дней`
-      : `Остался ${numberValue} день`;
-  }
-  return textValue;
 }
 
 /**
