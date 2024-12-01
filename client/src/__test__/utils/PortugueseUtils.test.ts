@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { translateServerResponsePtBr, translateTimeAgoPtBr, translateTimeLeftPtBr } from '../../utils/PortugueseUtils';
+import {
+  translateServerResponsePtBr,
+  translateTimeAgoPtBr,
+  translateTimeLeftPtBr
+} from '../../utils/PortugueseUtils';
 import { SERVER_RESPONSES } from '../../constants/serverResponses';
 
 describe('Portuguese Utils unit tests', () => {

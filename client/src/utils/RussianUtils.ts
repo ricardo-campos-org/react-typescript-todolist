@@ -1,3 +1,5 @@
+import { SERVER_RESPONSES } from '../constants/serverResponses';
+
 /**
  * Translates a time ago message from English to Russian.
  *
@@ -16,7 +18,7 @@ function translateTimeAgoRu(textValue: string, numberValue: number): string {
       ? `${numberValue} месяца назад`
       : `${numberValue} месяц назад`;
   }
-  else if (textValue.includes('days')) {
+  else if (textValue.includes('day')) {
     return textValue.includes('s ')
       ? `${numberValue} дня назад`
       : `${numberValue} день назад`;
@@ -26,12 +28,12 @@ function translateTimeAgoRu(textValue: string, numberValue: number): string {
       ? `${numberValue} часа назад`
       : `${numberValue} час назад`;
   }
-  else if (textValue.includes('minutes')) {
+  else if (textValue.includes('minute')) {
     return textValue.includes('s ')
       ? `${numberValue} минуты назад`
       : `${numberValue} минуту назад`;
   }
-  else if (textValue.includes('seconds')) {
+  else if (textValue.includes('second')) {
     return textValue.includes('s ')
       ? `${numberValue} секунд назад`
       : `${numberValue} секунду назад`;
@@ -74,46 +76,46 @@ function translateTimeLeftRu(textValue: string, numberValue: number): string {
  */
 function translateServerResponseRu(message: string): string {
   switch (message) {
-    case 'Bad password: Password must have at least at least 8 characters, 1 uppercase, 1 special character': {
+    case SERVER_RESPONSES.BAD_PASSWORD_3: {
       return 'Неправильный пароль: Пароль должен содержать не менее 8 символов, 1 заглавную букву, 1 специальный символ.';
     }
-    case 'Bad password: Password must have at least 1 uppercase, 1 special character': {
+    case SERVER_RESPONSES.BAD_PASSWORD_2: {
       return 'Неправильный пароль: Пароль должен содержать как минимум 1 заглавную букву и 1 специальный символ.';
     }
-    case 'Bad password: Password must have at least 1 special character': {
+    case SERVER_RESPONSES.BAD_PASSWORD_1: {
       return 'Неправильный пароль: Пароль должен содержать хотя бы 1 специальный символ.';
     }
-    case 'Email already exists!': {
+    case SERVER_RESPONSES.EMAIL_EXISTS: {
       return 'Электронная почта уже существует!';
     }
-    case 'Forbidden! Access denied!': {
+    case SERVER_RESPONSES.FORBIDDEN: {
       return 'Запрещено! Доступ запрещен!';
     }
-    case 'Internal Server Error!': {
+    case SERVER_RESPONSES.INTERNAL_ERROR: {
       return 'Внутренняя ошибка сервера!';
     }
-    case 'Max login attempt limit reached. Please wait 30 minutes': {
+    case SERVER_RESPONSES.MAX_LOGIN_ATTEMPT: {
       return 'Достигнут максимальный лимит попыток входа. Пожалуйста, подождите 30 минут';
     }
-    case 'Please fill in all the fields': {
+    case SERVER_RESPONSES.FILL_ALL_FIELDS: {
       return 'Пожалуйста, заполните все поля';
     }
-    case 'Please fill in your username and password!': {
+    case SERVER_RESPONSES.FILL_USER_AND_PASS: {
       return 'Пожалуйста, введите свое имя пользователя и пароль!';
     }
-    case 'Please type at least 3 characters': {
+    case SERVER_RESPONSES.FILL_AT_LEAST_3: {
       return 'Пожалуйста, введите не менее 3 символов';
     }
-    case 'The maximum text length is 2000': {
+    case SERVER_RESPONSES.MAX_TEXT_LENGTH_2000: {
       return 'Максимальная длина текста — 2000.';
     }
-    case 'Unknown error': {
+    case SERVER_RESPONSES.UNKNOWN: {
       return 'Неизвестная ошибка';
     }
-    case 'Wrong or missing information!': {
+    case SERVER_RESPONSES.WRONG_OR_MISSING_INFO: {
       return 'Неверная или отсутствующая информация!';
     }
-    case 'Wrong user or password': {
+    case SERVER_RESPONSES.WRONG_USER_OR_PASS: {
       return 'Неправильный пользователь или пароль';
     }
     default: return message;
