@@ -1,79 +1,6 @@
 import { SERVER_RESPONSES } from '../constants/serverResponses';
 
 /**
- * Translates a time ago message from English to Brazilian Portuguese.
- *
- * @param {string} textValue The text message to be translated.
- * @param {number} numberValue The number value to be used in the message.
- * @returns The translated message.
- */
-function translateTimeAgoPtBr(textValue: string, numberValue: number): string {
-  switch (textValue) {
-    case 'years ago':
-    case 'year ago':
-      return textValue.includes('s ')
-        ? `${numberValue} anos atrás`
-        : `${numberValue} ano atrás`;
-    case 'months ago':
-    case 'month ago':
-      return textValue.includes('s ')
-        ? `${numberValue} meses atrás`
-        : `${numberValue} mês atrás`;
-    case 'days ago':
-    case 'day ago':
-      return textValue.includes('s ')
-        ? `${numberValue} dias atrás`
-        : `${numberValue} dia atrás`;
-    case 'hours ago':
-    case 'hour ago':
-      return textValue.includes('s ')
-        ? `${numberValue} horas atrás`
-        : `${numberValue} hora atrás`;
-    case 'minutes ago':
-    case 'minute ago':
-      return textValue.includes('s ')
-        ? `${numberValue} minutos atrás`
-        : `${numberValue} minuto atrás`;
-    case 'seconds ago':
-    case 'second ago':
-      return textValue.includes('s ')
-        ? `${numberValue} segundos atrás`
-        : `${numberValue} segundo atrás`;
-    default:
-      return 'Momentos atrás';
-  }
-}
-
-/**
- * Translates a time left message from English to Brazilian Portuguese.
- *
- * @param {string} textValue The text message to be translated.
- * @param {number} numberValue The number value to be used in the message.
- * @returns The translated message.
- */
-function translateTimeLeftPtBr(textValue: string, numberValue: number): string {
-  switch (textValue) {
-    case 'years left':
-    case 'year left':
-      return textValue.includes('s ')
-        ? `${numberValue} anos restantes`
-        : `${numberValue} ano restante`;
-    case 'months left':
-    case 'month left':
-      return textValue.includes('s ')
-        ? `${numberValue} meses restantes`
-        : `${numberValue} mês restante`;
-    case 'days left':
-    case 'day left':
-      return textValue.includes('s ')
-        ? `${numberValue} dias restantes`
-        : `${numberValue} dia restante`;
-    default:
-      return textValue;
-  }
-}
-
-/**
  * Translates a server response message from English to brazilian Portuguese.
  *
  * @param {string} message The text message to be translated.
@@ -127,4 +54,4 @@ function translateServerResponsePtBr(message: string): string {
   }
 }
 
-export { translateTimeAgoPtBr, translateTimeLeftPtBr, translateServerResponsePtBr };
+export { translateServerResponsePtBr };

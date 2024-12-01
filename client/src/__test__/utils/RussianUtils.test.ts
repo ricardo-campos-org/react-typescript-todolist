@@ -1,40 +1,36 @@
 import { describe, expect, it } from 'vitest';
-import {
-  translateServerResponseRu,
-  translateTimeAgoRu,
-  translateTimeLeftRu
-} from '../../utils/RussianUtils';
+import { translateTimeMessage } from '../../utils/TranslatorUtils';
+import { translateServerResponseRu } from '../../utils/RussianUtils';
 import { SERVER_RESPONSES } from '../../constants/serverResponses';
 
 describe('Portuguese Utils unit tests', () => {
   it('should translate all time ago messages to ru', () => {
-    expect(translateTimeAgoRu('years ago', 2)).toBe('2 года назад');
-    expect(translateTimeAgoRu('year ago', 1)).toBe('1 год назад');
-    expect(translateTimeAgoRu('months ago', 2)).toBe('2 месяца назад');
-    expect(translateTimeAgoRu('month ago', 1)).toBe('1 месяц назад');
-    expect(translateTimeAgoRu('days ago', 2)).toBe('2 дня назад');
-    expect(translateTimeAgoRu('day ago', 1)).toBe('1 день назад');
-    expect(translateTimeAgoRu('hours ago', 2)).toBe('2 часа назад');
-    expect(translateTimeAgoRu('hour ago', 1)).toBe('1 час назад');
-    expect(translateTimeAgoRu('minutes ago', 2)).toBe('2 минуты назад');
-    expect(translateTimeAgoRu('minute ago', 1)).toBe('1 минуту назад');
-    expect(translateTimeAgoRu('seconds ago', 2)).toBe('2 секунд назад');
-    expect(translateTimeAgoRu('second ago', 1)).toBe('1 секунду назад');
-    expect(translateTimeAgoRu('lala', 1)).toBe('Несколько минут назад');
-    expect(translateTimeAgoRu('null', 1)).toBe('Несколько минут назад');
-    expect(translateTimeAgoRu('null', 0)).toBe('Несколько минут назад');
+    expect(translateTimeMessage('2 years ago', 'ru')).toBe('2 года назад');
+    expect(translateTimeMessage('1 year ago', 'ru')).toBe('1 год назад');
+    expect(translateTimeMessage('2 months ago', 'ru')).toBe('2 месяца назад');
+    expect(translateTimeMessage('1 month ago', 'ru')).toBe('1 месяц назад');
+    expect(translateTimeMessage('2 days ago', 'ru')).toBe('2 дня назад');
+    expect(translateTimeMessage('1 day ago', 'ru')).toBe('1 день назад');
+    expect(translateTimeMessage('2 hours ago', 'ru')).toBe('2 часа назад');
+    expect(translateTimeMessage('1 hour ago', 'ru')).toBe('1 час назад');
+    expect(translateTimeMessage('2 minutes ago', 'ru')).toBe('2 минуты назад');
+    expect(translateTimeMessage('1 minute ago', 'ru')).toBe('1 минуту назад');
+    expect(translateTimeMessage('2 seconds ago', 'ru')).toBe('2 секунд назад');
+    expect(translateTimeMessage('1 second ago', 'ru')).toBe('1 секунду назад');
+    expect(translateTimeMessage('Moments ago', 'ru')).toBe('Несколько минут назад');
+    expect(translateTimeMessage('lala', 'ru')).toBe('lala');
+    expect(translateTimeMessage('null', 'ru')).toBe('null');
   });
 
   it('should translate all time left messages to ru', () => {
-    expect(translateTimeLeftRu('years left', 2)).toBe('осталось 2 лет');
-    expect(translateTimeLeftRu('year left', 1)).toBe('Остался 1 год');
-    expect(translateTimeLeftRu('months left', 2)).toBe('осталось 2 месяцев');
-    expect(translateTimeLeftRu('month left', 1)).toBe('Остался 1 месяц');
-    expect(translateTimeLeftRu('days left', 2)).toBe('осталось 2 дней');
-    expect(translateTimeLeftRu('day left', 1)).toBe('Остался 1 день');
-    expect(translateTimeLeftRu('lala', 1)).toBe('lala');
-    expect(translateTimeLeftRu('null', 1)).toBe('null');
-    expect(translateTimeLeftRu('null', 0)).toBe('null');
+    expect(translateTimeMessage('2 years left', 'ru')).toBe('осталось 2 лет');
+    expect(translateTimeMessage('1 year left', 'ru')).toBe('Остался 1 год');
+    expect(translateTimeMessage('2 months left', 'ru')).toBe('осталось 2 месяцев');
+    expect(translateTimeMessage('1 month left', 'ru')).toBe('Остался 1 месяц');
+    expect(translateTimeMessage('2 days left', 'ru')).toBe('осталось 2 дней');
+    expect(translateTimeMessage('1 day left', 'ru')).toBe('Остался 1 день');
+    expect(translateTimeMessage('lala', 'ru')).toBe('lala');
+    expect(translateTimeMessage('null', 'ru')).toBe('null');
   });
 
   it('should translate all server responses to ru', () => {

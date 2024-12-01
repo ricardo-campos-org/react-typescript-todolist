@@ -1,40 +1,36 @@
 import { describe, expect, it } from 'vitest';
-import {
-  translateServerResponsePtBr,
-  translateTimeAgoPtBr,
-  translateTimeLeftPtBr
-} from '../../utils/PortugueseUtils';
+import { translateTimeMessage } from '../../utils/TranslatorUtils';
 import { SERVER_RESPONSES } from '../../constants/serverResponses';
+import { translateServerResponsePtBr } from '../../utils/PortugueseUtils';
 
 describe('Portuguese Utils unit tests', () => {
   it('should translate all time ago messages to pt_br', () => {
-    expect(translateTimeAgoPtBr('years ago', 2)).toBe('2 anos atrás');
-    expect(translateTimeAgoPtBr('year ago', 1)).toBe('1 ano atrás');
-    expect(translateTimeAgoPtBr('months ago', 2)).toBe('2 meses atrás');
-    expect(translateTimeAgoPtBr('month ago', 1)).toBe('1 mês atrás');
-    expect(translateTimeAgoPtBr('days ago', 2)).toBe('2 dias atrás');
-    expect(translateTimeAgoPtBr('day ago', 1)).toBe('1 dia atrás');
-    expect(translateTimeAgoPtBr('hours ago', 2)).toBe('2 horas atrás');
-    expect(translateTimeAgoPtBr('hour ago', 1)).toBe('1 hora atrás');
-    expect(translateTimeAgoPtBr('minutes ago', 2)).toBe('2 minutos atrás');
-    expect(translateTimeAgoPtBr('minute ago', 1)).toBe('1 minuto atrás');
-    expect(translateTimeAgoPtBr('seconds ago', 2)).toBe('2 segundos atrás');
-    expect(translateTimeAgoPtBr('second ago', 1)).toBe('1 segundo atrás');
-    expect(translateTimeAgoPtBr('lala', 1)).toBe('Momentos atrás');
-    expect(translateTimeAgoPtBr('null', 1)).toBe('Momentos atrás');
-    expect(translateTimeAgoPtBr('null', 0)).toBe('Momentos atrás');
+    expect(translateTimeMessage('2 years ago', 'pt_br')).toBe('2 anos atrás');
+    expect(translateTimeMessage('1 year ago', 'pt_br')).toBe('1 ano atrás');
+    expect(translateTimeMessage('2 months ago', 'pt_br')).toBe('2 meses atrás');
+    expect(translateTimeMessage('1 month ago', 'pt_br')).toBe('1 mês atrás');
+    expect(translateTimeMessage('2 days ago', 'pt_br')).toBe('2 dias atrás');
+    expect(translateTimeMessage('1 day ago', 'pt_br')).toBe('1 dia atrás');
+    expect(translateTimeMessage('2 hours ago', 'pt_br')).toBe('2 horas atrás');
+    expect(translateTimeMessage('1 hour ago', 'pt_br')).toBe('1 hora atrás');
+    expect(translateTimeMessage('2 minutes ago', 'pt_br')).toBe('2 minutos atrás');
+    expect(translateTimeMessage('1 minute ago', 'pt_br')).toBe('1 minuto atrás');
+    expect(translateTimeMessage('2 seconds ago', 'pt_br')).toBe('2 segundos atrás');
+    expect(translateTimeMessage('1 second ago', 'pt_br')).toBe('1 segundo atrás');
+    expect(translateTimeMessage('Moments ago', 'pt_br')).toBe('Momentos atrás');
+    expect(translateTimeMessage('lala', 'pt_br')).toBe('lala');
+    expect(translateTimeMessage('null', 'pt_br')).toBe('null');
   });
 
   it('should translate all time left messages to pt_br', () => {
-    expect(translateTimeLeftPtBr('years left', 2)).toBe('2 anos restantes');
-    expect(translateTimeLeftPtBr('year left', 1)).toBe('1 ano restante');
-    expect(translateTimeLeftPtBr('months left', 2)).toBe('2 meses restantes');
-    expect(translateTimeLeftPtBr('month left', 1)).toBe('1 mês restante');
-    expect(translateTimeLeftPtBr('days left', 2)).toBe('2 dias restantes');
-    expect(translateTimeLeftPtBr('day left', 1)).toBe('1 dia restante');
-    expect(translateTimeLeftPtBr('lala', 1)).toBe('lala');
-    expect(translateTimeLeftPtBr('null', 1)).toBe('null');
-    expect(translateTimeLeftPtBr('null', 0)).toBe('null');
+    expect(translateTimeMessage('2 years left', 'pt_br')).toBe('2 anos restantes');
+    expect(translateTimeMessage('1 year left', 'pt_br')).toBe('1 ano restante');
+    expect(translateTimeMessage('2 months left', 'pt_br')).toBe('2 meses restantes');
+    expect(translateTimeMessage('1 month left', 'pt_br')).toBe('1 mês restante');
+    expect(translateTimeMessage('2 days left', 'pt_br')).toBe('2 dias restantes');
+    expect(translateTimeMessage('1 day left', 'pt_br')).toBe('1 dia restante');
+    expect(translateTimeMessage('lala', 'pt_br')).toBe('lala');
+    expect(translateTimeMessage('null', 'pt_br')).toBe('null');
   });
 
   it('should translate all server responses to pt_br', () => {

@@ -1,79 +1,6 @@
 import { SERVER_RESPONSES } from '../constants/serverResponses';
 
 /**
- * Translates a time ago message from English to Russian.
- *
- * @param {string} textValue The text message to be translated.
- * @param {number} numberValue The number value to be used in the message.
- * @returns The translated message.
- */
-function translateTimeAgoRu(textValue: string, numberValue: number): string {
-  switch (textValue) {
-    case 'years ago':
-    case 'year ago':
-      return textValue.includes('s ')
-        ? `${numberValue} года назад`
-        : `${numberValue} год назад`;
-    case 'months ago':
-    case 'month ago':
-      return textValue.includes('s ')
-        ? `${numberValue} месяца назад`
-        : `${numberValue} месяц назад`;
-    case 'days ago':
-    case 'day ago':
-      return textValue.includes('s ')
-        ? `${numberValue} дня назад`
-        : `${numberValue} день назад`;
-    case 'hours ago':
-    case 'hour ago':
-      return textValue.includes('s ')
-        ? `${numberValue} часа назад`
-        : `${numberValue} час назад`;
-    case 'minutes ago':
-    case 'minute ago':
-      return textValue.includes('s ')
-        ? `${numberValue} минуты назад`
-        : `${numberValue} минуту назад`;
-    case 'seconds ago':
-    case 'second ago':
-      return textValue.includes('s ')
-        ? `${numberValue} секунд назад`
-        : `${numberValue} секунду назад`;
-    default:
-      return 'Несколько минут назад';
-  }
-}
-
-/**
- * Translates a time left message from English to Russian.
- *
- * @param {string} textValue The text message to be translated.
- * @param {number} numberValue The number value to be used in the message.
- * @returns The translated message.
- */
-function translateTimeLeftRu(textValue: string, numberValue: number): string {
-  switch (textValue) {
-    case 'years left':
-    case 'year left':
-      return textValue.includes('s ')
-        ? `осталось ${numberValue} лет`
-        : `Остался ${numberValue} год`;
-    case 'months left':
-    case 'month left':
-      return textValue.includes('s ')
-        ? `осталось ${numberValue} месяцев`
-        : `Остался ${numberValue} месяц`;
-    case 'days left':
-    case 'day left':
-      return textValue.includes('s ')
-        ? `осталось ${numberValue} дней`
-        : `Остался ${numberValue} день`;
-    default:
-      return textValue;
-  }
-}
-
-/**
  * Translates a server response message from English to Russian.
  *
  * @param {string} message The text message to be translated.
@@ -127,4 +54,4 @@ function translateServerResponseRu(message: string): string {
   }
 }
 
-export { translateTimeAgoRu, translateTimeLeftRu, translateServerResponseRu };
+export { translateServerResponseRu };

@@ -1,8 +1,9 @@
+import { timeAgoTranslations } from '../constants/languageConstants';
 import { TaskResponse } from '../types/TaskResponse';
 import USER_LANG from '../types/UserLangs';
-import { translateServerResponsePtBr, translateTimeAgoPtBr, translateTimeLeftPtBr } from './PortugueseUtils';
-import { translateServerResponseRu, translateTimeAgoRu, translateTimeLeftRu } from './RussianUtils';
-import { translateServerResponseEs, translateTimeAgoEs, translateTimeLeftEs } from './SpanishUtils';
+import { translateServerResponsePtBr } from './PortugueseUtils';
+import { translateServerResponseRu } from './RussianUtils';
+import { translateServerResponseEs } from './SpanishUtils';
 
 /**
  * Translates a given message to a given language
@@ -17,32 +18,19 @@ function translateTimeMessage(message: string, target: string): string {
   }
 
   const firstSpace = message.indexOf(' ');
-  const numberValue = parseInt(message.substring(0, firstSpace));
+  const numberValue = message.substring(0, firstSpace);
   const textValue = message.substring(firstSpace).trim();
 
-  if (message.includes(' ago')) {
-    if (target === USER_LANG.PORTUGUESE) {
-      return translateTimeAgoPtBr(textValue, numberValue);
-    }
-    if (target === USER_LANG.SPANISH) {
-      return translateTimeAgoEs(textValue, numberValue);
-    }
+  const keys: string[] = Object.keys(timeAgoTranslations);
+  const keyForLang: string = `${textValue}_${target}`;
 
-    return translateTimeAgoRu(textValue, numberValue);
+  if (keys.includes(keyForLang)) {
+    return timeAgoTranslations[keyForLang].replace('{X}', numberValue);
   }
 
-  if (message.includes(' left')) {
-    if (target === USER_LANG.PORTUGUESE) {
-      return translateTimeLeftPtBr(textValue, numberValue);
-    }
-    if (target === USER_LANG.SPANISH) {
-      return translateTimeLeftEs(textValue, numberValue);
-    }
-
-    return translateTimeLeftRu(textValue, numberValue);
-  }
-
-  return message;
+  return message.includes(' ago')
+    ? timeAgoTranslations[`default_${target}`]
+    : message;
 }
 
 /**
@@ -80,4 +68,4 @@ function translateTaskResponse(tasks: TaskResponse[], target: string): TaskRespo
   return tasks;
 }
 
-export { translateTaskResponse, translateServerResponse };
+export { translateTaskResponse, translateServerResponse, translateTimeMessage };

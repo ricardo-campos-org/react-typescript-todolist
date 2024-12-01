@@ -1,43 +1,39 @@
 import { describe, expect, it } from 'vitest';
-import {
-  translateServerResponseEs,
-  translateTimeAgoEs,
-  translateTimeLeftEs
-} from '../../utils/SpanishUtils';
+import { translateTimeMessage } from '../../utils/TranslatorUtils';
+import { translateServerResponseEs } from '../../utils/SpanishUtils';
 import { SERVER_RESPONSES } from '../../constants/serverResponses';
 
 describe('Portuguese Utils unit tests', () => {
-  it('should translate all time ago messages to pt_br', () => {
-    expect(translateTimeAgoEs('years ago', 2)).toBe('Hace 2 años');
-    expect(translateTimeAgoEs('year ago', 1)).toBe('Hace 1 año');
-    expect(translateTimeAgoEs('months ago', 2)).toBe('Hace 2 meses');
-    expect(translateTimeAgoEs('month ago', 1)).toBe('Hace 1 mes');
-    expect(translateTimeAgoEs('days ago', 2)).toBe('Hace 2 días');
-    expect(translateTimeAgoEs('day ago', 1)).toBe('Hace 1 día');
-    expect(translateTimeAgoEs('hours ago', 2)).toBe('Hace 2 horas');
-    expect(translateTimeAgoEs('hour ago', 1)).toBe('Hace 1 hora');
-    expect(translateTimeAgoEs('minutes ago', 2)).toBe('Hace 2 minutos');
-    expect(translateTimeAgoEs('minute ago', 1)).toBe('Hace 1 minuto');
-    expect(translateTimeAgoEs('seconds ago', 2)).toBe('Hace 2 segundos');
-    expect(translateTimeAgoEs('second ago', 1)).toBe('Hace 1 segundo');
-    expect(translateTimeAgoEs('lala', 1)).toBe('Hace momentos');
-    expect(translateTimeAgoEs('null', 1)).toBe('Hace momentos');
-    expect(translateTimeAgoEs('null', 0)).toBe('Hace momentos');
+  it('should translate all time ago messages to es', () => {
+    expect(translateTimeMessage('2 years ago', 'es')).toBe('Hace 2 años');
+    expect(translateTimeMessage('1 year ago', 'es')).toBe('Hace 1 año');
+    expect(translateTimeMessage('2 months ago', 'es')).toBe('Hace 2 meses');
+    expect(translateTimeMessage('1 month ago', 'es')).toBe('Hace 1 mes');
+    expect(translateTimeMessage('2 days ago', 'es')).toBe('Hace 2 días');
+    expect(translateTimeMessage('1 day ago', 'es')).toBe('Hace 1 día');
+    expect(translateTimeMessage('2 hours ago', 'es')).toBe('Hace 2 horas');
+    expect(translateTimeMessage('1 hour ago', 'es')).toBe('Hace 1 hora');
+    expect(translateTimeMessage('2 minutes ago', 'es')).toBe('Hace 2 minutos');
+    expect(translateTimeMessage('1 minute ago', 'es')).toBe('Hace 1 minuto');
+    expect(translateTimeMessage('2 seconds ago', 'es')).toBe('Hace 2 segundos');
+    expect(translateTimeMessage('1 second ago', 'es')).toBe('Hace 1 segundo');
+    expect(translateTimeMessage('Moments ago', 'es')).toBe('Hace momentos');
+    expect(translateTimeMessage('lala', 'es')).toBe('lala');
+    expect(translateTimeMessage('null', 'es')).toBe('null');
   });
 
-  it('should translate all time left messages to pt_br', () => {
-    expect(translateTimeLeftEs('years left', 2)).toBe('Faltan 2 años');
-    expect(translateTimeLeftEs('year left', 1)).toBe('Falta 1 año');
-    expect(translateTimeLeftEs('months left', 2)).toBe('Faltan 2 meses');
-    expect(translateTimeLeftEs('month left', 1)).toBe('Falta 1 mes');
-    expect(translateTimeLeftEs('days left', 2)).toBe('Faltan 2 días');
-    expect(translateTimeLeftEs('day left', 1)).toBe('Falta 1 día');
-    expect(translateTimeLeftEs('lala', 1)).toBe('lala');
-    expect(translateTimeLeftEs('null', 1)).toBe('null');
-    expect(translateTimeLeftEs('null', 0)).toBe('null');
+  it('should translate all time left messages to es', () => {
+    expect(translateTimeMessage('2 years left', 'es')).toBe('Faltan 2 años');
+    expect(translateTimeMessage('1 year left', 'es')).toBe('Falta 1 año');
+    expect(translateTimeMessage('2 months left', 'es')).toBe('Faltan 2 meses');
+    expect(translateTimeMessage('1 month left', 'es')).toBe('Falta 1 mes');
+    expect(translateTimeMessage('2 days left', 'es')).toBe('Faltan 2 días');
+    expect(translateTimeMessage('1 day left', 'es')).toBe('Falta 1 día');
+    expect(translateTimeMessage('lala', 'es')).toBe('lala');
+    expect(translateTimeMessage('null', 'es')).toBe('null');
   });
 
-  it('should translate all server responses to pt_br', () => {
+  it('should translate all server responses to es', () => {
     expect(translateServerResponseEs(SERVER_RESPONSES.BAD_PASSWORD_3))
       .toBe('Contraseña inválida: La contraseña debe tener al menos 8 caracteres, 1 mayúscula y 1 carácter especial');
     expect(translateServerResponseEs(SERVER_RESPONSES.BAD_PASSWORD_2))

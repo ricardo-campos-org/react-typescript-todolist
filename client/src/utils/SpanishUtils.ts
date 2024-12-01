@@ -1,79 +1,6 @@
 import { SERVER_RESPONSES } from '../constants/serverResponses';
 
 /**
- * Translates a time ago message from English to Spanish.
- *
- * @param {string} textValue The text message to be translated.
- * @param {number} numberValue The number value to be used in the message.
- * @returns The translated message.
- */
-function translateTimeAgoEs(textValue: string, numberValue: number): string {
-  switch (textValue) {
-    case 'years ago':
-    case 'year ago':
-      return textValue.includes('s ')
-        ? `Hace ${numberValue} años`
-        : `Hace ${numberValue} año`;
-    case 'months ago':
-    case 'month ago':
-      return textValue.includes('s ')
-        ? `Hace ${numberValue} meses`
-        : `Hace ${numberValue} mes`;
-    case 'days ago':
-    case 'day ago':
-      return textValue.includes('s ')
-        ? `Hace ${numberValue} días`
-        : `Hace ${numberValue} día`;
-    case 'hours ago':
-    case 'hour ago':
-      return textValue.includes('s ')
-        ? `Hace ${numberValue} horas`
-        : `Hace ${numberValue} hora`;
-    case 'minutes ago':
-    case 'minute ago':
-      return textValue.includes('s ')
-        ? `Hace ${numberValue} minutos`
-        : `Hace ${numberValue} minuto`;
-    case 'seconds ago':
-    case 'second ago':
-      return textValue.includes('s ')
-        ? `Hace ${numberValue} segundos`
-        : `Hace ${numberValue} segundo`;
-    default:
-      return 'Hace momentos';
-  }
-}
-
-/**
- * Translates a time left message from English to Spanish.
- *
- * @param {string} textValue The text message to be translated.
- * @param {number} numberValue The number value to be used in the message.
- * @returns The translated message.
- */
-function translateTimeLeftEs(textValue: string, numberValue: number): string {
-  switch (textValue) {
-    case 'years left':
-    case 'year left':
-      return textValue.includes('s ')
-        ? `Faltan ${numberValue} años`
-        : `Falta ${numberValue} año`;
-    case 'months left':
-    case 'month left':
-      return textValue.includes('s ')
-        ? `Faltan ${numberValue} meses`
-        : `Falta ${numberValue} mes`;
-    case 'days left':
-    case 'day left':
-      return textValue.includes('s ')
-        ? `Faltan ${numberValue} días`
-        : `Falta ${numberValue} día`;
-    default:
-      return textValue;
-  }
-}
-
-/**
  * Translates a server response message from English to Spanish.
  *
  * @param {string} message The text message to be translated.
@@ -127,4 +54,4 @@ function translateServerResponseEs(message: string): string {
   }
 }
 
-export { translateTimeAgoEs, translateTimeLeftEs, translateServerResponseEs };
+export { translateServerResponseEs };
