@@ -43,10 +43,7 @@ function translateServerResponse(message: string, target: string): string {
   if (serverResponseKeys.includes(message)) {
     const value = serverResponses[message];
     const key = `${value}_${target}`;
-    const valueTranslated: string = serverResponsesTranslations[key];
-    return valueTranslated
-      ? valueTranslated
-      : message;
+    return serverResponsesTranslations[key];
   }
   return message;
 }
