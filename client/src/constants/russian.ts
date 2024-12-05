@@ -57,9 +57,9 @@ const ruTranslations = {
   task_form_duedate_placeholder: 'Срок выполнения (необязательно)',
   task_form_submit: 'Сохранить задачу',
   task_table_description: 'Описание',
-  task_table_done: 'Сделанный',
+  task_table_done: 'Завершённый',
   task_table_actions: 'Действия',
-  task_table_action_done: 'Сделанный',
+  task_table_action_done: 'Завершённый',
   task_table_action_undone: 'Отменено',
   task_table_action_done_yes: 'Да',
   task_table_action_done_no: 'Нет',
@@ -83,7 +83,7 @@ const ruTranslations = {
   about_app_features: 'Функции',
   about_app_features_one: 'Быстро добавляйте и управляйте задачами и заметками',
   about_app_features_two: 'Поиск и фильтрация заметок для легкого доступа',
-  about_app_features_three: 'Интуитивно понятный и понятный пользовательский интерфейс',
+  about_app_features_three: 'Интуитивно понятный пользовательский интерфейс',
   about_app_help_title: 'Помощь и как использовать',
   about_app_help_description: `Чтобы начать, просто зарегистрируйтесь или войдите в систему, и
     вы получите доступ к своей персонализированной панели. Оттуда вы можете
@@ -96,10 +96,10 @@ const ruTranslations = {
       которые обеспечивают скорость, надежность и безопасность.`,
   about_tech_list_one: 'React с TypeScript для фронтенда',
   about_tech_list_two: 'Bootstrap 5 для компонентов и адаптивного дизайна',
-  about_tech_list_three: 'Java и Spring Boot плюс GraalVM для бэкэнда и Cloud Native',
+  about_tech_list_three: 'Java и Spring Boot плюс GraalVM для бэкенда и Cloud Native',
   about_tech_list_four: 'PostgreSQL для управления базами данных',
   about_tech_list_five: 'Docker для контейнеризации и развертывания',
-  about_tech_list_six: 'Действия GitHub для CI/CD, тестирования и принудительного линтинга',
+  about_tech_list_six: 'GitHub Actions для CI/CD, тестирования и принудительного линтинга',
   about_tech_list_seven: 'SonarCloud и GitHub QL для проверок безопасности и улучшений',
 
   about_dev_title: 'О разработчике',
@@ -108,7 +108,7 @@ const ruTranslations = {
     организованной. Вы можете связаться со мной по адресу `,
   about_dev_description_two: ' для любых вопросов или отзывов.',
 
-  account_my_account_tittle: 'Мой счет',
+  account_my_account_tittle: 'Мой аккаунт',
   account_my_account_hello: 'Привет! Здесь вы можете управлять своими предпочтениями.',
   account_my_account_logged: 'Вы вошли как:',
   account_app_lang_tittle: 'Язык приложения',
@@ -119,13 +119,13 @@ const ruTranslations = {
     аккаунта в любое время. После обработки вся ваша личная информация будет
     навсегда удалена с наших серверов.`,
   account_privacy_delete_btn: 'Удалить все мои данные',
-  account_delete_tittle: 'Вы собираетесь удалить свою учетную запись!',
+  account_delete_tittle: 'Вы собираетесь удалить свой аккаунт!',
   account_delete_description: `Это действие нельзя отменить. Если вы действительно хотите
     удалить все свои данные, нажмите кнопку ниже. Если нет, закройте это сообщение, и ваши
     данные будут в безопасности.`,
   account_delete_btn: 'Да, удалить все',
 
-  footer_my_account: 'Мой счет ',
+  footer_my_account: 'Мой аккаунт ',
 
   logout: 'Выйти'
 };

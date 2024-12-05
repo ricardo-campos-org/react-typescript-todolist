@@ -14,7 +14,7 @@ describe('Portuguese Utils unit tests', () => {
     expect(translateTimeMessage('1 hour ago', 'ru')).toBe('1 час назад');
     expect(translateTimeMessage('2 minutes ago', 'ru')).toBe('2 минуты назад');
     expect(translateTimeMessage('1 minute ago', 'ru')).toBe('1 минуту назад');
-    expect(translateTimeMessage('2 seconds ago', 'ru')).toBe('2 секунд назад');
+    expect(translateTimeMessage('2 seconds ago', 'ru')).toBe('2 секунды назад');
     expect(translateTimeMessage('1 second ago', 'ru')).toBe('1 секунду назад');
     expect(translateTimeMessage('Moments ago', 'ru')).toBe('Несколько минут назад');
     expect(translateTimeMessage('lala', 'ru')).toBe('lala');
@@ -22,12 +22,33 @@ describe('Portuguese Utils unit tests', () => {
   });
 
   it('should translate all time left messages to ru', () => {
-    expect(translateTimeMessage('2 years left', 'ru')).toBe('осталось 2 лет');
     expect(translateTimeMessage('1 year left', 'ru')).toBe('Остался 1 год');
-    expect(translateTimeMessage('2 months left', 'ru')).toBe('осталось 2 месяцев');
+    expect(translateTimeMessage('2 years left', 'ru')).toBe('осталось 2 года');
+    expect(translateTimeMessage('3 years left', 'ru')).toBe('осталось 3 года');
+    expect(translateTimeMessage('4 years left', 'ru')).toBe('осталось 4 года');
+    expect(translateTimeMessage('5 years left', 'ru')).toBe('осталось 5 лет');
+    expect(translateTimeMessage('6 years left', 'ru')).toBe('осталось 6 лет');
+    expect(translateTimeMessage('7 years left', 'ru')).toBe('осталось 7 лет');
+    expect(translateTimeMessage('8 years left', 'ru')).toBe('осталось 8 лет');
+    expect(translateTimeMessage('9 years left', 'ru')).toBe('осталось 9 лет');
     expect(translateTimeMessage('1 month left', 'ru')).toBe('Остался 1 месяц');
-    expect(translateTimeMessage('2 days left', 'ru')).toBe('осталось 2 дней');
+    expect(translateTimeMessage('2 months left', 'ru')).toBe('осталось 2 месяца');
+    expect(translateTimeMessage('3 months left', 'ru')).toBe('осталось 3 месяца');
+    expect(translateTimeMessage('4 months left', 'ru')).toBe('осталось 4 месяца');
+    expect(translateTimeMessage('5 months left', 'ru')).toBe('осталось 5 месяцев');
+    expect(translateTimeMessage('6 months left', 'ru')).toBe('осталось 6 месяцев');
+    expect(translateTimeMessage('7 months left', 'ru')).toBe('осталось 7 месяцев');
+    expect(translateTimeMessage('8 months left', 'ru')).toBe('осталось 8 месяцев');
+    expect(translateTimeMessage('9 months left', 'ru')).toBe('осталось 9 месяцев');
     expect(translateTimeMessage('1 day left', 'ru')).toBe('Остался 1 день');
+    expect(translateTimeMessage('2 days left', 'ru')).toBe('осталось 2 дня');
+    expect(translateTimeMessage('3 days left', 'ru')).toBe('осталось 3 дня');
+    expect(translateTimeMessage('4 days left', 'ru')).toBe('осталось 4 дня');
+    expect(translateTimeMessage('5 days left', 'ru')).toBe('осталось 5 дней');
+    expect(translateTimeMessage('6 days left', 'ru')).toBe('осталось 6 дней');
+    expect(translateTimeMessage('7 days left', 'ru')).toBe('осталось 7 дней');
+    expect(translateTimeMessage('8 days left', 'ru')).toBe('осталось 8 дней');
+    expect(translateTimeMessage('9 days left', 'ru')).toBe('осталось 9 дней');
     expect(translateTimeMessage('lala', 'ru')).toBe('lala');
     expect(translateTimeMessage('null', 'ru')).toBe('null');
   });
@@ -42,9 +63,9 @@ describe('Portuguese Utils unit tests', () => {
     expect(translateServerResponse(keys[2], 'ru'))
       .toBe('Неправильный пароль: Пароль должен содержать хотя бы 1 специальный символ.');
     expect(translateServerResponse(keys[3], 'ru'))
-      .toBe('Электронная почта уже существует!');
+      .toBe('Электронная почти уже используется!');
     expect(translateServerResponse(keys[4], 'ru'))
-      .toBe('Запрещено! Доступ запрещен!');
+      .toBe('Доступ запрещен!');
     expect(translateServerResponse(keys[5], 'ru'))
       .toBe('Внутренняя ошибка сервера!');
     expect(translateServerResponse(keys[6], 'ru'))
@@ -56,7 +77,7 @@ describe('Portuguese Utils unit tests', () => {
     expect(translateServerResponse(keys[9], 'ru'))
       .toBe('Пожалуйста, введите не менее 3 символов');
     expect(translateServerResponse(keys[10], 'ru'))
-      .toBe('Максимальная длина текста — 2000.');
+      .toBe('Максимальная длина текста — 2000 символов.');
     expect(translateServerResponse(keys[11], 'ru'))
       .toBe('Неизвестная ошибка');
     expect(translateServerResponse(keys[12], 'ru'))

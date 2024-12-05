@@ -23,7 +23,58 @@ function translateTimeMessage(message: string, target: string): string {
   const keyForLang: string = `${textValue}_${target}`;
 
   if (keys.includes(keyForLang)) {
-    return timeAgoTranslations[keyForLang].replace('{X}', numberValue);
+    const message = timeAgoTranslations[keyForLang].replace('{X}', numberValue);
+
+    // Fixes for Russian language
+    const shouldUpdateYearsLeft = target === USER_LANG.RUSSIAN
+      && parseInt(numberValue) > 4
+      && textValue.includes('left')
+      && textValue.includes('years');
+
+    if (shouldUpdateYearsLeft) {
+      const valuesToConsider: string[] = ['5', '6', '7', '8', '9'];
+      let finalTranslation = '';
+      valuesToConsider.forEach((valueStr: string) => {
+        if (numberValue.endsWith(valueStr)) {
+          finalTranslation = `осталось ${numberValue} лет`;
+        }
+      });
+      return finalTranslation;
+    }
+
+    const shouldUpdateMonthsLeft = target === USER_LANG.RUSSIAN
+      && parseInt(numberValue) > 4
+      && textValue.includes('left')
+      && textValue.includes('months');
+
+    if (shouldUpdateMonthsLeft) {
+      const valuesToConsider: string[] = ['5', '6', '7', '8', '9', '10'];
+      let finalTranslation = '';
+      valuesToConsider.forEach((valueStr: string) => {
+        if (numberValue.endsWith(valueStr)) {
+          finalTranslation = `осталось ${numberValue} месяцев`;
+        }
+      });
+      return finalTranslation;
+    }
+
+    const shouldUpdateDaysLeft = target === USER_LANG.RUSSIAN
+      && parseInt(numberValue) > 4
+      && textValue.includes('left')
+      && textValue.includes('days');
+
+    if (shouldUpdateDaysLeft) {
+      const valuesToConsider: string[] = ['5', '6', '7', '8', '9', '10'];
+      let finalTranslation = '';
+      valuesToConsider.forEach((valueStr: string) => {
+        if (numberValue.endsWith(valueStr)) {
+          finalTranslation = `осталось ${numberValue} дней`;
+        }
+      });
+      return finalTranslation;
+    }
+
+    return message;
   }
 
   return message.includes(' ago')

@@ -51,15 +51,15 @@ export const timeAgoTranslations: Record<string, string> = {
   'hour ago_ru': '{X} час назад',
   'minutes ago_ru': '{X} минуты назад',
   'minute ago_ru': '{X} минуту назад',
-  'seconds ago_ru': '{X} секунд назад',
+  'seconds ago_ru': '{X} секунды назад',
   'second ago_ru': '{X} секунду назад',
   'default_ru': 'Несколько минут назад',
 
-  'years left_ru': 'осталось {X} лет',
+  'years left_ru': 'осталось {X} года',
   'year left_ru': 'Остался {X} год',
-  'months left_ru': 'осталось {X} месяцев',
+  'months left_ru': 'осталось {X} месяца',
   'month left_ru': 'Остался {X} месяц',
-  'days left_ru': 'осталось {X} дней',
+  'days left_ru': 'осталось {X} дня',
   'day left_ru': 'Остался {X} день'
 };
 
@@ -97,14 +97,14 @@ export const serverResponsesTranslations: Record<string, string> = {
   BAD_PASSWORD_3_ru: 'Неправильный пароль: Пароль должен содержать не менее 8 символов, 1 заглавную букву, 1 специальный символ.',
   BAD_PASSWORD_2_ru: 'Неправильный пароль: Пароль должен содержать как минимум 1 заглавную букву и 1 специальный символ.',
   BAD_PASSWORD_1_ru: 'Неправильный пароль: Пароль должен содержать хотя бы 1 специальный символ.',
-  EMAIL_EXISTS_ru: 'Электронная почта уже существует!',
-  FORBIDDEN_ru: 'Запрещено! Доступ запрещен!',
+  EMAIL_EXISTS_ru: 'Электронная почти уже используется!',
+  FORBIDDEN_ru: 'Доступ запрещен!',
   INTERNAL_ERROR_ru: 'Внутренняя ошибка сервера!',
   MAX_LOGIN_ATTEMPT_ru: 'Достигнут максимальный лимит попыток входа. Пожалуйста, подождите 30 минут',
   FILL_ALL_FIELDS_ru: 'Пожалуйста, заполните все поля',
   FILL_USER_AND_PASS_ru: 'Пожалуйста, введите свое имя пользователя и пароль!',
   FILL_AT_LEAST_3_ru: 'Пожалуйста, введите не менее 3 символов',
-  MAX_TEXT_LENGTH_2000_ru: 'Максимальная длина текста — 2000.',
+  MAX_TEXT_LENGTH_2000_ru: 'Максимальная длина текста — 2000 символов.',
   UNKNOWN_ru: 'Неизвестная ошибка',
   WRONG_OR_MISSING_INFO_ru: 'Неверная или отсутствующая информация!',
   WRONG_USER_OR_PASS_ru: 'Неправильный пользователь или пароль'
