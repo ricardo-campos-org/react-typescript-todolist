@@ -72,7 +72,7 @@
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-jsdoc": "^50.5.0",
     "eslint-plugin-n": "^17.11.1",
-    "eslint-plugin-promise": "^7.2.0",
+    "eslint-plugin-promise": "^7.2.1",
     "eslint-plugin-react": "^7.37.2",
     "globals": "^15.12.0",
     "jsdom": "^25.0.1",
