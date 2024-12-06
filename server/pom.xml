@@ -43,6 +43,8 @@
     <timestamp>${maven.build.timestamp}</timestamp>
     <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
     <hibernate.version>6.6.2.Final</hibernate.version>
+    <sonar.organization>ricardo-campos-org</sonar.organization>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
   </properties>
 
   <!-- Profiles -->
