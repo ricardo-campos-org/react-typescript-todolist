@@ -88,6 +88,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_SERVER }}
         run: cd server && ./mvnw -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=ricardo-campos-org_react-typescript-todolist_server
+          -Dsonar.projectKey=ricardo-campos-org_react-typescript-todolist_server
+          -Dsonar.coverage.jacoco.xmlReportPaths=target/coverage-reports/merged-test-report/jacoco.xml
+          -Dsonar.exclusions=**/config/**,**/entity/**,**/exception/**,**/filter/**,**/**Builder*,**/RestExceptionEndpoint.*,**/JavaApiApiApplication.*
 
       - name: All Tests
         run: cd server && ./mvnw --no-transfer-progress clean verify -P tests --file pom.xml
