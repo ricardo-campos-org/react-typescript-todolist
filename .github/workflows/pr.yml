@@ -55,7 +55,7 @@ jobs:
           projectBaseDir: client
           args: >
             -Dsonar.organization=ricardo-campos-org
-            -Dsonar.projectKey=ricardo-campos-org_react-typescript-todolist
+            -Dsonar.projectKey=ricardo-campos-org_react-typescript-todolist_client
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
             -Dsonar.typescript.tsconfigPaths=tsconfig.json
             -Dsonar.sources=src/
