@@ -11,8 +11,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import br.com.tasknoteapp.server.entity.NoteEntity;
+import br.com.tasknoteapp.server.exception.NoteNotFoundException;
+import br.com.tasknoteapp.server.request.NotePatchRequest;
+import br.com.tasknoteapp.server.request.NoteRequest;
+import br.com.tasknoteapp.server.response.NoteResponse;
+import br.com.tasknoteapp.server.response.NoteUrlResponse;
+import br.com.tasknoteapp.server.service.NoteService;
 import java.util.List;
-
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,14 +29,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-
-import br.com.tasknoteapp.server.entity.NoteEntity;
-import br.com.tasknoteapp.server.exception.NoteNotFoundException;
-import br.com.tasknoteapp.server.request.NotePatchRequest;
-import br.com.tasknoteapp.server.request.NoteRequest;
-import br.com.tasknoteapp.server.response.NoteResponse;
-import br.com.tasknoteapp.server.response.NoteUrlResponse;
-import br.com.tasknoteapp.server.service.NoteService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -101,7 +99,8 @@ class NoteControllerTest {
     Long noteId = 123L;
     NotePatchRequest patchRequest = new NotePatchRequest("New title", "New description", List.of());
 
-    NoteResponse response = new NoteResponse(noteId, patchRequest.title(), patchRequest.description(), List.of());
+    NoteResponse response =
+        new NoteResponse(noteId, patchRequest.title(), patchRequest.description(), List.of());
 
     when(noteService.patchNote(noteId, patchRequest)).thenReturn(response);
 
