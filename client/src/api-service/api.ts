@@ -52,9 +52,15 @@ function handleError(httpStatusCode: number) {
 }
 
 async function handleResponse(response: Response) {
-  if (response.ok) {
+  // Successful responses
+  if (response.ok && response.status !== 204) {
     return await response.json();
   }
+  else if (response.status === 204) {
+    return;
+  }
+
+  // Error responses
   const contentType = response.headers.get('content-type');
   if (contentType && contentType.includes('application/json')) {
     const data = await response.json();
