@@ -48,34 +48,26 @@ function LoginForm({ prefix }: { prefix: string }): JSX.Element {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
     event.stopPropagation();
-    console.log('hi 1');
     setValidated(true);
 
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
-      console.log('hi 2');
       setFormInvalid(true);
       setErrorMessage(translateServerResponse('Please fill in your username and password!', i18n.language));
       return;
     }
 
-    console.log('hi 3');
-
     setFormInvalid(false);
     try {
       if (prefix === 'login') {
-        console.log('hi 4');
         await signIn(form.email.value, form.password.value);
       }
       else {
-        console.log('hi 5');
         await register(form.email.value, form.password.value);
       }
-      console.log('hi 6');
       goTo('/home');
     }
     catch (e) {
-      console.log('hi 7', e);
       setFormInvalid(true);
       if (typeof e === 'string') {
         setErrorMessage(translateServerResponse(e, i18n.language));
