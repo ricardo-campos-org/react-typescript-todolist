@@ -92,7 +92,7 @@ class AuthenticationControllerTest {
     String jsonString =
         """
         {
-          "email": "user@domain..com",
+          "email": "user@domain.com",
           "password": "abcde123456"
         }
         """;
