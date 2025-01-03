@@ -72,6 +72,7 @@ public class TaskService {
       task.setDueDate(LocalDate.parse(taskRequest.dueDate()));
     }
     task.setHighPriority(taskRequest.highPriority());
+    task.setTag(taskRequest.tag().trim().toLowerCase());
     TaskEntity created = taskRepository.save(task);
 
     if (!Objects.isNull(taskRequest.urls()) && !taskRequest.urls().isEmpty()) {
@@ -116,6 +117,10 @@ public class TaskService {
     if (!Objects.isNull(patch.highPriority())) {
       taskEntity.setHighPriority(patch.highPriority());
     }
+    taskEntity.setTag(null);
+    if (!Objects.isNull(patch.tag())) {
+      taskEntity.setTag(patch.tag().trim().toLowerCase());
+    }
 
     taskEntity.setLastUpdate(LocalDateTime.now());
 
@@ -128,13 +133,12 @@ public class TaskService {
       } else {
         log.info("No urls to patch for task {}", taskId);
       }
-
-      List<String> urlsList =
-          patch.urls().stream().filter(p -> p.id() == null).map(TaskUrlPatchRequest::url).toList();
-      List<TaskUrlEntity> urls = saveUrls(taskEntity, urlsList);
-
-      taskEntity.setUrls(urls);
     }
+
+    List<String> urlsList = patch.urls().stream().map(TaskUrlPatchRequest::url).toList();
+    List<TaskUrlEntity> urls = saveUrls(taskEntity, urlsList);
+
+    taskEntity.setUrls(urls);
 
     TaskEntity patchedTask = taskRepository.save(taskEntity);
 

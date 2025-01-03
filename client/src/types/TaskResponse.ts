@@ -11,6 +11,7 @@ type TaskResponse = {
   dueDate: string;
   dueDateFmt: string;
   lastUpdate: string;
+  tag: string;
   urls: TaskUrlResponse[];
 };
 

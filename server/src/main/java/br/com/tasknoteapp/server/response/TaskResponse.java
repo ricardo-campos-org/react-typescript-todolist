@@ -19,6 +19,7 @@ public record TaskResponse(
     @Schema(description = "Task due date, if any.", example = "true") LocalDate dueDate,
     @Schema(description = "Task due date, if any.", example = "true") String dueDateFmt,
     @Schema(description = "When was the last update time of the task") String lastUpdate,
+    @Schema(description = "Task tag, optional.") String tag,
     @Schema(description = "The urls of the task, zero, one or more.", example = "[]")
         List<TaskUrlResponse> urls) {
 
@@ -51,6 +52,7 @@ public record TaskResponse(
         entity.getDueDate(),
         dueDateFmt,
         timeAgoFmt,
+        entity.getTag(),
         urlsResponse);
   }
 }

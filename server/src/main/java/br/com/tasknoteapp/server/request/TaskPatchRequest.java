@@ -10,4 +10,5 @@ public record TaskPatchRequest(
     @Schema(description = "Task done definition. Optional.") Boolean done,
     @Schema(description = "Task urls. Optional.") List<TaskUrlPatchRequest> urls,
     @Schema(description = "Due date. Optional.") String dueDate,
-    @Schema(description = "Define high priority. Optional.") Boolean highPriority) {}
+    @Schema(description = "Define high priority. Optional.") Boolean highPriority,
+    @Schema(description = "Task tag, optional.") String tag) {}
