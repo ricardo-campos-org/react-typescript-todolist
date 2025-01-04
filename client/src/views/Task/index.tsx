@@ -31,7 +31,7 @@ function Task(): JSX.Element {
   const [tasks, setTasks] = useState<TaskResponse[]>([]);
   const [savedTasks, setSavedTasks] = useState<TaskResponse[]>([]);
   const [filterText, setFilterText] = useState<string>('');
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
 
   const handleError = (e: unknown): void => {
     if (typeof e === 'string') {
@@ -168,15 +168,15 @@ function Task(): JSX.Element {
                         {!task.done && (
                           <NavLink to={`/tasks/edit/${task.id}`}>
                             <Dropdown.Item as="span">
-                              Edit
+                              {t('task_table_action_edit')}
                             </Dropdown.Item>
                           </NavLink>
                         )}
                         <Dropdown.Item as="button" onClick={() => deleteTask(task.id)}>
-                          Delete
+                          {t('task_table_action_delete')}
                         </Dropdown.Item>
                         <Dropdown.Item as="button" onClick={() => markAsDone(task)}>
-                          Toggle Done
+                          {task.done ? t('task_table_action_undone') : t('task_table_action_done')}
                         </Dropdown.Item>
                       </Dropdown.Menu>
                     </Dropdown>
