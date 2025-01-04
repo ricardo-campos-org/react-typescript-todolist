@@ -1,8 +1,3 @@
-type TaskUrlResponse = {
-  id: number | null;
-  url: string;
-};
-
 type TaskResponse = {
   id: number;
   description: string;
@@ -12,7 +7,7 @@ type TaskResponse = {
   dueDateFmt: string;
   lastUpdate: string;
   tag: string;
-  urls: TaskUrlResponse[];
+  urls: string[];
 };
 
-export type { TaskUrlResponse, TaskResponse };
+export type { TaskResponse };

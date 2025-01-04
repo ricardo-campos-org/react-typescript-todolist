@@ -10,8 +10,9 @@ import {
   Row
 } from 'react-bootstrap';
 import { CalendarCheck, Hash, PencilFill } from 'react-bootstrap-icons';
+import { useNavigate, useParams } from 'react-router';
 import TaskNoteRequest from '../../types/TaskNoteRequest';
-import { TaskResponse, TaskUrlResponse } from '../../types/TaskResponse';
+import { TaskResponse } from '../../types/TaskResponse';
 import { useTranslation } from 'react-i18next';
 import api from '../../api-service/api';
 import ApiConfig from '../../api-service/apiConfig';
@@ -29,13 +30,14 @@ function TaskAdd(): JSX.Element {
   const [taskId, setTaskId] = useState<number>(0);
   const [taskDescription, setTaskDescription] = useState<string>('');
   const [taskUrl, setTaskUrl] = useState<string>('');
-  const [taskUrlId, setTaskUrlId] = useState<number>(0);
   const [taskDone, setTaskDone] = useState<boolean>(false);
   const [action, setAction] = useState<TaskAction>('add');
   const [dueDate, setDueDate] = useState<string>('');
   const [highPriority, setHighPriority] = useState<boolean>(false);
   const [tag, setTag] = useState<string>('');
   const { i18n, t } = useTranslation();
+  const params = useParams();
+  const navigate = useNavigate();
 
   const handleError = (e: unknown): void => {
     if (typeof e === 'string') {
@@ -76,7 +78,6 @@ function TaskAdd(): JSX.Element {
     setTaskDescription('');
     setTaskDone(false);
     setTaskUrl('');
-    setTaskUrlId(0);
     setDueDate('');
     setHighPriority(false);
     setTag('');
@@ -103,27 +104,20 @@ function TaskAdd(): JSX.Element {
     if (action === 'add') {
       const addPayload: TaskNoteRequest = {
         description: form.description.value.trim(),
-        urls: form.url.value ? [form.url.value] : [],
-        dueDate: form.dueDate.value ? form.dueDate.value : null,
         highPriority: highPriority,
-        tag: tag
+        dueDate: form.dueDate.value ? form.dueDate.value : null,
+        tag: tag,
+        urls: form.url.value ? [form.url.value] : []
       };
 
       const added: boolean = await addTask(addPayload);
       if (added) {
         form.reset();
         resetInputs();
+        navigate('/tasks');
       }
     }
     else if (action === 'edit') {
-      const urls: TaskUrlResponse[] = [];
-      if (taskUrlId) {
-        urls.push({ url: '', id: taskUrlId });
-      }
-      if (taskUrl) {
-        urls.push({ url: taskUrl, id: null });
-      }
-
       const editPayload: TaskResponse = {
         id: taskId,
         description: form.description.value.trim(),
@@ -133,19 +127,45 @@ function TaskAdd(): JSX.Element {
         dueDateFmt: '',
         lastUpdate: '',
         tag: tag,
-        urls
+        urls: taskUrl ? [taskUrl] : []
       };
 
       const edited: boolean = await submitEditTask(editPayload);
       if (edited) {
         form.reset();
         resetInputs();
+        navigate('/tasks');
+      }
+    }
+  };
+
+  const checkEditUrl = async (): Promise<void> => {
+    if (params.id) {
+      console.log('edit id', params.id);
+
+      try {
+        const taskToEdit: TaskResponse = await api.getJSON(`${ApiConfig.tasksUrl}/${params.id}`);
+        setTaskId(taskToEdit.id);
+        setTaskDescription(taskToEdit.description);
+        setTaskUrl(taskToEdit.urls.length ? taskToEdit.urls[0] : '');
+        setTaskDone(taskToEdit.done);
+        if (taskToEdit.dueDateFmt) {
+          setDueDate(taskToEdit.dueDate);
+        }
+        setHighPriority(taskToEdit.highPriority);
+        if (taskToEdit.tag) {
+          setTag(taskToEdit.tag);
+        }
+        setAction('edit');
+      }
+      catch (e) {
+        handleError(e);
       }
     }
   };
 
   useEffect(() => {
-    //
+    checkEditUrl();
   }, []);
 
   return (
@@ -243,7 +263,7 @@ function TaskAdd(): JSX.Element {
                         <Form.Control
                           required={false}
                           type="text"
-                          name="dueDate"
+                          name="tag"
                           placeholder="my-tag"
                           value={tag}
                           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {

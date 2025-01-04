@@ -187,7 +187,7 @@ function Task(): JSX.Element {
                   <TaskTimeLeft text={task.dueDateFmt} done={task.done} />
                 )}
                 {task.urls.length > 0 && (
-                  <TaskUrl url={task.urls[0].url} />
+                  <TaskUrl url={task.urls[0]} />
                 )}
               </Card.Body>
               <Card.Footer className="task-card-footer">

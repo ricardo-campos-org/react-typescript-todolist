@@ -16,7 +16,6 @@ import br.com.tasknoteapp.server.exception.TaskNotFoundException;
 import br.com.tasknoteapp.server.request.TaskPatchRequest;
 import br.com.tasknoteapp.server.request.TaskRequest;
 import br.com.tasknoteapp.server.response.TaskResponse;
-import br.com.tasknoteapp.server.response.TaskUrlResponse;
 import br.com.tasknoteapp.server.service.TaskService;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,9 +42,9 @@ class TaskControllerTest {
   @DisplayName("Get all tasks with some tasks found should succeed")
   @WithMockUser(username = "user@domain.com", password = "abcde123456A@")
   void getAllTasks_tasksFound_shouldSucceed() throws Exception {
-    TaskUrlResponse taskUrl = new TaskUrlResponse(1L, "http://test.com");
     TaskResponse taskResponse =
-        new TaskResponse(1L, "Desc", false, true, null, null, "Moments ago", List.of(taskUrl));
+        new TaskResponse(
+            1L, "Desc", false, true, null, null, "Moments ago", "tag", List.of("http://test.com"));
     when(taskService.getAllTasks()).thenReturn(List.of(taskResponse));
 
     mockMvc
@@ -62,8 +61,7 @@ class TaskControllerTest {
         .andExpect(jsonPath("$[0].dueDate", Matchers.nullValue()))
         .andExpect(jsonPath("$[0].dueDateFmt", Matchers.nullValue()))
         .andExpect(jsonPath("$[0].lastUpdate").value("Moments ago"))
-        .andExpect(jsonPath("$[0].urls[0].id").value(taskUrl.id()))
-        .andExpect(jsonPath("$[0].urls[0].url").value(taskUrl.url()))
+        .andExpect(jsonPath("$[0].urls[0].url").value(taskResponse.urls().get(0)))
         .andReturn();
   }
 
@@ -103,11 +101,19 @@ class TaskControllerTest {
   void patchTask_happyPath_shouldSucceed() throws Exception {
     Long taskId = 111L;
     TaskPatchRequest patchRequest =
-        new TaskPatchRequest("Description patched", false, List.of(), null, true);
+        new TaskPatchRequest("Description patched", false, List.of(), null, true, "tag");
 
     TaskResponse taskResponse =
         new TaskResponse(
-            taskId, "Description patched", false, true, null, null, "Moments ago", List.of());
+            taskId,
+            "Description patched",
+            false,
+            true,
+            null,
+            null,
+            "Moments ago",
+            "tag",
+            List.of());
     when(taskService.patchTask(taskId, patchRequest)).thenReturn(taskResponse);
 
     final String payloadJson =
@@ -145,7 +151,7 @@ class TaskControllerTest {
   void patchTask_notFound_shouldFail() throws Exception {
     Long taskId = 111L;
     TaskPatchRequest patchRequest =
-        new TaskPatchRequest("Description patched", false, List.of(), null, true);
+        new TaskPatchRequest("Description patched", false, List.of(), null, true, "tag");
 
     when(taskService.patchTask(taskId, patchRequest)).thenThrow(new TaskNotFoundException());
 
@@ -200,17 +206,17 @@ class TaskControllerTest {
   @DisplayName("Post create task happy path should succeed and return 201")
   @WithMockUser(username = "user@domain.com", password = "abcde123456A@")
   void postTasks_happyPath_shouldSucceed() throws Exception {
-    TaskRequest request = new TaskRequest("Test task", List.of(), null, true);
+    TaskRequest request = new TaskRequest("Test task", List.of("www.url.com"), null, true, "tag");
 
     TaskEntity entity = new TaskEntity();
     entity.setId(222L);
     entity.setDescription(request.description());
     entity.setDone(false);
-    entity.setUrls(List.of());
     entity.setLastUpdate(LocalDateTime.now());
     entity.setDueDate(null);
     entity.setHighPriority(request.highPriority());
-    when(taskService.createTask(request)).thenReturn(entity);
+
+    doNothing().when(taskService).createTask(request);
 
     final String payloadJson =
         """
