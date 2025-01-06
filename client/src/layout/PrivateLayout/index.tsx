@@ -19,7 +19,7 @@ function PrivateLayout(): JSX.Element {
       <div
         className="content"
         style={{
-          marginLeft: '250px', // Matches sidebar width
+          marginLeft: '276px',
           padding: '20px'
         }}
       >

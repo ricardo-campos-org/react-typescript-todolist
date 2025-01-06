@@ -3,6 +3,9 @@ import { Button, Nav } from 'react-bootstrap';
 import { NavLink } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import AuthContext from '../../context/AuthContext';
+import UserIcon from '../../assets/user.png';
+import DashboardIcon from '../../assets/dashboard.png';
+import TaskIcon from '../../assets/task.png';
 import './style.css';
 
 function Sidebar(): JSX.Element {
@@ -15,26 +18,25 @@ function Sidebar(): JSX.Element {
   };
 
   return (
-    <div
-      className="d-flex flex-column vh-100 bg-light"
-      style={{
-        width: '250px',
-        position: 'fixed',
-        left: 0,
-        top: 0,
-        borderRight: '1px solid #ddd'
-      }}
-    >
-      <div className="p-3 border-bottom">
-        <h5>TaskNote</h5>
+    <div className="d-flex flex-column vh-100 bg-light sidebar">
+      <div className="sidebar-header plus-jakarta-sans-bold">
+        <img width="45" src={UserIcon} alt="User icon" />
+        <span>Xerife Ricky</span>
       </div>
-      <Nav className="flex-column p-3">
-        <h5>Main menu</h5>
+      <div className="header-spacer"></div>
+      <div className="sidebar-menu-header plus-jakarta-sans-regular">Main Menu</div>
+      <Nav className="flex-column p-3 plus-jakarta-sans-bold">
         <NavLink to="/home" className="mb-2">
-          <div className="sidebar-nav">{t('home_nav_home')}</div>
+          <div className="sidebar-nav">
+            <img width="20" src={DashboardIcon} alt="Dashboard" />
+            Dashboard
+          </div>
         </NavLink>
         <NavLink to="/tasks" className="mb-2">
-          <div className="sidebar-nav">{t('home_nav_tasks')}</div>
+          <div className="sidebar-nav">
+            <img width="20" src={TaskIcon} alt="Dashboard" />
+            {t('home_nav_tasks')}
+          </div>
         </NavLink>
         <NavLink to="/notes" className="mb-2">
           <div className="sidebar-nav">{t('home_nav_notes')}</div>
