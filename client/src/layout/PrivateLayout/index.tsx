@@ -10,9 +10,9 @@ import Sidebar from '../../components/Sidebar';
  * including the outlet responsible for the main content.
  * It also includes the header and the footer.
  *
- * @returns {JSX.Element} The Layout component.
+ * @returns {React.ReactNode} The Layout component.
  */
-function PrivateLayout(): JSX.Element {
+function PrivateLayout(): React.ReactNode {
   return (
     <div className="page-container">
       <Sidebar />

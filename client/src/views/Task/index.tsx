@@ -25,7 +25,7 @@ import './style.css';
 /**
  *
  */
-function Task(): JSX.Element {
+function Task(): React.ReactNode {
   const [displayError, setDisplayError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [tasks, setTasks] = useState<TaskResponse[]>([]);
