@@ -159,7 +159,7 @@ function Task(): React.ReactNode {
                       />
                     </Card.Title>
                   </Col>
-                  <Col xs={2} align="end">
+                  <Col xs={2} className="text-end">
                     <Dropdown>
                       <Dropdown.Toggle variant="success">
                         <ThreeDotsVertical />

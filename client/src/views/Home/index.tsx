@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react';
+import { NavLink } from 'react-router';
+import { useTranslation } from 'react-i18next';
 import {
   Accordion,
   Alert,
-  Button, Card, Col, Container, Form, InputGroup, Row
+  Button,
+  Card,
+  Col,
+  Container,
+  Form,
+  InputGroup,
+  Row
 } from 'react-bootstrap';
-import './style.css';
-import { useTranslation } from 'react-i18next';
-import { NavLink } from 'react-router';
+import { PlusCircleFill } from 'react-bootstrap-icons';
 import { SummaryResponse } from '../../types/SummaryResponse';
 import { HomeSearchResponse } from '../../types/HomeSearchResponse';
 import { TaskResponse } from '../../types/TaskResponse';
@@ -15,6 +21,8 @@ import api from '../../api-service/api';
 import ApiConfig from '../../api-service/apiConfig';
 import { handleDefaultLang } from '../../lang-service/LangHandler';
 import { translateServerResponse } from '../../utils/TranslatorUtils';
+import CompletedTasks from '../../components/CompletedTasks';
+import './style.css';
 
 /**
  * Home page component.
@@ -29,6 +37,7 @@ function Home(): React.ReactNode {
   const [validated, setValidated] = useState<boolean>(false);
   const [formInvalid, setFormInvalid] = useState<boolean>(false);
   const [searchResults, setSearchResults] = useState<HomeSearchResponse | null>(null);
+  const [name, setName] = useState<string>('Ricardo');
   const { i18n, t } = useTranslation();
 
   const handleError = (e: unknown): void => {
@@ -84,11 +93,51 @@ function Home(): React.ReactNode {
   useEffect(() => {
     getSummary();
     handleDefaultLang();
+    setName('Ricardo');
   }, []);
 
   return (
     <Container>
-      <h1 className="mt-5 mb-4">{t('home_welcome_title')}</h1>
+      <h1 className="poppins-regular home-hello">
+        {t('home_welcome_title')}
+        <b>{name}</b>
+      </h1>
+      <p className="poppins-regular home-subtitle">
+        Welcome to TaskNote! Get ready to complete your pending tasks
+      </p>
+
+      <Row className="mb-3">
+        <Col xs={8}>
+          <h2 className="poppins-regular">Start Your Day, Be</h2>
+          <h2 className="poppins-bold home-productive">Productive</h2>
+        </Col>
+        <Col xs={4} className="text-end">
+          <NavLink to="/tasks/new">
+            <button
+              type="button"
+              className="home-new-item w-45"
+            >
+              <PlusCircleFill size={25} />
+              Add note
+            </button>
+          </NavLink>
+          <NavLink to="/notes/new">
+            <button
+              type="button"
+              className="home-new-item w-45"
+            >
+              <PlusCircleFill size={25} />
+              Add task
+            </button>
+          </NavLink>
+        </Col>
+      </Row>
+
+      <Row className="mb-4">
+        <Col xs={12} md={6}>
+          <CompletedTasks />
+        </Col>
+      </Row>
 
       <Row className="mb-4">
         <Col xs={12} md={6}>
@@ -188,7 +237,7 @@ function Home(): React.ReactNode {
                   <Accordion.Body>
                     {task.urls.length > 0
                       ? (
-                          <a href={`${task.urls[0].url}`}>{task.urls[0].url}</a>
+                          <a href={`${task.urls[0]}`}>{task.urls[0]}</a>
                         )
                       : 'No URL!'}
                   </Accordion.Body>
