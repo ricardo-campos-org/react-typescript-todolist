@@ -1,0 +1,6 @@
+https://www.digitalocean.com/community/tutorials/forward-logs-from-droplet-to-opensearch-via-fluentbit
+https://www.elastic.co/guide/en/ecs/current/index.html
+https://opensearch.org/
+https://opensearch.org/docs/latest/install-and-configure/install-opensearch/debian/
+https://github.com/bcgov/nr-spar/blob/2b424afc7fb3d06210f09b135ffa7a1f353f7f1d/backend/src/main/resources/logback-spring.xml
+https://github.com/bcgov/nr-spar/pull/1371/files#diff-34049c3bc6deee4bbf269544338e0450399140da63fec684096d1ae0ce70b4bb

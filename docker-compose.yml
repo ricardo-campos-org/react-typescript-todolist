@@ -39,6 +39,7 @@ services:
     working_dir: /app
     volumes:
       - "./server:/app"
+      - "./server/logs:/logs"
     healthcheck:
       test: curl -f http://localhost:8585/actuator/health | grep '"status":"UP"'
       interval: 1m30s
