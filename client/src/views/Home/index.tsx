@@ -98,7 +98,7 @@ function Home(): React.ReactNode {
 
   return (
     <Container>
-      <h1 className="poppins-regular home-hello">
+      <h1 className="poppins-regular home-hello main-margin">
         {t('home_welcome_title')}
         <b>{name}</b>
       </h1>

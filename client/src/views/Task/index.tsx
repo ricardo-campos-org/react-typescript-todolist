@@ -109,7 +109,7 @@ function Task(): React.ReactNode {
   return (
     <Container>
       {/* Tasks added */}
-      <Row className="mt-3">
+      <Row className="main-margin">
         <Col xs={12}>
           {displayError
             ? (
