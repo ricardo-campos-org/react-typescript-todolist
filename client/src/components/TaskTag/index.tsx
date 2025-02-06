@@ -7,7 +7,7 @@ interface Props {
   lastUpdate: string;
 }
 
-function TaskTag(props: Props): JSX.Element {
+function TaskTag(props: Props): React.ReactNode {
   const tagText = props.tag ? `#${props.tag}` : '#untagged';
 
   return (

@@ -8,7 +8,7 @@ interface Props {
   done: boolean;
 }
 
-function TaskTitle(props: Props): JSX.Element {
+function TaskTitle(props: Props): React.ReactNode {
   if (props.highPriority) {
     return (
       <span className="task-title-icon">

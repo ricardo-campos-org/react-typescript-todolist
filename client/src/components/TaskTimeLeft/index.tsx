@@ -6,7 +6,7 @@ interface Props {
   done: boolean;
 }
 
-function TaskTimeLeft(props: Props): JSX.Element | null {
+function TaskTimeLeft(props: Props): React.ReactNode | null {
   if (props.done) {
     return null;
   }

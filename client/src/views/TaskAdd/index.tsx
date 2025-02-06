@@ -23,7 +23,7 @@ type TaskAction = 'add' | 'edit';
 /**
  *
  */
-function TaskAdd(): JSX.Element {
+function TaskAdd(): React.ReactNode {
   const [validated, setValidated] = useState<boolean>(false);
   const [formInvalid, setFormInvalid] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');

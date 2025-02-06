@@ -5,7 +5,7 @@ interface Props {
   url: string;
 }
 
-function TaskUrl(props: Props): JSX.Element {
+function TaskUrl(props: Props): React.ReactNode {
   let displayUrl = props.url.substring(props.url.indexOf('://') + 3);
   if (displayUrl.includes('www.')) {
     displayUrl = displayUrl.substring(displayUrl.indexOf('wwww.') + 5);
