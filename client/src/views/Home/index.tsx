@@ -22,6 +22,7 @@ import ApiConfig from '../../api-service/apiConfig';
 import { handleDefaultLang } from '../../lang-service/LangHandler';
 import { translateServerResponse } from '../../utils/TranslatorUtils';
 import CompletedTasks from '../../components/CompletedTasks';
+import TaskProgress from '../../components/TaskProgress';
 import './style.css';
 
 /**
@@ -115,7 +116,7 @@ function Home(): React.ReactNode {
           <NavLink to="/tasks/new">
             <button
               type="button"
-              className="home-new-item w-45"
+              className="home-new-item w-45 mb-2"
             >
               <PlusCircleFill size={25} />
               Add note
@@ -134,56 +135,11 @@ function Home(): React.ReactNode {
       </Row>
 
       <Row className="mb-4">
-        <Col xs={12} md={6}>
+        <Col xs={12} lg={6} className="mb-4">
           <CompletedTasks />
         </Col>
-      </Row>
-
-      <Row className="mb-4">
-        <Col xs={12} md={6}>
-          <Card className="text-center h-100">
-            <Card.Header className="bg-primary text-white">
-              {t('home_card_task_title')}
-            </Card.Header>
-            <Card.Body className="d-flex flex-column align-items-center justify-content-center">
-              <Card.Title className="display-4">
-                {summary?.pendingTaskCount || '0'}
-              </Card.Title>
-              <Card.Text>
-                {summary?.pendingTaskCount && summary?.pendingTaskCount > 0
-                  ? t('home_card_task_pending')
-                  : t('home_card_task_empty')}
-                <br />
-                {summary?.doneTaskCount && summary?.doneTaskCount > 0
-                  ? ` ${summary?.doneTaskCount} ${t('home_card_task_done')}`
-                  : t('home_card_task_done_empty')}
-              </Card.Text>
-              <NavLink to="/tasks">
-                <Button variant="primary" type="button">
-                  {t('home_card_task_btn')}
-                </Button>
-              </NavLink>
-            </Card.Body>
-          </Card>
-        </Col>
-
-        <Col xs={12} md={6}>
-          <Card className="text-center h-100">
-            <Card.Header className="bg-primary text-white">
-              {t('home_card_note_title')}
-            </Card.Header>
-            <Card.Body className="d-flex flex-column align-items-center justify-content-center">
-              <Card.Title className="display-4">
-                {summary?.notesCount}
-              </Card.Title>
-              <Card.Text>{t('home_card_note_count')}</Card.Text>
-              <NavLink to="/tasks">
-                <Button variant="primary" type="button">
-                  {t('home_card_note_btn')}
-                </Button>
-              </NavLink>
-            </Card.Body>
-          </Card>
+        <Col xs={12} lg={6}>
+          <TaskProgress />
         </Col>
       </Row>
 
