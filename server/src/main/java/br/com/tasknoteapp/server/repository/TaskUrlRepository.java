@@ -10,5 +10,5 @@ public interface TaskUrlRepository extends JpaRepository<TaskUrlEntity, TaskUrlE
 
   void deleteAllById_taskId(Long taskId);
 
-  List<TaskUrlEntity> findAllById_taskId(Long noteId);
+  List<TaskUrlEntity> findAllById_taskId(Long taskId);
 }
