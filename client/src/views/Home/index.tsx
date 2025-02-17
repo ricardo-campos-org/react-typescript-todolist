@@ -13,7 +13,6 @@ import {
   Row
 } from 'react-bootstrap';
 import { PlusCircleFill } from 'react-bootstrap-icons';
-import { SummaryResponse } from '../../types/SummaryResponse';
 import { HomeSearchResponse } from '../../types/HomeSearchResponse';
 import { TaskResponse } from '../../types/TaskResponse';
 import { NoteResponse } from '../../types/NoteResponse';
@@ -34,7 +33,6 @@ import './style.css';
  */
 function Home(): React.ReactNode {
   const [errorMessage, setErrorMessage] = useState<string>('');
-  const [summary, setSummary] = useState<SummaryResponse | undefined>();
   const [validated, setValidated] = useState<boolean>(false);
   const [formInvalid, setFormInvalid] = useState<boolean>(false);
   const [searchResults, setSearchResults] = useState<HomeSearchResponse | null>(null);
@@ -47,16 +45,6 @@ function Home(): React.ReactNode {
     }
     else if (e instanceof Error) {
       setErrorMessage(translateServerResponse(e.message, i18n.language));
-    }
-  };
-
-  const getSummary = async () => {
-    try {
-      const response: SummaryResponse = await api.getJSON(`${ApiConfig.homeUrl}/summary`);
-      setSummary(response);
-    }
-    catch (e) {
-      handleError(e);
     }
   };
 
@@ -92,7 +80,6 @@ function Home(): React.ReactNode {
   };
 
   useEffect(() => {
-    getSummary();
     handleDefaultLang();
     setName('Ricardo');
   }, []);
