@@ -151,7 +151,7 @@ public class TaskService {
 
     if (!Objects.isNull(patch.urls())) {
       List<String> urlListToAdd =
-          patch.urls().stream().filter(u -> !u.isBlank()).map(u -> u.trim()).toList();
+          patch.urls().stream().filter(u -> !u.isBlank()).map(String::trim).toList();
       saveUrls(taskEntity, urlListToAdd);
     } else {
       log.info("No urls to add for task {}", taskId);
