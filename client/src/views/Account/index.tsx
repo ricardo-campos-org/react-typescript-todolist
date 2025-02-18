@@ -30,13 +30,12 @@ function Account(): React.ReactNode {
     await api.postJSON(ApiConfig.deleteAccountUrl, {});
     signOut();
     clearStorage();
-    // navigate('/');
   };
 
   return (
-    <Container className="about-page my-5">
+    <Container className="mb-5 main-margin">
       <Row className="justify-content-center mb-4">
-        <Col xs={12} md={10} lg={8}>
+        <Col xs={12}>
           <Card className="p-4 shadow-sm">
             <h2 className="mb-4">
               <Person />
@@ -56,7 +55,7 @@ function Account(): React.ReactNode {
       </Row>
 
       <Row className="justify-content-center mb-4">
-        <Col xs={12} md={10} lg={8}>
+        <Col xs={12}>
           <Card className="p-4 shadow-sm">
             <h2 className="mb-4">
               <FileText />
@@ -82,7 +81,7 @@ function Account(): React.ReactNode {
       </Row>
 
       <Row className="justify-content-center mb-4">
-        <Col xs={12} md={10} lg={8}>
+        <Col xs={12}>
           <Card className="p-4 shadow-sm">
             <h2 className="mb-4">
               <ShieldCheck />
