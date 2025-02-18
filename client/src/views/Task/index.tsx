@@ -23,7 +23,9 @@ import TaskTitle from '../../components/TaskTitle';
 import './style.css';
 
 /**
+ * The Task component is a view that displays a list of tasks.
  *
+ * @returns {React.ReactNode} The Task component
  */
 function Task(): React.ReactNode {
   const [displayError, setDisplayError] = useState<boolean>(false);
@@ -33,6 +35,11 @@ function Task(): React.ReactNode {
   const [filterText, setFilterText] = useState<string>('');
   const { i18n, t } = useTranslation();
 
+  /**
+   * Handle errors from server requests and translate them if required.
+   *
+   * @param {unknown} e The error to be handled. 
+   */
   const handleError = (e: unknown): void => {
     if (typeof e === 'string') {
       setErrorMessage(translateServerResponse(e, i18n.language));
@@ -44,6 +51,9 @@ function Task(): React.ReactNode {
     }
   };
 
+  /**
+   * Load tasks from the server.
+   */
   const loadTasks = async () => {
     try {
       const tasksFetched: TaskResponse[] = await api.getJSON(ApiConfig.tasksUrl);
@@ -62,6 +72,11 @@ function Task(): React.ReactNode {
     }
   };
 
+  /**
+   * Mark a task as done or undone.
+   *
+   * @param {TaskResponse} task The task to be marked as done or undone. 
+   */
   const markAsDone = async (task: TaskResponse) => {
     try {
       const updatedTask = {
@@ -76,6 +91,11 @@ function Task(): React.ReactNode {
     }
   };
 
+  /**
+   * Delete a task.
+   *
+   * @param {number} taskIdParam The task ID to be deleted.
+   */
   const deleteTask = async (taskIdParam: number) => {
     try {
       await api.deleteNoContent(`${ApiConfig.tasksUrl}/${taskIdParam}`);
@@ -86,6 +106,9 @@ function Task(): React.ReactNode {
     }
   };
 
+  /**
+   * Filter tasks by a given text.
+   */
   const filterTasks = (text: string): void => {
     setFilterText(text);
 
@@ -94,7 +117,6 @@ function Task(): React.ReactNode {
       return;
     }
 
-    // filter
     const filteredTasks = savedTasks.filter((task: TaskResponse) => {
       return task.description.toLowerCase().includes(text.toLowerCase());
     });
