@@ -38,7 +38,7 @@ function Task(): React.ReactNode {
   /**
    * Handle errors from server requests and translate them if required.
    *
-   * @param {unknown} e The error to be handled. 
+   * @param {unknown} e The error to be handled.
    */
   const handleError = (e: unknown): void => {
     if (typeof e === 'string') {
@@ -75,7 +75,7 @@ function Task(): React.ReactNode {
   /**
    * Mark a task as done or undone.
    *
-   * @param {TaskResponse} task The task to be marked as done or undone. 
+   * @param {TaskResponse} task The task to be marked as done or undone.
    */
   const markAsDone = async (task: TaskResponse) => {
     try {
