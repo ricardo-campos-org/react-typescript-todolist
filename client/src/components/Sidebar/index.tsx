@@ -12,7 +12,7 @@ function Sidebar(): React.ReactNode {
   const build = import.meta.env.VITE_BUILD;
   const [current, setCurrent] = useState<string>('/home');
 
-  // TODO: when selected, change class to plus-jakarta-sans-thin and add background
+  // Note: when selected, change class to plus-jakarta-sans-thin and add background
 
   const goOut = () => {
     signOut();
