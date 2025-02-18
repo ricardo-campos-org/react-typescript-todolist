@@ -42,7 +42,7 @@ jobs:
       - uses: actions/setup-node@v4
         name: Set up Node
         with:
-          node-version: '20'
+          node-version: '22'
       - name: Clean and Install
         run: cd client && npm ci
       - name: Build
@@ -80,7 +80,7 @@ jobs:
       - uses: actions/setup-node@v4
         name: Set up Node
         with:
-          node-version: '20'
+          node-version: '22'
       - name: Clean and Install
         run: cd client && npm ci --ignore-scripts --no-update-notifier --omit=dev
       - name: Build
