@@ -43,7 +43,7 @@ function Account(): React.ReactNode {
               {t('account_my_account_tittle')}
             </h2>
             <p>{t('account_my_account_hello')}</p>
-            <p>
+            <p data-testid="logged-in-as">
               {t('account_my_account_logged')}
               {' '}
               <b>
