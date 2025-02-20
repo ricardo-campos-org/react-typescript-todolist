@@ -2,10 +2,17 @@ import React from 'react';
 import { At } from 'react-bootstrap-icons';
 
 interface Props {
-  url: string;
+  readonly url: string;
 }
 
-function TaskUrl(props: Props): React.ReactNode {
+/**
+ * Renders the TaskUrl component, displaying a URL with an icon.
+ *
+ * @param {Props} props - The props for the component.
+ * @param {string} props.url - The URL to be displayed.
+ * @returns {React.ReactNode} The rendered TaskUrl component.
+ */
+function TaskUrl(props: React.PropsWithChildren<Props>): React.ReactNode {
   let displayUrl = props.url.substring(props.url.indexOf('://') + 3);
   if (displayUrl.includes('www.')) {
     displayUrl = displayUrl.substring(displayUrl.indexOf('wwww.') + 5);

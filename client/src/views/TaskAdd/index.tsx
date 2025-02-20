@@ -141,7 +141,6 @@ function TaskAdd(): React.ReactNode {
 
   const checkEditUrl = async (): Promise<void> => {
     if (params.id) {
-
       try {
         const taskToEdit: TaskResponse = await api.getJSON(`${ApiConfig.tasksUrl}/${params.id}`);
         setTaskId(taskToEdit.id);
