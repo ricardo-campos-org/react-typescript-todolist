@@ -26,7 +26,6 @@ function Sidebar(): React.ReactNode {
   };
 
   const navLinkClicked = (menu: string): void => {
-    console.log('menu', menu);
     setCurrent(menu);
   };
 

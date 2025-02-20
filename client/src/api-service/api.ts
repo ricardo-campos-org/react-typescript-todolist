@@ -44,7 +44,6 @@ function getRequestInit(method: string, payload: object | undefined, addAuth: bo
  * @param {number} httpStatusCode The HTTP response status code.
  */
 function handleError(httpStatusCode: number) {
-  console.log(`httpStatusCode: ${httpStatusCode}`);
   if (httpStatusCode === 500) {
     throw new Error('Internal Server Error!');
   }

@@ -3,12 +3,21 @@ import { Bell, Check2Circle } from 'react-bootstrap-icons';
 import './style.css';
 
 interface Props {
-  title: string;
-  highPriority: boolean;
-  done: boolean;
+  readonly title: string;
+  readonly highPriority: boolean;
+  readonly done: boolean;
 }
 
-function TaskTitle(props: Props): React.ReactNode {
+/**
+ * Renders the TaskTitle component, displaying an icon and the task title.
+ *
+ * @param {Props} props - The props for the component.
+ * @param {string} [props.title] - The title for the task.
+ * @param {boolean} [props.highPriority] - Define if the task is high priority.
+ * @param {boolean} [props.done] - Define if the task is completed.
+ * @returns {React.ReactNode} The rendered TaskTitle component.
+ */
+function TaskTitle(props: React.PropsWithChildren<Props>): React.ReactNode {
   if (props.highPriority) {
     return (
       <span className="task-title-icon">
