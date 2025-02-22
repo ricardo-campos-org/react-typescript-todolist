@@ -130,13 +130,12 @@ function TaskAdd(): React.ReactNode {
 
     if (action === 'add') {
       const addPayload: TaskNoteRequest = {
-        description: form.description.value.trim(),
+        description: taskDescription.trim(),
         highPriority: highPriority,
-        dueDate: form.dueDate.value ? form.dueDate.value : null,
+        dueDate: dueDate || '',
         tag: tag,
-        urls: form.url.value ? [form.url.value] : []
+        urls: taskUrl ? [taskUrl] : []
       };
-      console.log('addPayload', addPayload);
 
       const added: boolean = await addTask(addPayload);
       if (added) {
@@ -148,10 +147,10 @@ function TaskAdd(): React.ReactNode {
     else if (action === 'edit') {
       const editPayload: TaskResponse = {
         id: taskId,
-        description: form.description.value.trim(),
+        description: taskDescription.trim(),
         done: taskDone,
         highPriority: highPriority,
-        dueDate: form.dueDate.value ? form.dueDate.value : null,
+        dueDate: dueDate || '',
         dueDateFmt: '',
         lastUpdate: '',
         tag: tag,

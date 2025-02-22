@@ -67,45 +67,24 @@ describe('TaskAdd Component', () => {
     });
   });
 
-  //it('should add a new task when form is valid', async () => {
-  //  const { getByLabelText, getByRole } = renderTaskAdd();
-  //  const descriptionInput = getByLabelText('task_form_desc_label');
-  //  const submitButton = getByRole('button', { name: 'task_form_submit' });
-//
-  //  fireEvent.change(descriptionInput, { target: { value: 'New Task' } });
-  //  fireEvent.click(submitButton);
-//
-  //  await waitFor(() => {
-  //    const newTask: TaskNoteRequest = {
-  //      description: 'New Task',
-  //      highPriority: false,
-  //      tag: '',
-  //      urls: []
-  //    }
-  //    expect(api.postJSON).toHaveBeenCalledWith(ApiConfig.tasksUrl, newTask);
-  //  });
-  //});
+  it('should add a new task when form is valid', async () => {
+    const { getByLabelText, getByRole } = renderTaskAdd();
+    const descriptionInput = getByLabelText('task_form_desc_label') as HTMLInputElement;
+    const submitButton = getByRole('button', { name: 'task_form_submit' });
 
-  //it('should edit an existing task when form is valid', async () => {
-  //  const { getByLabelText, getByRole } = renderTaskAdd();
-  //  const descriptionInput = getByLabelText('task_form_desc_label');
-  //  const submitButton = getByRole('button', { name: 'task_form_submit' });
-//
-  //  fireEvent.change(descriptionInput, { target: { value: 'Edited Task' } });
-  //  fireEvent.click(submitButton);
-//
-  //  await waitFor(() => {
-  //    expect(api.patchJSON).toHaveBeenCalledWith(`${ApiConfig.tasksUrl}/0`, {
-  //      id: 0,
-  //      description: 'Edited Task',
-  //      done: false,
-  //      highPriority: false,
-  //      dueDate: null,
-  //      dueDateFmt: '',
-  //      lastUpdate: '',
-  //      tag: '',
-  //      urls: []
-  //    });
-  //  });
-  //});
+    fireEvent.change(descriptionInput, { target: { value: 'New Task' } });
+    expect(descriptionInput.value).toBe('New Task');
+    fireEvent.click(submitButton);
+
+    await waitFor(() => {
+      const newTask: TaskNoteRequest = {
+        description: 'New Task',
+        dueDate: '',
+        highPriority: false,
+        tag: '',
+        urls: []
+      }
+      expect(api.postJSON).toHaveBeenCalledWith(ApiConfig.tasksUrl, newTask);
+    });
+  });
 });
