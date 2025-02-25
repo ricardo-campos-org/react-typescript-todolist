@@ -28,13 +28,12 @@ spring:
     url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5435}/${POSTGRES_DB:tasknote}
     username: ${POSTGRES_USER:tasknoteuser}
     password: ${POSTGRES_PASSWORD:default}
-spring:
   jpa:
     properties:
       hibernate:
         default_schema: tasknote
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-    jpa.show-sql: true
+    show-sql: true
   flyway:
     enabled: true
     baseline-on-migrate: true
