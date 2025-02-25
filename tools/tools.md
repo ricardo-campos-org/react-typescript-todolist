@@ -60,23 +60,19 @@ scp "client_$VERSION.zip" root@$SERVER_IP:/root/
 **DB:**
 
 ```bash
-docker run -d --rm \
+docker run -d -p 5432:5432 --rm \
   --name db \
-  --network=host \
   -e POSTGRES_DB=$POSTGRES_DB \
   -e POSTGRES_USER=$POSTGRES_USER \
   -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD \
-  -e PGDATA=/tmp \
-  -v ./data:/tmp \
   postgres:15.8-bookworm
 ```
 
 **Server:**
 
 ```bash
-docker run -d --rm \
+docker run -d -p 8585:8585 --rm \
   --name server \
-  --network=host \
   -e POSTGRES_DB=$POSTGRES_DB \
   -e POSTGRES_USER=$POSTGRES_USER \
   -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD \
