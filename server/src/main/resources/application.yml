@@ -8,13 +8,7 @@ cors:
 logging:
     level:
         root: ${ROOT_LOG_LEVEL:INFO}
-        br:
-            com:
-                tasknoteapp:
-                    server: DEBUG
-        org:
-            springframework:
-                security: DEBUG
+
 management:
     endpoint:
         health:
