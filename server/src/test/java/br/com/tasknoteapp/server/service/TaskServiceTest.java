@@ -13,6 +13,7 @@ import br.com.tasknoteapp.server.entity.UserEntity;
 import br.com.tasknoteapp.server.exception.TaskNotFoundException;
 import br.com.tasknoteapp.server.repository.TaskRepository;
 import br.com.tasknoteapp.server.repository.TaskUrlRepository;
+import br.com.tasknoteapp.server.request.TaskPatchRequest;
 import br.com.tasknoteapp.server.request.TaskRequest;
 import br.com.tasknoteapp.server.response.TaskResponse;
 import br.com.tasknoteapp.server.util.AuthUtil;
@@ -326,5 +327,42 @@ class TaskServiceTest {
         () -> {
           taskService.deleteTask(taskId);
         });
+  }
+
+  @Test
+  @DisplayName("Patch a task following the happy path it should succeed")
+  void patchTask_happyPath_shouldSucceed() {
+    when(authUtil.getCurrentUserEmail()).thenReturn(Optional.of(USER_EMAIL));
+
+    UserEntity userEntity = new UserEntity();
+    userEntity.setId(USER_ID);
+    userEntity.setEmail(USER_EMAIL);
+    when(authService.findByEmail(USER_EMAIL)).thenReturn(Optional.of(userEntity));
+
+    Long taskId = 2525L;
+
+    TaskEntity taskEntity = new TaskEntity();
+    taskEntity.setId(taskId);
+    taskEntity.setDescription("Test task");
+    taskEntity.setHighPriority(true);
+    taskEntity.setTag("test");
+    taskEntity.setUser(userEntity);
+    when(taskRepository.findById(taskId)).thenReturn(Optional.of(taskEntity));
+
+    when(taskUrlRepository.findAllById_taskId(taskId)).thenReturn(List.of());
+
+    TaskEntity entity = new TaskEntity();
+    entity.setDescription("Updated description");
+    entity.setHighPriority(false);
+    entity.setTag(taskEntity.getTag());
+    when(taskRepository.save(any())).thenReturn(entity);
+
+    TaskPatchRequest patch =
+        new TaskPatchRequest("Updated description", null, null, null, false, null);
+    TaskResponse patched = taskService.patchTask(taskId, patch);
+
+    Assertions.assertNotNull(patched);
+    Assertions.assertEquals("Updated description", patched.description());
+    Assertions.assertFalse(patched.highPriority());
   }
 }
