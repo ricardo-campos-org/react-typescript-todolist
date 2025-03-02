@@ -105,4 +105,15 @@ docker pull ghcr.io/ricardo-campos-org/react-typescript-todolist/server:50
 ```
 
 - Get container IP
+
+```sh
 docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' db
+```
+
+- Get reason of health check failing on a container
+```sh
+docker inspect --format "{{json .State.Health}}" container_name_or_id | jq
+
+# Or to see it live
+while true; do clear; docker inspect --format "{{json .State.Health}}" server | jq; sleep 1; done
+```
