@@ -11,6 +11,8 @@ import br.com.tasknoteapp.server.repository.TaskUrlRepository;
 import br.com.tasknoteapp.server.request.TaskRequest;
 import br.com.tasknoteapp.server.response.TaskResponse;
 import br.com.tasknoteapp.server.util.AuthUtil;
+
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -163,5 +165,28 @@ class TaskServiceTest {
 
     Assertions.assertNotNull(entity);
     Assertions.assertEquals("development", entity.getTag());
+  }
+
+  @Test
+  @DisplayName("Get all tasks happy path should succeed")
+  void getAllTasks_happyPath_shouldSucceed() {
+    when(authUtil.getCurrentUserEmail()).thenReturn(Optional.of(USER_EMAIL));
+
+    UserEntity userEntity = new UserEntity();
+    userEntity.setId(USER_ID);
+    userEntity.setEmail(USER_EMAIL);
+    when(authService.findByEmail(USER_EMAIL)).thenReturn(Optional.of(userEntity));
+
+    TaskEntity entity = new TaskEntity();
+    entity.setDescription("Writ unit tests");
+    entity.setHighPriority(true);
+    entity.setTag("dev");
+    when(taskRepository.findAllByUser_id(USER_ID)).thenReturn(List.of(entity));
+
+    List<TaskResponse> responses = taskService.getAllTasks();
+
+    Assertions.assertFalse(responses.isEmpty());
+    Assertions.assertEquals(1, responses.size());
+    Assertions.assertEquals(entity.getTag(), responses.get(0).tag());
   }
 }
