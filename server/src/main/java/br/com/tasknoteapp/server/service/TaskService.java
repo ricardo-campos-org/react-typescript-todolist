@@ -220,8 +220,8 @@ public class TaskService {
     return authService.findByEmail(email).orElseThrow();
   }
 
-  private List<String> getAllTasksUrls(Long noteId) {
-    List<TaskUrlEntity> urls = taskUrlRepository.findAllById_taskId(noteId);
+  private List<String> getAllTasksUrls(Long taskId) {
+    List<TaskUrlEntity> urls = taskUrlRepository.findAllById_taskId(taskId);
     return urls.stream().map(TaskUrlEntity::getId).map(TaskUrlEntityPk::getUrl).toList();
   }
 

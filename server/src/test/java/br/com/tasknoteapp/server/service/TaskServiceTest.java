@@ -4,6 +4,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import br.com.tasknoteapp.server.entity.TaskEntity;
+import br.com.tasknoteapp.server.entity.TaskUrlEntity;
+import br.com.tasknoteapp.server.entity.TaskUrlEntityPk;
 import br.com.tasknoteapp.server.entity.UserEntity;
 import br.com.tasknoteapp.server.exception.TaskNotFoundException;
 import br.com.tasknoteapp.server.repository.TaskRepository;
@@ -11,7 +13,6 @@ import br.com.tasknoteapp.server.repository.TaskUrlRepository;
 import br.com.tasknoteapp.server.request.TaskRequest;
 import br.com.tasknoteapp.server.response.TaskResponse;
 import br.com.tasknoteapp.server.util.AuthUtil;
-
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
@@ -165,6 +166,90 @@ class TaskServiceTest {
 
     Assertions.assertNotNull(entity);
     Assertions.assertEquals("development", entity.getTag());
+  }
+
+  @Test
+  @DisplayName("Create task with null url it should succeed")
+  void createTask_nullUrl_shouldSucceed() {
+    when(authUtil.getCurrentUserEmail()).thenReturn(Optional.of(USER_EMAIL));
+
+    UserEntity userEntity = new UserEntity();
+    userEntity.setId(USER_ID);
+    userEntity.setEmail(USER_EMAIL);
+    when(authService.findByEmail(USER_EMAIL)).thenReturn(Optional.of(userEntity));
+
+    TaskRequest request =
+        new TaskRequest("Write unit tests", null, "2025-12-12", false, "development");
+
+    TaskEntity entity = new TaskEntity();
+    entity.setId(123L);
+    entity.setDescription(request.description());
+    entity.setHighPriority(request.highPriority());
+    entity.setTag(request.tag());
+    when(taskRepository.save(any())).thenReturn(new TaskEntity());
+
+    TaskResponse response = taskService.createTask(request);
+
+    Assertions.assertNotNull(response);
+    Assertions.assertTrue(response.urls().isEmpty());
+  }
+
+  @Test
+  @DisplayName("Create task with empty url it should succeed")
+  void createTask_emptyUrl_shouldSucceed() {
+    when(authUtil.getCurrentUserEmail()).thenReturn(Optional.of(USER_EMAIL));
+
+    UserEntity userEntity = new UserEntity();
+    userEntity.setId(USER_ID);
+    userEntity.setEmail(USER_EMAIL);
+    when(authService.findByEmail(USER_EMAIL)).thenReturn(Optional.of(userEntity));
+
+    TaskRequest request =
+        new TaskRequest("Write unit tests", List.of(), "2025-12-12", false, "development");
+
+    TaskEntity entity = new TaskEntity();
+    entity.setId(123L);
+    entity.setDescription(request.description());
+    entity.setHighPriority(request.highPriority());
+    entity.setTag(request.tag());
+    when(taskRepository.save(any())).thenReturn(new TaskEntity());
+
+    TaskResponse response = taskService.createTask(request);
+
+    Assertions.assertNotNull(response);
+    Assertions.assertTrue(response.urls().isEmpty());
+  }
+
+  @Test
+  @DisplayName("Create task with valid url it should succeed")
+  void createTask_fullUrl_shouldSucceed() {
+    when(authUtil.getCurrentUserEmail()).thenReturn(Optional.of(USER_EMAIL));
+
+    UserEntity userEntity = new UserEntity();
+    userEntity.setId(USER_ID);
+    userEntity.setEmail(USER_EMAIL);
+    when(authService.findByEmail(USER_EMAIL)).thenReturn(Optional.of(userEntity));
+
+    TaskRequest request =
+        new TaskRequest(
+            "Write unit tests", List.of("debian.org"), "2025-12-12", false, "development");
+
+    TaskEntity entity = new TaskEntity();
+    entity.setId(123L);
+    entity.setDescription(request.description());
+    entity.setHighPriority(request.highPriority());
+    entity.setTag(request.tag());
+    when(taskRepository.save(any())).thenReturn(entity);
+
+    TaskUrlEntity urlEntity = new TaskUrlEntity();
+    urlEntity.setId(new TaskUrlEntityPk(entity.getId(), "debian.org"));
+    when(taskUrlRepository.findAllById_taskId(entity.getId())).thenReturn(List.of(urlEntity));
+
+    TaskResponse response = taskService.createTask(request);
+
+    Assertions.assertNotNull(response);
+    Assertions.assertFalse(response.urls().isEmpty());
+    Assertions.assertEquals("debian.org", response.urls().get(0));
   }
 
   @Test
