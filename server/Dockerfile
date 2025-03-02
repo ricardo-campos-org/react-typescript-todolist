@@ -26,7 +26,7 @@ COPY --from=build /app/target/server ./tasknote-api
 USER 1001
 EXPOSE ${PORT}
 #HEALTHCHECK CMD timeout 10s bash -c 'true > /dev/tcp/127.0.0.1/8585'
-HEALTHCHECK --interval=60s --timeout=5s CMD ["curl", "-f", "http://localhost:8585/actuator/health"]
+HEALTHCHECK --interval=30s --timeout=5s CMD ["curl", "-f", "http://localhost:8585/actuator/health"]
 
 # Startup
 ENTRYPOINT ["/app/tasknote-api", "-Dspring.profiles.active=prod"]

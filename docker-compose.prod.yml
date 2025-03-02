@@ -1,6 +1,18 @@
 ---
 
 services:
+  client:
+    container_name: client
+    depends_on:
+      server:
+        condition: service_healthy
+    environment:
+      VITE_BACKEND_SERVER: http://localhost:8585
+      VITE_BUILD: snapshot
+    image: client:latest
+    ports: 
+      - "5000:5000"
+
   server:
     container_name: server
     depends_on:
@@ -16,7 +28,7 @@ services:
       SERVER_SERVLET_CONTEXT_PATH: /
     ports:
       - "8585:8585"
-    image: ghcr.io/ricardo-campos-org/react-typescript-todolist/server:316
+    image: server:latest
 
   db:
     container_name: db

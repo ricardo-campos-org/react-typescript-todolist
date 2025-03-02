@@ -25,6 +25,11 @@ npm ci --ignore-scripts --no-update-notifier --omit=dev \
  && rm -rf node_modules
 ```
 
+If you want to build with Docker:
+```sh
+docker build -t client ./client
+```
+
 That's it!
 
 **Server - Backend REST API:**
@@ -102,6 +107,11 @@ echo $CR_PAT | docker login ghcr.io -u RMCampos --password-stdin
 ```sh
 docker pull ghcr.io/ricardo-campos-org/react-typescript-todolist/client:50
 docker pull ghcr.io/ricardo-campos-org/react-typescript-todolist/server:50
+```
+
+**Pushing images:**
+```sh
+docker push ghcr.io/ricardo-campos-org/react-typescript-todolist/server:316
 ```
 
 - Get container IP
