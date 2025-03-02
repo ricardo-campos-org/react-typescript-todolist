@@ -1,6 +1,9 @@
 package br.com.tasknoteapp.server.service;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import br.com.tasknoteapp.server.entity.TaskEntity;
@@ -273,5 +276,55 @@ class TaskServiceTest {
     Assertions.assertFalse(responses.isEmpty());
     Assertions.assertEquals(1, responses.size());
     Assertions.assertEquals(entity.getTag(), responses.get(0).tag());
+  }
+
+  @Test
+  @DisplayName("Delete a task following the happy path should succeed")
+  void deleteTask_happyPath_shouldSucceed() {
+    when(authUtil.getCurrentUserEmail()).thenReturn(Optional.of(USER_EMAIL));
+
+    UserEntity userEntity = new UserEntity();
+    userEntity.setId(USER_ID);
+    userEntity.setEmail(USER_EMAIL);
+    when(authService.findByEmail(USER_EMAIL)).thenReturn(Optional.of(userEntity));
+
+    Long taskId = 2525L;
+
+    TaskEntity taskEntity = new TaskEntity();
+    taskEntity.setId(taskId);
+    taskEntity.setDescription("Test task");
+    taskEntity.setHighPriority(true);
+    taskEntity.setTag("test");
+    taskEntity.setUser(userEntity);
+    when(taskRepository.findById(taskId)).thenReturn(Optional.of(taskEntity));
+
+    when(taskUrlRepository.findAllById_taskId(taskId)).thenReturn(List.of());
+
+    doNothing().when(taskRepository).delete(taskEntity);
+
+    taskService.deleteTask(taskId);
+
+    verify(taskRepository, times(1)).delete(any());
+  }
+
+  @Test
+  @DisplayName("Delete a not existing tasks it should fail")
+  void deleteTask_notFound_shouldFail() {
+    when(authUtil.getCurrentUserEmail()).thenReturn(Optional.of(USER_EMAIL));
+
+    UserEntity userEntity = new UserEntity();
+    userEntity.setId(USER_ID);
+    userEntity.setEmail(USER_EMAIL);
+    when(authService.findByEmail(USER_EMAIL)).thenReturn(Optional.of(userEntity));
+
+    Long taskId = 2526L;
+
+    when(taskRepository.findById(taskId)).thenReturn(Optional.empty());
+
+    Assertions.assertThrows(
+        TaskNotFoundException.class,
+        () -> {
+          taskService.deleteTask(taskId);
+        });
   }
 }
