@@ -19,7 +19,9 @@ RUN apk add --no-cache ca-certificates curl
 
 # Receive build number as argument, retain as environment variable
 ARG VITE_BUILD
+ARG SOURCE_PR
 ENV VITE_BUILD=${VITE_BUILD}
+ENV SOURCE_PR=${SOURCE_PR}
 
 # Copy files and run formatting
 COPY --from=build /app/dist/ /app/dist

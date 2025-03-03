@@ -23,7 +23,9 @@ WORKDIR /app
 COPY --from=build /app/target/server ./tasknote-api
 
 ARG BUILD
+ARG SOURCE_PR
 ENV BUILD=${BUILD}
+ENV SOURCE_PR=${SOURCE_PR}
 
 # User, port and health check
 USER 1001
