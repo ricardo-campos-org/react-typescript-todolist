@@ -31,7 +31,7 @@ class UserControllerTest {
   @DisplayName("Get all users happy path should succeed")
   @WithMockUser(username = "user@domain.com", password = "abcde123456A@")
   void getAllUsers_happyPath_shouldSucceed() throws Exception {
-    UserResponse userResponse = new UserResponse(1L, "email@test.com", false, null, null);
+    UserResponse userResponse = new UserResponse(1L, "John", "email@test.com", false, null, null);
     when(authService.getAllUsers()).thenReturn(List.of(userResponse));
 
     mockMvc

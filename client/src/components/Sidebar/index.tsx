@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Nav } from 'react-bootstrap';
 import { NavLink } from 'react-router';
 import { useTranslation } from 'react-i18next';
@@ -9,7 +9,7 @@ import { env } from '../../env';
 import './style.css';
 
 function Sidebar(): React.ReactNode {
-  const { signOut } = useContext(AuthContext);
+  const { signOut, user } = useContext(AuthContext);
   const { t } = useTranslation();
   const build = `Build: ${env.VITE_BUILD}`;
   const [current, setCurrent] = useState<string>('/home');
@@ -31,11 +31,13 @@ function Sidebar(): React.ReactNode {
     setCurrent(menu);
   };
 
+  useEffect(() => {}, [user]);
+
   return (
     <div className="d-flex flex-column vh-100 bg-light sidebar">
       <div className="sidebar-header plus-jakarta-sans-bold">
         <img width="45" src={UserIcon} alt="User icon" />
-        <span>Ricardo Campos</span>
+        <span>{user?.name ? user?.name : 'User'}</span>
       </div>
 
       <div className="header-spacer"></div>
