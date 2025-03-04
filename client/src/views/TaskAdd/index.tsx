@@ -229,7 +229,7 @@ function TaskAdd(): React.ReactNode {
 
                 {/* Task URL */}
                 <FormInput
-                  labelText={t('task_form_desc_label')}
+                  labelText={t('task_form_url_label')}
                   iconName="At"
                   required={false}
                   type="text"

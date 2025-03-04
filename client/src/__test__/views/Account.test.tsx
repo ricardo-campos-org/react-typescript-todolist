@@ -27,12 +27,19 @@ vi.mock('react-i18next', () => ({
 
 const authContextMock = {
   signed: true,
-  user: { email: 'test@example.com' },
+  user: {
+    userId: 1,
+    name: 'Ricardo',
+    email: 'test@example.com',
+    admin: false,
+    createdAt: new Date()
+  },
   checkCurrentAuthUser: vi.fn(),
   signIn: vi.fn(),
   signOut: vi.fn(),
   register: vi.fn(),
-  isAdmin: false
+  isAdmin: false,
+  updateUser: vi.fn()
 };
 
 describe('Account Component', () => {
@@ -50,10 +57,7 @@ describe('Account Component', () => {
 
   it('should render the Account component', () => {
     const { getByText } = renderAccount();
-    expect(getByText('account_my_account_tittle')).toBeDefined();
-    expect(getByText('account_my_account_hello')).toBeDefined();
-    expect(getByText('account_my_account_logged')).toBeDefined();
-    expect(getByText('test@example.com')).toBeDefined();
+    expect(getByText('Change your info')).toBeDefined();
   });
 
   // it('should change language when a language button is clicked', () => {
