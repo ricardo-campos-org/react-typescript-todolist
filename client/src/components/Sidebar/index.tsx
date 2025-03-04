@@ -8,6 +8,11 @@ import NavButton from '../NavButton';
 import { env } from '../../env';
 import './style.css';
 
+/**
+ * Sidebar component renders the sidebar navigation menu.
+ *
+ * @returns {React.ReactNode} The rendered Sidebar component.
+ */
 function Sidebar(): React.ReactNode {
   const { signOut, user } = useContext(AuthContext);
   const { t } = useTranslation();
@@ -16,10 +21,19 @@ function Sidebar(): React.ReactNode {
 
   // Note: when selected, change class to plus-jakarta-sans-thin and add background
 
-  const goOut = () => {
+  /**
+   * Handles the sign-out action.
+   */
+  const goOut = (): void => {
     signOut();
   };
 
+  /**
+   * Gets the color for the selected navigation link.
+   *
+   * @param {string} path - The path of the navigation link.
+   * @returns {string} The color for the selected navigation link.
+   */
   const getSelectedColor = (path: string): string => {
     if (path === current) {
       return '#4CD964';
@@ -27,6 +41,11 @@ function Sidebar(): React.ReactNode {
     return '#6A8996';
   };
 
+  /**
+   * Handles the navigation link click event.
+   *
+   * @param {string} menu - The menu path.
+   */
   const navLinkClicked = (menu: string): void => {
     setCurrent(menu);
   };

@@ -15,12 +15,31 @@ interface Props {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-function FormInput(props: React.PropsWithChildren<Props>) {
+/**
+ * FormInput component renders a form input with a label, icon, and optional password toggle.
+ *
+ * @param {Props} props - The properties for the FormInput component.
+ * @param {string} props.labelText - The text for the form label.
+ * @param {IconName} props.iconName - The name of the icon to display.
+ * @param {boolean} props.required - Whether the input is required.
+ * @param {string} [props.type] - The type of the input (e.g., 'text', 'password').
+ * @param {string} props.name - The name of the input.
+ * @param {string} [props.placeholder] - The placeholder text for the input.
+ * @param {string} props.value - The value of the input.
+ * @param {(e: React.ChangeEvent<HTMLInputElement>) void} props.onChange - The change event handler for the input.
+ * @returns {React.ReactNode} The rendered FormInput component.
+ */
+function FormInput(props: React.PropsWithChildren<Props>): React.ReactNode {
   const [showingPwd, setShowingPwd] = useState<boolean>(false);
   const [formType, setFormType] = useState<string>(props.type ? props.type : 'text');
   const Icon = Icons[props.iconName];
 
-  const toggleShowPassword = (e: React.MouseEvent<Element, MouseEvent>) => {
+  /**
+   * Toggle the password visibility.
+   *
+   * @param {React.MouseEvent<Element, MouseEvent>} e the click event.
+   */
+  const toggleShowPassword = (e: React.MouseEvent<Element, MouseEvent>): void => {
     e.preventDefault();
     e.stopPropagation();
 

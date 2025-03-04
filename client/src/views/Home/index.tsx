@@ -41,6 +41,11 @@ function Home(): React.ReactNode {
   const [searchResults, setSearchResults] = useState<HomeSearchResponse | null>(null);
   const [name, setName] = useState<string>(user?.name ? user?.name : 'User');
 
+  /**
+   * Handles the error by setting the error message.
+   *
+   * @param {unknown} e - The error to handle.
+   */
   const handleError = (e: unknown): void => {
     if (typeof e === 'string') {
       setErrorMessage(translateServerResponse(e, i18n.language));
@@ -50,6 +55,12 @@ function Home(): React.ReactNode {
     }
   };
 
+  /**
+   * Searches for a term.
+   *
+   * @param {string}
+   * @returns {Promise<boolean>} Whether the search was successful.
+   */
   const searchTerm = async (term: string): Promise<boolean> => {
     try {
       const response: HomeSearchResponse = await api.getJSON(`${ApiConfig.homeUrl}/search?term=${term}`);
@@ -62,6 +73,11 @@ function Home(): React.ReactNode {
     return false;
   };
 
+  /**
+   * Handles the search form submission.
+   *
+   * @param {React.FormEvent<HTMLFormElement>} event - The form submission event.
+   */
   const handleSearch = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
     event.stopPropagation();

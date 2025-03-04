@@ -33,11 +33,19 @@ function Account(): React.ReactNode {
   const [userPassword, setUserPassword] = useState<string>('');
   const [userPasswordAgain, setUserPasswordAgain] = useState<string>('');
 
-  const handleLanguage = (lang: string) => {
+  /**
+   * Handle the language change.
+   *
+   * @param {string} lang the language to change to.
+   */
+  const handleLanguage = (lang: string): void => {
     i18n.changeLanguage(lang);
     setDefaultLang(lang);
   };
 
+  /**
+   * Deletes the user account
+   */
   const deleteAccount = async (): Promise<void> => {
     setShowAlert(false);
     await api.postJSON(ApiConfig.deleteAccountUrl, {});
