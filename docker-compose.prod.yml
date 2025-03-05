@@ -28,7 +28,7 @@ services:
       SERVER_SERVLET_CONTEXT_PATH: /
     ports:
       - "8585:8585"
-    image: ghcr.io/ricardo-campos-org/react-typescript-todolist/server:candidate
+    image: server:candidate
 
   db:
     container_name: db

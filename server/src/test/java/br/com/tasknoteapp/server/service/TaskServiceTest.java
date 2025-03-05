@@ -13,6 +13,7 @@ import br.com.tasknoteapp.server.entity.UserEntity;
 import br.com.tasknoteapp.server.exception.TaskNotFoundException;
 import br.com.tasknoteapp.server.repository.TaskRepository;
 import br.com.tasknoteapp.server.repository.TaskUrlRepository;
+import br.com.tasknoteapp.server.repository.UserTasksDoneRepository;
 import br.com.tasknoteapp.server.request.TaskPatchRequest;
 import br.com.tasknoteapp.server.request.TaskRequest;
 import br.com.tasknoteapp.server.response.TaskResponse;
@@ -38,6 +39,8 @@ class TaskServiceTest {
 
   @Mock TaskUrlRepository taskUrlRepository;
 
+  @Mock UserTasksDoneRepository userTasksDoneRepository;
+
   private static final Long USER_ID = 123L;
 
   private static final String USER_EMAIL = "test@domain.com";
@@ -46,7 +49,9 @@ class TaskServiceTest {
 
   @BeforeEach
   void setup() {
-    taskService = new TaskService(taskRepository, authService, authUtil, taskUrlRepository);
+    taskService =
+        new TaskService(
+            taskRepository, authService, authUtil, taskUrlRepository, userTasksDoneRepository);
   }
 
   @Test

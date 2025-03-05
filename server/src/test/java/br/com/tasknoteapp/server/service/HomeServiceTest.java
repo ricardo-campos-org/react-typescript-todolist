@@ -3,6 +3,7 @@ package br.com.tasknoteapp.server.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
+import br.com.tasknoteapp.server.repository.UserTasksDoneRepository;
 import br.com.tasknoteapp.server.response.NoteResponse;
 import br.com.tasknoteapp.server.response.SearchResponse;
 import br.com.tasknoteapp.server.response.SummaryResponse;
@@ -21,6 +22,8 @@ class HomeServiceTest {
 
   @Mock private NoteService noteService;
 
+  @Mock UserTasksDoneRepository userTasksDoneRepository;
+
   private HomeService homeService;
 
   private List<TaskResponse> tasks;
@@ -28,7 +31,7 @@ class HomeServiceTest {
 
   @BeforeEach
   void setUp() {
-    homeService = new HomeService(taskService, noteService);
+    homeService = new HomeService(taskService, noteService, userTasksDoneRepository);
 
     TaskResponse task1 =
         new TaskResponse(2L, "Task 1", false, false, null, null, null, "tag", List.of());
