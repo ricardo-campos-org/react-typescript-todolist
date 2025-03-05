@@ -13,6 +13,7 @@ interface Props {
   placeholder?: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  data_testid?: string;
 }
 
 /**
@@ -75,6 +76,7 @@ function FormInput(props: React.PropsWithChildren<Props>): React.ReactNode {
               placeholder={props.placeholder ? props.placeholder : ''}
               value={props.value}
               onChange={props.onChange}
+              data-testid={props.data_testid}
             />
           </InputGroup>
         </Form.Group>

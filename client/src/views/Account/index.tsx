@@ -82,8 +82,6 @@ function Account(): React.ReactNode {
     catch (e) {
       handleError(e);
     }
-
-    return;
   };
 
   /**
@@ -107,9 +105,9 @@ function Account(): React.ReactNode {
 
     const patchPayload: UserPatchRequest = {
       name: userName ? DOMPurify.sanitize(userName) : null,
-      email: userEmail ? userEmail : null,
-      password: userPassword ? userPassword : null,
-      passwordAgain: userPasswordAgain ? userPasswordAgain : null
+      email: userEmail,
+      password: userPassword,
+      passwordAgain: userPasswordAgain
     };
 
     const updated: UserResponse | undefined = await patchUserInfo(patchPayload);
@@ -197,6 +195,7 @@ function Account(): React.ReactNode {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setUserPassword(e.target.value);
                 }}
+                data_testid="account-password-one"
               />
 
               {/* User password again */}
@@ -244,6 +243,7 @@ function Account(): React.ReactNode {
                   variant="outline-primary"
                   className="btn-sm me-3"
                   onClick={() => handleLanguage(lang.lang)}
+                  data-testid={`language-button-${lang.lang}`}
                 >
                   {lang.lang === 'pt_br' && (
                     <span>🇧🇷 </span>

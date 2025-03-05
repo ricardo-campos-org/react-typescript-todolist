@@ -11,10 +11,12 @@ import ApiConfig from '../../api-service/apiConfig';
 
 vi.mock('../../api-service/api');
 
+const changeLanguageMock = vi.fn();
+
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
     i18n: {
-      changeLanguage: vi.fn(),
+      changeLanguage: changeLanguageMock,
     },
     t: (key: string) => key,
   }),
@@ -60,12 +62,12 @@ describe('Account Component', () => {
     expect(getByText('Change your info')).toBeDefined();
   });
 
-  // it('should change language when a language button is clicked', () => {
-  //   const { getByText } = renderAccount();
-  //   const languageButton = getByText('account_app_lang_tittle');
-  //   fireEvent.click(languageButton);
-  //   expect(changeLanguageMock).toHaveBeenCalled();
-  // });
+  it('should change language when a language button is clicked', () => {
+    const { getByTestId } = renderAccount();
+    const languageButton = getByTestId('language-button-pt_br');
+    fireEvent.click(languageButton);
+    expect(changeLanguageMock).toHaveBeenCalled();
+  });
 
   it('should show alert when delete button is clicked', () => {
     const { getByText } = renderAccount();
@@ -85,5 +87,29 @@ describe('Account Component', () => {
       expect(api.postJSON).toHaveBeenCalledWith(ApiConfig.deleteAccountUrl, {});
       expect(authContextMock.signOut).toHaveBeenCalled();
     });
+  });
+
+  it('should submit the form with correct patchPayload', async () => {
+    const mockPatchJSON = vi.spyOn(api, 'patchJSON').mockResolvedValue(authContextMock.user);
+
+    const { getByLabelText, getByText, getByTestId } = renderAccount();
+
+    fireEvent.change(getByLabelText(/First name/i), { target: { value: 'Jane' } });
+    fireEvent.change(getByLabelText(/Email/i), { target: { value: 'jane.doe@example.com' } });
+    fireEvent.change(getByTestId('account-password-one'), { target: { value: 'password123' } });
+    fireEvent.change(getByLabelText(/Repeat password/i), { target: { value: 'password123' } });
+
+    fireEvent.click(getByText(/Save profile information/i));
+
+    await waitFor(() => {
+      expect(mockPatchJSON).toHaveBeenCalledWith(expect.any(String), {
+        name: 'Jane',
+        email: 'jane.doe@example.com',
+        password: 'password123',
+        passwordAgain: 'password123',
+      });
+    });
+
+    mockPatchJSON.mockRestore();
   });
 });
