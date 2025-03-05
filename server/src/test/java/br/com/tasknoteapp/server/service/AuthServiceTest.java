@@ -17,6 +17,7 @@ import br.com.tasknoteapp.server.exception.UserNotFoundException;
 import br.com.tasknoteapp.server.repository.UserPwdLimitRepository;
 import br.com.tasknoteapp.server.repository.UserRepository;
 import br.com.tasknoteapp.server.request.LoginRequest;
+import br.com.tasknoteapp.server.request.UserPatchRequest;
 import br.com.tasknoteapp.server.response.UserResponse;
 import br.com.tasknoteapp.server.response.UserResponseWithToken;
 import br.com.tasknoteapp.server.util.AuthUtil;
@@ -363,5 +364,55 @@ class AuthServiceTest {
     UserResponse response = authService.deleteUserAccount();
 
     Assertions.assertNotNull(response);
+  }
+
+  @Test
+  @DisplayName("Patch user info patch user name and email should succeed")
+  void pathUserInfo_nameAndEmail_shouldSucceed() {
+    String email = "user@domain.com";
+    when(authUtil.getCurrentUserEmail()).thenReturn(Optional.of(email));
+
+    UserEntity existing = new UserEntity();
+    existing.setId(919L);
+    existing.setName(null);
+    existing.setEmail(email);
+    existing.setAdmin(false);
+    when(userRepository.findByEmail(email)).thenReturn(Optional.of(existing));
+
+    when(userRepository.save(any())).thenReturn(existing);
+
+    UserPatchRequest patchRequest = new UserPatchRequest("Kong", "newemail@domain.com", null, null);
+    UserResponse response = authService.patchUserInfo(patchRequest);
+
+    Assertions.assertNotNull(response);
+    Assertions.assertEquals("Kong", response.name());
+    Assertions.assertEquals("newemail@domain.com", response.email());
+  }
+
+  @Test
+  @DisplayName("Patch user info patch user password should succeed")
+  void pathUserInfo_password_shouldSucceed() {
+    String email = "user@domain.com";
+    when(authUtil.getCurrentUserEmail()).thenReturn(Optional.of(email));
+
+    UserEntity existing = new UserEntity();
+    existing.setId(919L);
+    existing.setName(null);
+    existing.setEmail(email);
+    existing.setAdmin(false);
+    when(userRepository.findByEmail(email)).thenReturn(Optional.of(existing));
+
+    when(userRepository.save(any())).thenReturn(existing);
+    
+    String newPassword = "TestHackedPw@difficult!#:)";
+    UserPatchRequest patchRequest = new UserPatchRequest("Kong", "newemail@domain.com", newPassword, newPassword);
+    
+    when(authUtil.validatePassword(patchRequest.password())).thenReturn(Optional.empty());
+    
+    UserResponse response = authService.patchUserInfo(patchRequest);
+
+    Assertions.assertNotNull(response);
+    Assertions.assertEquals("Kong", response.name());
+    Assertions.assertEquals("newemail@domain.com", response.email());
   }
 }
