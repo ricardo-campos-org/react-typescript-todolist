@@ -30,12 +30,13 @@ function CompletedTasks(): React.ReactNode {
         label: 'Completed Tasks',
         data: response
       }];
-      console.log('chartData:', chartData);
       setData(chartData);
-      setLoading(false);
     }
     catch (error) {
       console.error('Error fetching chart data:', error);
+    }
+    finally {
+      setLoading(false);
     }
   };
 
