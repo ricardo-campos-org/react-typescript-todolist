@@ -119,6 +119,6 @@ public class HomeService {
   }
 
   private String getDayOfWeek(LocalDateTime date) {
-    return date.getDayOfWeek().toString().substring(0, 1);
+    return date.getDayOfWeek().toString().substring(0, 3);
   }
 }

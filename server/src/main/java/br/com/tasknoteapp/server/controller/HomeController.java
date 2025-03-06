@@ -45,8 +45,8 @@ public class HomeController {
                     mediaType = "application/json",
                     schema = @Schema(implementation = SummaryResponse.class))),
         @ApiResponse(
-            responseCode = "403",
-            description = "Forbidden. Access Denied",
+            responseCode = "401",
+            description = "Unauthorized. Access Denied",
             content = @Content(schema = @Schema(implementation = Void.class))),
       })
   public SummaryResponse getSummary() {
@@ -71,8 +71,8 @@ public class HomeController {
                     mediaType = "application/json",
                     schema = @Schema(implementation = SearchResponse.class, type = "array"))),
         @ApiResponse(
-            responseCode = "403",
-            description = "Forbidden. Access Denied",
+            responseCode = "401",
+            description = "Unauthorized. Access Denied",
             content = @Content(schema = @Schema(implementation = Void.class)))
       })
   public SearchResponse search(
@@ -99,8 +99,8 @@ public class HomeController {
       responses = {
         @ApiResponse(responseCode = "200", description = "Data successfully retrieved"),
         @ApiResponse(
-            responseCode = "403",
-            description = "Forbidden. Access Denied",
+            responseCode = "401",
+            description = "Unauthorized. Access Denied",
             content = @Content(schema = @Schema(implementation = Void.class)))
       })
   public List<TasksChartResponse> getTasksChart() {
