@@ -9,5 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 /** This interface contains methods to access the user done tasks table in the database. */
 public interface UserTasksDoneRepository extends JpaRepository<UserTasksDone, UserTasksDonePk> {
 
-  List<UserTasksDone> findByDoneDateAfter(LocalDateTime date);
+  List<UserTasksDone> findAllByDoneDateAfterAndId_userId(LocalDateTime date, Long userId);
 }

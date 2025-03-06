@@ -1,5 +1,6 @@
 package br.com.tasknoteapp.server.service;
 
+import br.com.tasknoteapp.server.entity.UserEntity;
 import br.com.tasknoteapp.server.entity.UserTasksDone;
 import br.com.tasknoteapp.server.repository.UserTasksDoneRepository;
 import br.com.tasknoteapp.server.response.NoteResponse;
@@ -7,6 +8,7 @@ import br.com.tasknoteapp.server.response.SearchResponse;
 import br.com.tasknoteapp.server.response.SummaryResponse;
 import br.com.tasknoteapp.server.response.TaskResponse;
 import br.com.tasknoteapp.server.response.TasksChartResponse;
+import br.com.tasknoteapp.server.util.AuthUtil;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,6 +32,10 @@ public class HomeService {
   private final NoteService noteService;
 
   private final UserTasksDoneRepository userTasksDoneRepository;
+
+  private final AuthUtil authUtil;
+
+  private final AuthService authService;
 
   /**
    * Get summary for the home page.
@@ -71,8 +78,14 @@ public class HomeService {
    * @return List of TasksChartResponse.
    */
   public List<TasksChartResponse> getTasksChartData() {
+    Optional<String> currentUserEmail = authUtil.getCurrentUserEmail();
+    String email = currentUserEmail.orElseThrow();
+    UserEntity user = authService.findByEmail(email).orElseThrow();
+
     LocalDateTime date = LocalDateTime.now();
-    List<UserTasksDone> tasks = userTasksDoneRepository.findByDoneDateAfter(date.minusDays(8L));
+    List<UserTasksDone> tasks =
+        userTasksDoneRepository.findAllByDoneDateAfterAndId_userId(
+            date.minusDays(8L), user.getId());
     log.info("Tasks finished in the last 7 days: {}", tasks.size());
 
     if (tasks.isEmpty()) {
