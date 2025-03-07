@@ -44,14 +44,24 @@ public class HomeService {
    */
   public SummaryResponse getSummary() {
     log.info("Getting summary");
+    
+    Optional<String> currentUserEmail = authUtil.getCurrentUserEmail();
+    String email = currentUserEmail.orElseThrow();
+    UserEntity user = authService.findByEmail(email).orElseThrow();
+
+    // Pending tasks
     List<TaskResponse> tasks = taskService.getAllTasks();
-    List<NoteResponse> notes = noteService.getAllNotes();
-
-    long doneCount = tasks.stream().filter(t -> t.done() == true).count();
     long undoneCount = tasks.stream().filter(t -> t.done() == false).count();
-    int taskCount = notes.size();
 
-    return new SummaryResponse((int) undoneCount, (int) doneCount, taskCount);
+    // All notes: FIXME to get deleted notes
+    List<NoteResponse> notes = noteService.getAllNotes();
+    int noteCount = notes.size();
+
+    // All completed tasks (including deleted ones)
+    List<UserTasksDone> doneTasks = userTasksDoneRepository.findAllById_userId(user.getId());
+    int doneCount = doneTasks.size();
+
+    return new SummaryResponse((int) undoneCount, doneCount, noteCount);
   }
 
   /**

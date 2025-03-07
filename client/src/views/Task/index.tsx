@@ -28,7 +28,6 @@ import './style.css';
  * @returns {React.ReactNode} The Task component
  */
 function Task(): React.ReactNode {
-  const [displayError, setDisplayError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [tasks, setTasks] = useState<TaskResponse[]>([]);
   const [savedTasks, setSavedTasks] = useState<TaskResponse[]>([]);
@@ -43,11 +42,9 @@ function Task(): React.ReactNode {
   const handleError = (e: unknown): void => {
     if (typeof e === 'string') {
       setErrorMessage(translateServerResponse(e, i18n.language));
-      setDisplayError(true);
     }
     else if (e instanceof Error) {
       setErrorMessage(translateServerResponse(e.message, i18n.language));
-      setDisplayError(true);
     }
   };
 
@@ -118,7 +115,10 @@ function Task(): React.ReactNode {
     }
 
     const filteredTasks = savedTasks.filter((task: TaskResponse) => {
-      return task.description.toLowerCase().includes(text.toLowerCase());
+      const shouldFilter = task.description.toLowerCase().includes(text.toLowerCase())
+        || task.tag.toLowerCase().includes(text.toLowerCase())
+        || task.urls.filter((url: string) => url.includes(text.toLowerCase())).length > 0;
+      return shouldFilter;
     });
 
     setTasks([...filteredTasks]);
@@ -130,16 +130,30 @@ function Task(): React.ReactNode {
 
   return (
     <Container>
+      <h1 className="poppins-regular home-hello main-margin">
+        All
+        {' '}
+        <b>Tasks</b>
+      </h1>
+      <p className="poppins-regular home-subtitle">
+        Save your notes in plain text or Markdown format
+      </p>
+
+      <Row className="mb-3">
+        <Col xs={12}>
+          <h2 className="poppins-regular">Create, Filter, and Easily Find</h2>
+          <h2 className="poppins-bold home-productive">Them</h2>
+        </Col>
+      </Row>
+
       {/* Tasks added */}
       <Row className="main-margin">
         <Col xs={12}>
-          {displayError
-            ? (
-                <Alert variant="danger">
-                  { errorMessage }
-                </Alert>
-              )
-            : null}
+          {errorMessage.length > 0 && (
+            <Alert variant="danger">
+              { errorMessage }
+            </Alert>
+          )}
         </Col>
       </Row>
 

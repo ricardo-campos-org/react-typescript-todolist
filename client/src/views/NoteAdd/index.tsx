@@ -9,33 +9,31 @@ import {
   Row
 } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router';
-import TaskNoteRequest from '../../types/TaskNoteRequest';
-import { TaskResponse } from '../../types/TaskResponse';
 import { useTranslation } from 'react-i18next';
+import { NoteResponse } from '../../types/NoteResponse';
 import api from '../../api-service/api';
 import ApiConfig from '../../api-service/apiConfig';
 import { translateServerResponse } from '../../utils/TranslatorUtils';
 import FormInput from '../../components/FormInput';
+import ModalMarkdown from '../../components/ModalMarkdown';
 
-type TaskAction = 'add' | 'edit';
+type NoteAction = 'add' | 'edit';
 
 /**
- * TaskAdd component for adding and editing tasks.
+ * NoteAdd component for adding and editing notes.
  *
- * @returns {React.ReactNode} The rendered TaskAdd component.
+ * @returns {React.ReactNode} The rendered NoteAdd component.
  */
-function TaskAdd(): React.ReactNode {
+function NoteAdd(): React.ReactNode {
   const [validated, setValidated] = useState<boolean>(false);
   const [formInvalid, setFormInvalid] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
-  const [taskId, setTaskId] = useState<number>(0);
-  const [taskDescription, setTaskDescription] = useState<string>('');
-  const [taskUrl, setTaskUrl] = useState<string>('');
-  const [taskDone, setTaskDone] = useState<boolean>(false);
-  const [action, setAction] = useState<TaskAction>('add');
-  const [dueDate, setDueDate] = useState<string>('');
-  const [highPriority, setHighPriority] = useState<boolean>(false);
-  const [tag, setTag] = useState<string>('');
+  const [noteId, setNoteId] = useState<number>(0);
+  const [noteTitle, setNoteTitle] = useState<string>('');
+  const [noteDescription, setNoteDescription] = useState<string>('');
+  const [noteUrl, setNoteUrl] = useState<string>('');
+  const [action, setAction] = useState<NoteAction>('add');
+  const [showPreviewMd, setShowPreviewMd] = useState<boolean>(false);
   const { i18n, t } = useTranslation();
   const params = useParams();
   const navigate = useNavigate();
@@ -57,14 +55,14 @@ function TaskAdd(): React.ReactNode {
   };
 
   /**
-   * Adds a new task.
+   * Adds a new note.
    *
    * @param {TaskNoteRequest} payload - The task data to add.
    * @returns {Promise<boolean>} True if the task was added successfully, false otherwise.
    */
-  const addTask = async (payload: TaskNoteRequest): Promise<boolean> => {
+  const addNote = async (payload: NoteResponse): Promise<boolean> => {
     try {
-      await api.postJSON(ApiConfig.tasksUrl, payload);
+      await api.postJSON(ApiConfig.notesUrl, payload);
       return true;
     }
     catch (e) {
@@ -80,9 +78,9 @@ function TaskAdd(): React.ReactNode {
    * @param {TaskResponse} payload - The task data to edit.
    * @returns {Promise<boolean>} True if the task was edited successfully, false otherwise.
    */
-  const submitEditTask = async (payload: TaskResponse): Promise<boolean> => {
+  const submitEditNote = async (payload: NoteResponse): Promise<boolean> => {
     try {
-      await api.patchJSON(`${ApiConfig.tasksUrl}/${payload.id}`, payload);
+      await api.patchJSON(`${ApiConfig.notesUrl}/${payload.id}`, payload);
       return true;
     }
     catch (e) {
@@ -94,14 +92,10 @@ function TaskAdd(): React.ReactNode {
   /**
    * Resets the input fields to their default values.
    */
-  const resetInputs = (): void => {
-    setTaskId(0);
-    setTaskDescription('');
-    setTaskDone(false);
-    setTaskUrl('');
-    setDueDate('');
-    setHighPriority(false);
-    setTag('');
+  const resetInputs = () => {
+    setNoteId(0);
+    setNoteTitle('');
+    setNoteDescription('');
 
     setAction('add');
     setValidated(false);
@@ -127,40 +121,37 @@ function TaskAdd(): React.ReactNode {
 
     setFormInvalid(false);
 
+    const title: string = form.note_title.value;
+    const description: string = form.note_description.value;
+
     if (action === 'add') {
-      const addPayload: TaskNoteRequest = {
-        description: taskDescription.trim(),
-        highPriority: highPriority,
-        dueDate: dueDate || '',
-        tag: tag,
-        urls: taskUrl ? [taskUrl] : []
+      const payload: NoteResponse = {
+        id: 0,
+        title,
+        description,
+        url: noteUrl ? noteUrl : null
       };
 
-      const added: boolean = await addTask(addPayload);
+      const added: boolean = await addNote(payload);
       if (added) {
         form.reset();
         resetInputs();
-        navigate('/tasks');
+        navigate('/notes');
       }
     }
     else if (action === 'edit') {
-      const editPayload: TaskResponse = {
-        id: taskId,
-        description: taskDescription.trim(),
-        done: taskDone,
-        highPriority: highPriority,
-        dueDate: dueDate || '',
-        dueDateFmt: '',
-        lastUpdate: '',
-        tag: tag,
-        urls: taskUrl ? [taskUrl] : []
+      const payload: NoteResponse = {
+        id: noteId,
+        title,
+        description,
+        url: noteUrl ? noteUrl : null
       };
 
-      const edited: boolean = await submitEditTask(editPayload);
+      const edited: boolean = await submitEditNote(payload);
       if (edited) {
         form.reset();
         resetInputs();
-        navigate('/tasks');
+        navigate('/notes');
       }
     }
   };
@@ -171,18 +162,10 @@ function TaskAdd(): React.ReactNode {
   const checkEditUrl = async (): Promise<void> => {
     if (params.id) {
       try {
-        const taskToEdit: TaskResponse = await api.getJSON(`${ApiConfig.tasksUrl}/${params.id}`);
-        setTaskId(taskToEdit.id);
-        setTaskDescription(taskToEdit.description);
-        setTaskUrl(taskToEdit.urls.length ? taskToEdit.urls[0] : '');
-        setTaskDone(taskToEdit.done);
-        if (taskToEdit.dueDateFmt) {
-          setDueDate(taskToEdit.dueDate);
-        }
-        setHighPriority(taskToEdit.highPriority);
-        if (taskToEdit.tag) {
-          setTag(taskToEdit.tag);
-        }
+        const noteToEdit: NoteResponse = await api.getJSON(`${ApiConfig.notesUrl}/${params.id}`);
+        setNoteId(noteToEdit.id);
+        setNoteTitle(noteToEdit.title);
+        setNoteDescription(noteToEdit.description);
         setAction('edit');
       }
       catch (e) {
@@ -190,6 +173,14 @@ function TaskAdd(): React.ReactNode {
       }
     }
   };
+
+  const previewMarkdown = (e: React.MouseEvent<Element, MouseEvent>): void => {
+    e.preventDefault();
+    e.stopPropagation();
+    setShowPreviewMd(noteDescription.length > 0);
+  };
+
+  const handleCloseModal = () => setShowPreviewMd(false);
 
   useEffect(() => {
     checkEditUrl();
@@ -200,7 +191,7 @@ function TaskAdd(): React.ReactNode {
       <h1 className="poppins-regular home-hello main-margin">
         All
         {' '}
-        <b>Tasks</b>
+        <b>Notes</b>
       </h1>
       <p className="poppins-regular home-subtitle">
         Save your notes in plain text or Markdown format
@@ -213,16 +204,15 @@ function TaskAdd(): React.ReactNode {
         </Col>
       </Row>
 
-      {/* Form to add, edit and save tasks */}
       <Row className="main-margin">
         <Col xs={12}>
           <Card>
             <Card.Body>
-              <Card.Title>{t('task_form_title')}</Card.Title>
+              <Card.Title>{t('note_form_title')}</Card.Title>
 
               {formInvalid
                 ? (
-                    <Alert variant="danger" data-testid="add-task-error-message">
+                    <Alert variant="danger">
                       { errorMessage }
                     </Alert>
                   )
@@ -234,21 +224,21 @@ function TaskAdd(): React.ReactNode {
                 onSubmit={handleSubmit}
                 autoComplete="off"
               >
-                {/* Description */}
+                {/* Note title */}
                 <FormInput
-                  labelText={t('task_form_desc_label')}
-                  iconName="PencilFill"
+                  labelText={t('note_form_title_label')}
+                  iconName="JournalCheck"
                   required={true}
                   type="text"
-                  name="description"
-                  placeholder={t('task_form_desc_placeholder')}
-                  value={taskDescription}
+                  name="note_title"
+                  placeholder={t('note_form_title_placeholder')}
+                  value={noteTitle}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    setTaskDescription(e.target.value);
+                    setNoteTitle(e.target.value);
                   }}
                 />
 
-                {/* Task URL */}
+                {/* Note URL */}
                 <FormInput
                   labelText={t('task_form_url_label')}
                   iconName="At"
@@ -256,60 +246,60 @@ function TaskAdd(): React.ReactNode {
                   type="text"
                   name="url"
                   placeholder={t('task_form_url_placeholder')}
-                  value={taskUrl}
+                  value={noteUrl}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    setTaskUrl(e.target.value);
+                    setNoteUrl(e.target.value);
                   }}
                 />
 
-                {/* Due date */}
-                <FormInput
-                  labelText={t('task_form_duedate_label')}
-                  iconName="CalendarCheck"
-                  required={false}
-                  type="text"
-                  name="dueDate"
-                  placeholder={t('task_form_duedate_placeholder')}
-                  value={dueDate}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    setDueDate(e.target.value);
-                  }}
-                />
+                <Form.Group controlId="form_noteDescription">
+                  <Form.Label>
+                    {t('note_form_content_label')}
+                    <small>
+                      <a href="#" onClick={previewMarkdown}>
+                        {' '}
+                        Preview Markdown
+                      </a>
+                    </small>
+                  </Form.Label>
+                  <Form.Control
+                    className="font-size-14"
+                    as="textarea"
+                    required
+                    size="lg"
+                    rows={15}
+                    name="note_description"
+                    aria-describedby="noteDescriptionHelper"
+                    placeholder={t('note_form_content_placeholder')}
+                    value={noteDescription}
+                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                      setNoteDescription(e.target.value);
+                    }}
+                  />
+                </Form.Group>
 
-                {/* Tag */}
-                <FormInput
-                  labelText="Tags"
-                  iconName="Hash"
-                  required={false}
-                  type="text"
-                  name="tag"
-                  placeholder="my-tag"
-                  value={tag}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    setTag(e.target.value);
-                  }}
-                />
-
-                <Form.Check
-                  type="switch"
-                  id="high-priority-input"
-                  label="High priority"
-                  className="mb-3"
-                  name="highPriority"
-                  checked={highPriority}
-                  onChange={() => setHighPriority(!highPriority)}
-                />
-
-                <Button variant="primary" type="submit">
-                  {t('task_form_submit')}
+                <Button
+                  variant="primary"
+                  type="submit"
+                  className="w-100 mt-3"
+                >
+                  {t('note_form_submit')}
                 </Button>
               </Form>
+
             </Card.Body>
           </Card>
         </Col>
       </Row>
+
+      <ModalMarkdown
+        show={showPreviewMd}
+        onHide={handleCloseModal}
+        title={noteTitle}
+        markdownText={noteDescription}
+      />
     </Container>
   );
 }
 
-export default TaskAdd;
+export default NoteAdd;
