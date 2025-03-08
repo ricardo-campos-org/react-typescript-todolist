@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import {
-  Alert,
   Button,
   Card,
   Col,
@@ -21,6 +20,8 @@ import TaskUrl from '../../components/TaskUrl';
 import TaskTag from '../../components/TaskTag';
 import TaskTitle from '../../components/TaskTitle';
 import './style.css';
+import ContentHeader from '../../components/ContentHeader';
+import AlertError from '../../components/AlertError';
 
 /**
  * The Task component is a view that displays a list of tasks.
@@ -130,32 +131,15 @@ function Task(): React.ReactNode {
 
   return (
     <Container>
-      <h1 className="poppins-regular home-hello main-margin">
-        All
-        {' '}
-        <b>Tasks</b>
-      </h1>
-      <p className="poppins-regular home-subtitle">
-        Save your notes in plain text or Markdown format
-      </p>
+      <ContentHeader
+        h1TextRegular="All"
+        h1TextBold="Tasks"
+        subtitle="Be on top of your TODO list"
+        h2BlackText="Create, Filter, and Easily Find"
+        h2GreenText="Them"
+      />
 
-      <Row className="mb-3">
-        <Col xs={12}>
-          <h2 className="poppins-regular">Create, Filter, and Easily Find</h2>
-          <h2 className="poppins-bold home-productive">Them</h2>
-        </Col>
-      </Row>
-
-      {/* Tasks added */}
-      <Row className="main-margin">
-        <Col xs={12}>
-          {errorMessage.length > 0 && (
-            <Alert variant="danger">
-              { errorMessage }
-            </Alert>
-          )}
-        </Col>
-      </Row>
+      <AlertError errorMessage={errorMessage} />
 
       <Row>
         <Col xs={9}>

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Alert,
   Button,
   Card,
   Col,
@@ -18,11 +17,15 @@ import { translateServerResponse } from '../../utils/TranslatorUtils';
 import { ThreeDotsVertical } from 'react-bootstrap-icons';
 import TaskUrl from '../../components/TaskUrl';
 import NoteTitle from '../../components/NoteTitle';
-import './style.css';
 import ModalMarkdown from '../../components/ModalMarkdown';
+import ContentHeader from '../../components/ContentHeader';
+import AlertError from '../../components/AlertError';
+import './style.css';
 
 /**
+ * The Note component is a view that displays a list of notes.
  *
+ * @returns {React.ReactNode} The Task component
  */
 function Note(): React.ReactNode {
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -106,31 +109,15 @@ function Note(): React.ReactNode {
 
   return (
     <Container>
-      <h1 className="poppins-regular home-hello main-margin">
-        All
-        {' '}
-        <b>Notes</b>
-      </h1>
-      <p className="poppins-regular home-subtitle">
-        Save your notes in plain text or Markdown format
-      </p>
+      <ContentHeader
+        h1TextRegular="All"
+        h1TextBold="Notes"
+        subtitle="Save your notes in plain text or Markdown format"
+        h2BlackText="Create, Filter, and Easily Find"
+        h2GreenText="Them"
+      />
 
-      <Row className="mb-3">
-        <Col xs={12}>
-          <h2 className="poppins-regular">Create, Filter, and Easily Find</h2>
-          <h2 className="poppins-bold home-productive">Them</h2>
-        </Col>
-      </Row>
-
-      <Row className="main-margin">
-        <Col xs={12}>
-          {errorMessage.length > 0 && (
-            <Alert variant="danger">
-              { errorMessage }
-            </Alert>
-          )}
-        </Col>
-      </Row>
+      <AlertError errorMessage={errorMessage} />
 
       <Row>
         <Col xs={9}>

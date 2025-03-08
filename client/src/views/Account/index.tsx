@@ -12,6 +12,7 @@ import FormInput from '../../components/FormInput';
 import { translateServerResponse } from '../../utils/TranslatorUtils';
 import { UserPatchRequest } from '../../types/UserPatchRequest';
 import { UserResponse } from '../../types/UserResponse';
+import ContentHeader from '../../components/ContentHeader';
 import './styles.css';
 
 /**
@@ -121,21 +122,13 @@ function Account(): React.ReactNode {
 
   return (
     <Container>
-      <h1 className="poppins-regular home-hello main-margin">
-        My
-        {' '}
-        <b>Account</b>
-      </h1>
-      <p className="poppins-regular home-subtitle">
-        {t('account_my_account_hello')}
-      </p>
-
-      <Row className="mb-3">
-        <Col xs={12}>
-          <h2 className="poppins-regular">Update and Manage, Your</h2>
-          <h2 className="poppins-bold home-productive">Information</h2>
-        </Col>
-      </Row>
+      <ContentHeader
+        h1TextRegular="My"
+        h1TextBold="Account"
+        subtitle={t('account_my_account_hello')}
+        h2BlackText="Update and Manage, Your"
+        h2GreenText="Data"
+      />
 
       <Row>
         <Col xs={6}>
@@ -286,7 +279,7 @@ function Account(): React.ReactNode {
 
             {showAlert && (
               <Alert className="mt-3" variant="danger" onClose={() => setShowAlert(false)} dismissible>
-                <Alert.Heading>{t('account_delete_tittle')}</Alert.Heading>
+                <Alert.Heading>{t('account_delete_title')}</Alert.Heading>
                 <p>{t('account_delete_description')}</p>
                 <Button onClick={() => deleteAccount()} variant="outline-danger">
                   {t('account_delete_btn')}

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Alert,
   Button,
   Card,
   Col,
@@ -16,6 +15,8 @@ import ApiConfig from '../../api-service/apiConfig';
 import { translateServerResponse } from '../../utils/TranslatorUtils';
 import FormInput from '../../components/FormInput';
 import ModalMarkdown from '../../components/ModalMarkdown';
+import AlertError from '../../components/AlertError';
+import ContentHeader from '../../components/ContentHeader';
 
 type NoteAction = 'add' | 'edit';
 
@@ -26,7 +27,6 @@ type NoteAction = 'add' | 'edit';
  */
 function NoteAdd(): React.ReactNode {
   const [validated, setValidated] = useState<boolean>(false);
-  const [formInvalid, setFormInvalid] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [noteId, setNoteId] = useState<number>(0);
   const [noteTitle, setNoteTitle] = useState<string>('');
@@ -46,11 +46,9 @@ function NoteAdd(): React.ReactNode {
   const handleError = (e: unknown): void => {
     if (typeof e === 'string') {
       setErrorMessage(translateServerResponse(e, i18n.language));
-      setFormInvalid(true);
     }
     else if (e instanceof Error) {
       setErrorMessage(translateServerResponse(e.message, i18n.language));
-      setFormInvalid(true);
     }
   };
 
@@ -99,7 +97,6 @@ function NoteAdd(): React.ReactNode {
 
     setAction('add');
     setValidated(false);
-    setFormInvalid(false);
   };
 
   /**
@@ -114,12 +111,9 @@ function NoteAdd(): React.ReactNode {
 
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
-      setFormInvalid(true);
       setErrorMessage(translateServerResponse('Please fill in all the fields', i18n.language));
       return;
     }
-
-    setFormInvalid(false);
 
     const title: string = form.note_title.value;
     const description: string = form.note_description.value;
@@ -174,13 +168,21 @@ function NoteAdd(): React.ReactNode {
     }
   };
 
+  /**
+   * Display the Markdown text in Markdown format on a modal.
+   *
+   * @param {React.MouseEvent<Element, MouseEvent>} e The mouse click event.
+   */
   const previewMarkdown = (e: React.MouseEvent<Element, MouseEvent>): void => {
     e.preventDefault();
     e.stopPropagation();
     setShowPreviewMd(noteDescription.length > 0);
   };
 
-  const handleCloseModal = () => setShowPreviewMd(false);
+  /**
+   * Closes the Markdown preview modal.
+   */
+  const handleCloseModal = (): void => setShowPreviewMd(false);
 
   useEffect(() => {
     checkEditUrl();
@@ -188,21 +190,13 @@ function NoteAdd(): React.ReactNode {
 
   return (
     <Container>
-      <h1 className="poppins-regular home-hello main-margin">
-        All
-        {' '}
-        <b>Notes</b>
-      </h1>
-      <p className="poppins-regular home-subtitle">
-        Save your notes in plain text or Markdown format
-      </p>
-
-      <Row className="mb-3">
-        <Col xs={12}>
-          <h2 className="poppins-regular">Create, Filter, and Easily Find</h2>
-          <h2 className="poppins-bold home-productive">Them</h2>
-        </Col>
-      </Row>
+      <ContentHeader
+        h1TextRegular="All"
+        h1TextBold="Notes"
+        subtitle="Save your notes in plain text or Markdown format"
+        h2BlackText="Create, Filter, and Easily Find"
+        h2GreenText="Them"
+      />
 
       <Row className="main-margin">
         <Col xs={12}>
@@ -210,13 +204,7 @@ function NoteAdd(): React.ReactNode {
             <Card.Body>
               <Card.Title>{t('note_form_title')}</Card.Title>
 
-              {formInvalid
-                ? (
-                    <Alert variant="danger">
-                      { errorMessage }
-                    </Alert>
-                  )
-                : null}
+              <AlertError errorMessage={errorMessage} />
 
               <Form
                 noValidate
