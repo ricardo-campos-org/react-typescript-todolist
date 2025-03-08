@@ -2,11 +2,13 @@ package br.com.tasknoteapp.server.service;
 
 import br.com.tasknoteapp.server.entity.NoteEntity;
 import br.com.tasknoteapp.server.entity.NoteUrlEntity;
+import br.com.tasknoteapp.server.entity.NotesCreatedEntity;
 import br.com.tasknoteapp.server.entity.UserEntity;
 import br.com.tasknoteapp.server.exception.NoteNotFoundException;
 import br.com.tasknoteapp.server.exception.TaskNotFoundException;
 import br.com.tasknoteapp.server.repository.NoteRepository;
 import br.com.tasknoteapp.server.repository.NoteUrlRepository;
+import br.com.tasknoteapp.server.repository.NotesCreatedRepository;
 import br.com.tasknoteapp.server.request.NotePatchRequest;
 import br.com.tasknoteapp.server.request.NoteRequest;
 import br.com.tasknoteapp.server.response.NoteResponse;
@@ -32,6 +34,8 @@ public class NoteService {
   private final AuthUtil authUtil;
 
   private final NoteUrlRepository noteUrlRepository;
+
+  private final NotesCreatedRepository notesCreatedRepository;
 
   /**
    * Get all notes for the current user.
@@ -89,6 +93,19 @@ public class NoteService {
       NoteUrlEntity urlEntity = saveUrl(note, noteRequest.url());
       note.setNoteUrl(urlEntity);
     }
+
+    Optional<NotesCreatedEntity> userNote = notesCreatedRepository.findById(user.getId());
+    NotesCreatedEntity userNoteEntity = null;
+    if (userNote.isPresent()) {
+      userNoteEntity = userNote.get();
+      userNoteEntity.setCount(userNoteEntity.getCount() + 1);
+    } else {
+      userNoteEntity = new NotesCreatedEntity();
+      userNoteEntity.setCount(1);
+      userNoteEntity.setUserId(user.getId());
+    }
+
+    notesCreatedRepository.save(userNoteEntity);
 
     log.info("Note created! Id {}", created.getId());
     return created;
