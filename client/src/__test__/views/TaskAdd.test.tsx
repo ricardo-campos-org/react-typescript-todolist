@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react';
+import { render, fireEvent, waitFor, getByText } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { MemoryRouter } from 'react-router';
 import { I18nextProvider } from 'react-i18next';
@@ -16,6 +16,7 @@ vi.mock('react-i18next', () => ({
   useTranslation: () => ({
     i18n: {
       changeLanguage: vi.fn(),
+      language: 'en',
     },
     t: (key: string) => key,
   }),
@@ -66,11 +67,11 @@ describe('TaskAdd Component', () => {
   });
 
   it('should show error message when form is invalid', async () => {
-    const { getByTestId, getByRole } = renderTaskAdd();
+    const { getByText, getByRole } = renderTaskAdd();
     const submitButton = getByRole('button', { name: 'task_form_submit' });
     fireEvent.click(submitButton);
     await waitFor(() => {
-      expect(getByTestId('add-task-error-message')).toBeDefined();
+      expect(getByText('Please fill in all the fields')).toBeDefined();
     });
   });
 
