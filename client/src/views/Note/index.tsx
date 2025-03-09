@@ -155,7 +155,7 @@ function Note(): React.ReactNode {
                   </Col>
                   <Col xs={2} className="text-end">
                     <Dropdown>
-                      <Dropdown.Toggle variant="success">
+                      <Dropdown.Toggle variant="success" data-testid={`note-dropdown-menu-${note.id}`}>
                         <ThreeDotsVertical />
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
@@ -164,7 +164,11 @@ function Note(): React.ReactNode {
                             {t('task_table_action_edit')}
                           </Dropdown.Item>
                         </NavLink>
-                        <Dropdown.Item as="button" onClick={() => deleteNote(note.id)}>
+                        <Dropdown.Item
+                          as="button"
+                          onClick={() => deleteNote(note.id)}
+                          data-testid={`note-dropdown-delete-item-${note.id}`}
+                        >
                           {t('task_table_action_delete')}
                         </Dropdown.Item>
                       </Dropdown.Menu>
@@ -186,6 +190,7 @@ function Note(): React.ReactNode {
                     setModalContent(note.description);
                     setShowPreviewMd(true);
                   }}
+                  data-testid={`preview-markdown-link-${note.id}`}
                 >
                   {' '}
                   Preview Markdown
