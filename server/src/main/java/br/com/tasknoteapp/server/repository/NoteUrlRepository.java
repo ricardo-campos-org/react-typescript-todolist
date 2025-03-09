@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface NoteUrlRepository extends JpaRepository<NoteUrlEntity, Long> {
 
   void deleteAllByIdIn(List<Long> ids);
+
+  void deleteByNote_id(Long noteId);
 }
