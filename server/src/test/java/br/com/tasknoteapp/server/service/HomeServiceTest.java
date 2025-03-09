@@ -80,8 +80,8 @@ class HomeServiceTest {
 
     when(taskService.getAllTasks()).thenReturn(tasks);
 
-    NotesCreatedEntity notes = new NotesCreatedEntity(userEntity.getId(), 2);
-    when(notesCreatedRepository.findById(userEntity.getId())).thenReturn(Optional.of(notes));
+    NotesCreatedEntity notesCreated = new NotesCreatedEntity(userEntity.getId(), 2);
+    when(notesCreatedRepository.findById(userEntity.getId())).thenReturn(Optional.of(notesCreated));
 
     SummaryResponse summary = homeService.getSummary();
 

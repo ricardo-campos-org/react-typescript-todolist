@@ -92,8 +92,9 @@ class NoteServiceTest {
     when(authUtil.getCurrentUserEmail()).thenReturn(Optional.of(user.getEmail()));
     when(authService.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
     when(noteRepository.findById(note.getId())).thenReturn(Optional.empty());
+    Long noteId = note.getId();
 
-    assertThrows(NoteNotFoundException.class, () -> noteService.getNoteById(note.getId()));
+    assertThrows(NoteNotFoundException.class, () -> noteService.getNoteById(noteId));
   }
 
   @Test
@@ -103,6 +104,24 @@ class NoteServiceTest {
     when(noteRepository.save(any(NoteEntity.class))).thenReturn(note);
     when(noteUrlRepository.save(any(NoteUrlEntity.class))).thenReturn(new NoteUrlEntity());
     when(notesCreatedRepository.findById(user.getId())).thenReturn(Optional.empty());
+
+    NoteEntity createdNote = noteService.createNote(noteRequest);
+
+    assertEquals("Test Note", createdNote.getTitle());
+    verify(noteRepository, times(1)).save(any(NoteEntity.class));
+    verify(noteUrlRepository, times(1)).save(any(NoteUrlEntity.class));
+    verify(notesCreatedRepository, times(1)).save(any(NotesCreatedEntity.class));
+  }
+
+  @Test
+  void createNote_withExistingCount() {
+    when(authUtil.getCurrentUserEmail()).thenReturn(Optional.of(user.getEmail()));
+    when(authService.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+    NotesCreatedEntity noteUrlEntity = new NotesCreatedEntity();
+    noteUrlEntity.setCount(6);
+    when(notesCreatedRepository.findById(user.getId())).thenReturn(Optional.of(noteUrlEntity));
+    when(noteRepository.save(any(NoteEntity.class))).thenReturn(note);
+    when(noteUrlRepository.save(any(NoteUrlEntity.class))).thenReturn(new NoteUrlEntity());
 
     NoteEntity createdNote = noteService.createNote(noteRequest);
 
@@ -124,6 +143,17 @@ class NoteServiceTest {
     assertEquals("Updated Note", patchedNote.title());
     verify(noteRepository, times(1)).findById(note.getId());
     verify(noteRepository, times(1)).save(any(NoteEntity.class));
+  }
+
+  @Test
+  void patchNote_notFound() {
+    when(authUtil.getCurrentUserEmail()).thenReturn(Optional.of(user.getEmail()));
+    when(authService.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+    when(noteRepository.findById(note.getId())).thenReturn(Optional.empty());
+    Long noteId = note.getId();
+
+    assertThrows(
+        NoteNotFoundException.class, () -> noteService.patchNote(noteId, notePatchRequest));
   }
 
   @Test
