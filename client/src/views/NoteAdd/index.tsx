@@ -120,7 +120,7 @@ function NoteAdd(): React.ReactNode {
         id: 0,
         title: noteTitle,
         description: noteContent,
-        url: noteUrl ? noteUrl : null
+        url: noteUrl
       };
 
       const added: boolean = await addNote(payload);
@@ -135,7 +135,7 @@ function NoteAdd(): React.ReactNode {
         id: noteId,
         title: noteTitle,
         description: noteContent,
-        url: noteUrl ? noteUrl : null
+        url: noteUrl
       };
 
       const edited: boolean = await submitEditNote(payload);

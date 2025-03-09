@@ -92,10 +92,10 @@ function Note(): React.ReactNode {
     }
 
     const filteredTasks = savedNotes.filter((note: NoteResponse) => {
-      const shouldFilter = note.description.toLowerCase().includes(text.toLowerCase())
-        || note.title.toLowerCase().includes(text.toLowerCase())
-        || (note.url && note.url.includes(text.toLowerCase()));
-      return shouldFilter;
+      const anyTitleMatch = note.title.toLowerCase().includes(text.toLowerCase());
+      const anyContentMatch = note.description.toLowerCase().includes(text.toLowerCase());
+      const anyUrlMatch = note.url && note.url.includes(text.toLowerCase());
+      return anyTitleMatch || anyContentMatch || anyUrlMatch;
     });
 
     setNotes([...filteredTasks]);
