@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+/** This class represents a note created for the user in the database. */
 @Setter
 @Getter
 @Entity
