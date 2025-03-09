@@ -90,7 +90,7 @@ describe('NoteAdd Component', () => {
         id: 0,
         title: 'New Note',
         description: 'Note content',
-        url: null
+        url: ''
       }
       expect(api.postJSON).toHaveBeenCalledWith(ApiConfig.notesUrl, newNote);
     });
