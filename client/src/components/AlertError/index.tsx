@@ -3,6 +3,7 @@ import { Alert, Col, Row } from 'react-bootstrap';
 
 type Props = {
   errorMessage?: string;
+  dataTestid?: string;
 };
 
 /**
@@ -10,6 +11,7 @@ type Props = {
  *
  * @param {Props} props the AlertError props with the message to be displayed.
  * @param {string} [props.errorMessage] Optional error message.
+ * @param {string} [props.dataTestid] Optional data-testid property.
  * @returns {React.ReactNode} the AlertError rendered component.
  */
 const AlertError: React.FC<Props> = (props: Props): React.ReactNode => {
@@ -17,7 +19,7 @@ const AlertError: React.FC<Props> = (props: Props): React.ReactNode => {
     ? (
         <Row className="main-margin">
           <Col xs={12}>
-            <Alert variant="danger">
+            <Alert variant="danger" data-testid={props.dataTestid}>
               { props.errorMessage }
             </Alert>
           </Col>
