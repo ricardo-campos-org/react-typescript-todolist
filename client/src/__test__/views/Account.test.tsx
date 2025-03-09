@@ -17,6 +17,7 @@ vi.mock('react-i18next', () => ({
   useTranslation: () => ({
     i18n: {
       changeLanguage: changeLanguageMock,
+      language: 'en'
     },
     t: (key: string) => key,
   }),
@@ -111,5 +112,15 @@ describe('Account Component', () => {
     });
 
     mockPatchJSON.mockRestore();
+  });
+
+  it('should render text based on new contentHeader component', () => {
+    const { getByText } = renderAccount();
+
+    expect(getByText('My')).toBeDefined();
+    expect(getByText('Account')).toBeDefined();
+    expect(getByText('account_my_account_hello')).toBeDefined();
+    expect(getByText('Update and Manage, Your')).toBeDefined();
+    expect(getByText('Data')).toBeDefined();
   });
 });
