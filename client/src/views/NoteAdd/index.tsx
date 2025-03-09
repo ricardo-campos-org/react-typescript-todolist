@@ -30,7 +30,7 @@ function NoteAdd(): React.ReactNode {
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [noteId, setNoteId] = useState<number>(0);
   const [noteTitle, setNoteTitle] = useState<string>('');
-  const [noteDescription, setNoteDescription] = useState<string>('');
+  const [noteContent, setNoteContent] = useState<string>('');
   const [noteUrl, setNoteUrl] = useState<string>('');
   const [action, setAction] = useState<NoteAction>('add');
   const [showPreviewMd, setShowPreviewMd] = useState<boolean>(false);
@@ -93,7 +93,7 @@ function NoteAdd(): React.ReactNode {
   const resetInputs = () => {
     setNoteId(0);
     setNoteTitle('');
-    setNoteDescription('');
+    setNoteContent('');
 
     setAction('add');
     setValidated(false);
@@ -115,14 +115,11 @@ function NoteAdd(): React.ReactNode {
       return;
     }
 
-    const title: string = form.note_title.value;
-    const description: string = form.note_description.value;
-
     if (action === 'add') {
       const payload: NoteResponse = {
         id: 0,
-        title,
-        description,
+        title: noteTitle,
+        description: noteContent,
         url: noteUrl ? noteUrl : null
       };
 
@@ -136,8 +133,8 @@ function NoteAdd(): React.ReactNode {
     else if (action === 'edit') {
       const payload: NoteResponse = {
         id: noteId,
-        title,
-        description,
+        title: noteTitle,
+        description: noteContent,
         url: noteUrl ? noteUrl : null
       };
 
@@ -159,7 +156,7 @@ function NoteAdd(): React.ReactNode {
         const noteToEdit: NoteResponse = await api.getJSON(`${ApiConfig.notesUrl}/${params.id}`);
         setNoteId(noteToEdit.id);
         setNoteTitle(noteToEdit.title);
-        setNoteDescription(noteToEdit.description);
+        setNoteContent(noteToEdit.description);
         setAction('edit');
       }
       catch (e) {
@@ -176,7 +173,7 @@ function NoteAdd(): React.ReactNode {
   const previewMarkdown = (e: React.MouseEvent<Element, MouseEvent>): void => {
     e.preventDefault();
     e.stopPropagation();
-    setShowPreviewMd(noteDescription.length > 0);
+    setShowPreviewMd(noteContent.length > 0);
   };
 
   /**
@@ -253,16 +250,17 @@ function NoteAdd(): React.ReactNode {
                   <Form.Control
                     className="font-size-14"
                     as="textarea"
-                    required
+                    required={true}
                     size="lg"
                     rows={15}
                     name="note_description"
                     aria-describedby="noteDescriptionHelper"
                     placeholder={t('note_form_content_placeholder')}
-                    value={noteDescription}
+                    value={noteContent}
                     onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                      setNoteDescription(e.target.value);
+                      setNoteContent(e.target.value);
                     }}
+                    data-testid="note-content-input-area"
                   />
                 </Form.Group>
 
@@ -284,7 +282,7 @@ function NoteAdd(): React.ReactNode {
         show={showPreviewMd}
         onHide={handleCloseModal}
         title={noteTitle}
-        markdownText={noteDescription}
+        markdownText={noteContent}
       />
     </Container>
   );
