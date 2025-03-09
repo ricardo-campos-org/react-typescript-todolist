@@ -73,7 +73,7 @@ describe('Account Component', () => {
     const { getByText } = renderAccount();
     const deleteButton = getByText('account_privacy_delete_btn');
     fireEvent.click(deleteButton);
-    expect(getByText('account_delete_tittle')).toBeDefined();
+    expect(getByText('account_delete_title')).toBeDefined();
   })
 
   it('should call deleteAccount API and signOut when delete is confirmed', async () => {

@@ -13,6 +13,7 @@ import { translateServerResponse } from '../../utils/TranslatorUtils';
 import { UserPatchRequest } from '../../types/UserPatchRequest';
 import { UserResponse } from '../../types/UserResponse';
 import ContentHeader from '../../components/ContentHeader';
+import AlertError from '../../components/AlertError';
 import './styles.css';
 
 /**
@@ -27,7 +28,6 @@ function Account(): React.ReactNode {
   const { i18n, t } = useTranslation();
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [validated, setValidated] = useState<boolean>(false);
-  const [formInvalid, setFormInvalid] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [userName, setUserName] = useState<string>('');
   const [userEmail, setUserEmail] = useState<string>('');
@@ -62,11 +62,9 @@ function Account(): React.ReactNode {
   const handleError = (e: unknown): void => {
     if (typeof e === 'string') {
       setErrorMessage(translateServerResponse(e, i18n.language));
-      setFormInvalid(true);
     }
     else if (e instanceof Error) {
       setErrorMessage(translateServerResponse(e.message, i18n.language));
-      setFormInvalid(true);
     }
   };
 
@@ -94,7 +92,6 @@ function Account(): React.ReactNode {
     updateUser(userUpdated);
 
     setValidated(false);
-    setFormInvalid(false);
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
@@ -142,13 +139,7 @@ function Account(): React.ReactNode {
               Update only what you need. Blank fields will not be updated
             </span>
 
-            {formInvalid
-              ? (
-                  <Alert variant="danger" data-testid="add-task-error-message">
-                    { errorMessage }
-                  </Alert>
-                )
-              : null}
+            <AlertError errorMessage={errorMessage} />
 
             <Form noValidate validated={validated} onSubmit={handleSubmit} className="mt-4">
               {/* User name */}
