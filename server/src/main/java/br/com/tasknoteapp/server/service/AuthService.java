@@ -289,7 +289,6 @@ public class AuthService {
       return Optional.of(hexString.toString());
     } catch (NoSuchAlgorithmException | NullPointerException e) {
       log.error("NoSuchAlgorithmException or NullPointerException", e.getMessage());
-      e.printStackTrace();
     }
     return Optional.empty();
   }
