@@ -181,7 +181,7 @@ public class AuthService {
     List<UserEntity> users = userRepository.findAll();
     List<UserResponse> usersResponse = new ArrayList<>(users.size());
     users.forEach(
-        (u) -> usersResponse.add(UserResponse.fromEntity(u, getGravatarImageUrl(u.getEmail()))));
+        u -> usersResponse.add(UserResponse.fromEntity(u, getGravatarImageUrl(u.getEmail()))));
     log.info("{} user(s) found!", usersResponse.size());
 
     return usersResponse;

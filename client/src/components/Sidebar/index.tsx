@@ -37,9 +37,7 @@ function Sidebar(): React.ReactNode {
     setCurrent(menu);
   };
 
-  useEffect(() => {
-    console.log('user', user);
-  }, [user]);
+  useEffect(() => {}, [user]);
 
   return (
     <div className="d-flex flex-column vh-100 bg-light sidebar">
@@ -122,8 +120,6 @@ function Sidebar(): React.ReactNode {
           {build}
         </small>
       </div>
-
-      {/* FIXME make the sidebar get the whole page, always */}
     </div>
   );
 }
