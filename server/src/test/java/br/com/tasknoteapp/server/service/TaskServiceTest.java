@@ -385,6 +385,62 @@ class TaskServiceTest {
   }
 
   @Test
+  @DisplayName("Patch a task with url it should succeed")
+  void patchTask_withUrl_shouldSucceed() {
+    when(authUtil.getCurrentUserEmail()).thenReturn(Optional.of(USER_EMAIL));
+
+    UserEntity userEntity = new UserEntity();
+    userEntity.setId(USER_ID);
+    userEntity.setEmail(USER_EMAIL);
+    when(authService.findByEmail(USER_EMAIL)).thenReturn(Optional.of(userEntity));
+
+    Long taskId = 2525L;
+
+    TaskEntity taskEntity = new TaskEntity();
+    taskEntity.setId(taskId);
+    taskEntity.setDescription("Test task");
+    taskEntity.setHighPriority(true);
+    taskEntity.setDone(false);
+    taskEntity.setTag("test");
+    taskEntity.setUser(userEntity);
+    when(taskRepository.findById(taskId)).thenReturn(Optional.of(taskEntity));
+
+    TaskUrlEntity urlEntity = new TaskUrlEntity();
+    urlEntity.setId(new TaskUrlEntityPk(taskId, "www.url.com"));
+    when(taskUrlRepository.findAllById_taskId(taskId)).thenReturn(List.of(urlEntity));
+    doNothing().when(taskUrlRepository).deleteAllById_taskId(taskId);
+
+    String dueDate = "2026-12-31";
+    String timeLeft = TimeAgoUtil.formatDueDate(LocalDate.parse(dueDate));
+
+    TaskEntity savedTask = new TaskEntity();
+    savedTask.setDescription("Test task updated");
+    savedTask.setHighPriority(false);
+    savedTask.setDueDate(LocalDate.parse(dueDate));
+    savedTask.setDone(true);
+    savedTask.setTag(taskEntity.getTag());
+    when(taskRepository.save(any())).thenReturn(savedTask);
+
+    UserTasksDonePk pk = new UserTasksDonePk(USER_ID, taskId);
+    when(userTasksDoneRepository.findById(pk)).thenReturn(Optional.empty());
+
+    String url = "http://test.com";
+    TaskPatchRequest patch =
+        new TaskPatchRequest("Test task updated", true, List.of(url), dueDate, false, "test");
+    
+    when(taskUrlRepository.saveAll(any())).thenReturn(List.of());
+    TaskResponse patched = taskService.patchTask(taskId, patch);
+
+    assertNotNull(patched);
+    assertEquals("Test task updated", patched.description());
+    assertTrue(patched.done());
+    assertEquals(timeLeft, patched.dueDateFmt());
+    assertFalse(patched.highPriority());
+    assertEquals("test", patched.tag());
+    assertFalse(patched.urls().isEmpty());
+  }
+
+  @Test
   @DisplayName("Patch a task with a not found task should fail")
   void patchTask_taskNotFound_shouldFail() {
     when(authUtil.getCurrentUserEmail()).thenReturn(Optional.of(USER_EMAIL));
