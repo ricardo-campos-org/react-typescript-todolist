@@ -82,7 +82,8 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }: Pro
         name: registerResponse.name,
         email: registerResponse.email,
         admin: registerResponse.admin,
-        createdAt: new Date(registerResponse.createdAt)
+        createdAt: new Date(registerResponse.createdAt),
+        gravatarImageUrl: registerResponse.gravatarImageUrl
       };
 
       setSigned(true);
@@ -107,7 +108,8 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }: Pro
         name: registerResponse.name,
         email: registerResponse.email,
         admin: registerResponse.admin,
-        createdAt: new Date(registerResponse.createdAt)
+        createdAt: new Date(registerResponse.createdAt),
+        gravatarImageUrl: registerResponse.gravatarImageUrl
       };
 
       setSigned(true);

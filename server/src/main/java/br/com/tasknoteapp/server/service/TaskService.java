@@ -17,6 +17,7 @@ import br.com.tasknoteapp.server.util.AuthUtil;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -133,8 +134,12 @@ public class TaskService {
       taskEntity.setDone(patch.done());
     }
     taskEntity.setDueDate(null);
-    if (!Objects.isNull(patch.dueDate())) {
-      taskEntity.setDueDate(LocalDate.parse(patch.dueDate()));
+    if (!Objects.isNull(patch.dueDate()) && !patch.description().isBlank()) {
+      try {
+        taskEntity.setDueDate(LocalDate.parse(patch.dueDate()));
+      } catch (DateTimeParseException e) {
+        log.error("Unable to parse the provided date: {}: {}", patch.dueDate(), e.getMessage(), e);
+      }
     }
     taskEntity.setHighPriority(false);
     if (!Objects.isNull(patch.highPriority())) {

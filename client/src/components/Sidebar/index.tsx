@@ -3,7 +3,6 @@ import { Nav } from 'react-bootstrap';
 import { NavLink } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import AuthContext from '../../context/AuthContext';
-import UserIcon from '../../assets/user.png';
 import NavButton from '../NavButton';
 import SidebarIcon from '../SidebarIcon';
 import { env } from '../../env';
@@ -38,12 +37,14 @@ function Sidebar(): React.ReactNode {
     setCurrent(menu);
   };
 
-  useEffect(() => {}, [user]);
+  useEffect(() => {
+    console.log('user', user);
+  }, [user]);
 
   return (
     <div className="d-flex flex-column vh-100 bg-light sidebar">
       <div className="sidebar-header plus-jakarta-sans-bold">
-        <img width="45" src={UserIcon} alt="User icon" />
+        <img src={`https://gravatar.com/avatar/${user?.gravatarImageUrl}.jpg`} alt="User icon" />
         <span>{user?.name ? user?.name : 'User'}</span>
       </div>
 
@@ -121,6 +122,8 @@ function Sidebar(): React.ReactNode {
           {build}
         </small>
       </div>
+
+      {/* FIXME make the sidebar get the whole page, always */}
     </div>
   );
 }
