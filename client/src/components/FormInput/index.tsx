@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Form, InputGroup, Row } from 'react-bootstrap';
 import * as Icons from 'react-bootstrap-icons';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import './custom-datepicker.css';
+import { MiddlewareReturn } from '@floating-ui/core';
+import { MiddlewareState } from '@floating-ui/dom';
 
 type IconName = keyof typeof Icons;
 
@@ -34,6 +39,7 @@ function FormInput(props: React.PropsWithChildren<Props>): React.ReactNode {
   const [showingPwd, setShowingPwd] = useState<boolean>(false);
   const [formType, setFormType] = useState<string>(props.type ? props.type : 'text');
   const Icon = Icons[props.iconName];
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   /**
    * Toggle the password visibility.
@@ -74,15 +80,45 @@ function FormInput(props: React.PropsWithChildren<Props>): React.ReactNode {
             <InputGroup.Text>
               <Icon />
             </InputGroup.Text>
-            <Form.Control
-              required={props.required}
-              type={formType}
-              name={props.name}
-              placeholder={props.placeholder ? props.placeholder : ''}
-              value={props.value}
-              onChange={props.onChange}
-              data-testid={props.data_testid}
-            />
+            {props.type == 'date'
+              ? (
+                  <DatePicker
+                    selected={selectedDate}
+                    onChange={date => setSelectedDate(date)}
+                    dateFormat="MMMM d, yyyy"
+                    className="form-control"
+                    id="date-input"
+                    popperPlacement="bottom"
+                    popperModifiers={[
+                      {
+                        name: 'preventOverflow',
+                        options: {
+                          enabled: true,
+                          boundariesElement: 'viewport'
+                        },
+                        fn: function (state: MiddlewareState): MiddlewareReturn | Promise<MiddlewareReturn> {
+                          return state;
+                        }
+                      }
+                    ]}
+                    // Mobile-friendly options
+                    withPortal
+                    showYearDropdown
+                    showMonthDropdown
+                    dropdownMode="select"
+                  />
+                )
+              : (
+                  <Form.Control
+                    required={props.required}
+                    type={formType}
+                    name={props.name}
+                    placeholder={props.placeholder ? props.placeholder : ''}
+                    value={props.value}
+                    onChange={props.onChange}
+                    data-testid={props.data_testid}
+                  />
+                )}
           </InputGroup>
         </Form.Group>
       </Col>

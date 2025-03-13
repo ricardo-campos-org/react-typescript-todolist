@@ -247,7 +247,7 @@ function TaskAdd(): React.ReactNode {
                   labelText={t('task_form_duedate_label')}
                   iconName="CalendarCheck"
                   required={false}
-                  type="text"
+                  type="date"
                   name="dueDate"
                   placeholder={t('task_form_duedate_placeholder')}
                   value={dueDate}
