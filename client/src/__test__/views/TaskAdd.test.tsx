@@ -100,8 +100,8 @@ describe('TaskAdd Component', () => {
   it('should render text based on new contentHeader component', () => {
     const { getByText } = renderTaskAdd();
 
-    expect(getByText('All')).toBeDefined();
-    expect(getByText('Tasks')).toBeDefined();
+    expect(getByText('Add')).toBeDefined();
+    expect(getByText('Task')).toBeDefined();
     expect(getByText('Be on top of your TODO list')).toBeDefined();
     expect(getByText('Create, Filter, and Easily Find')).toBeDefined();
     expect(getByText('Them')).toBeDefined();

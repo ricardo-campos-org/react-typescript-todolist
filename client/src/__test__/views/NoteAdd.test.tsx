@@ -99,8 +99,8 @@ describe('NoteAdd Component', () => {
   it('should render text based on new contentHeader component', () => {
     const { getByText } = renderNoteAdd();
 
-    expect(getByText('All')).toBeDefined();
-    expect(getByText('Notes')).toBeDefined();
+    expect(getByText('Add')).toBeDefined();
+    expect(getByText('Note')).toBeDefined();
     expect(getByText('Save your notes in plain text or Markdown format')).toBeDefined();
     expect(getByText('Create, Filter, and Easily Find')).toBeDefined();
     expect(getByText('Them')).toBeDefined();
