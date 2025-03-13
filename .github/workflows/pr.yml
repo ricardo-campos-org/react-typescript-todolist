@@ -109,13 +109,14 @@ jobs:
     needs: client-docker-build
     if: github.event.pull_request.user.login == 'rmcampos' && github.event_name == 'pull_request'
     env:
-      STAGE_DOMAIN: ${{ vars.STAGE_DOMAIN }}
+      CLIENT_STAGE_URL: ${{ vars.CLIENT_STAGE_URL }}
+      BASE_DOMAIN: ${{ vars.BASE_DOMAIN }}
       API_KEY: ${{ secrets.DOKPLOY_API_KEY }}
       APP_ID: ${{ secrets.STAGE_WEB_CLIENT_ID }}
     steps:
       - name: Pre-deployment check
         run: |
-          if ! curl -s -f "${STAGE_DOMAIN}/"; then
+          if ! curl -s -f "${CLIENT_STAGE_URL}/"; then
             echo "Stage environment is not healthy"
           else
             echo "Stage environment is healthy"
@@ -128,31 +129,33 @@ jobs:
           max_attempts: 3
           command: |
             response=$(curl -X POST \
-              "${STAGE_DOMAIN}/api/application.deploy" \
+              "${BASE_DOMAIN}/api/application.deploy" \
               --max-time 30 \
               -H "accept: application/json" \
               -H "x-api-key: ${API_KEY}" \
               -H "Content-Type: application/json" \
-              -d "{\"json\":{\"applicationId\":\"${APP_ID}\"}}" \
+              -d "{\"applicationId\":\"${APP_ID}\"}" \
               -w "\n%{http_code}" \
               -s)
 
             status_code=$(echo "$response" | tail -n1)
-            body=$(echo "$response" | sed '$d')
-
             echo "Status code: $status_code"
-            echo "Response body: $body"
 
             if [ "$status_code" -ge 400 ]; then
+              body=$(echo "$response" | sed '$d')
+              
               echo "Deployment failed with status code $status_code"
+              echo "Response body: $body"
               exit 1
+            else
+              echo "Deployment succeeded!"
             fi
       - name: Verify deployment
         run: |
           # Wait for deployment to complete
           sleep 30
     
-          if ! curl -s -f "${STAGE_DOMAIN}/"; then
+          if ! curl -s -f "${CLIENT_STAGE_URL}/"; then
             echo "Stage environment is not healthy"
             exit 1
           fi
@@ -249,14 +252,14 @@ jobs:
     needs: client-docker-build
     if: github.event.pull_request.user.login == 'rmcampos' && github.event_name == 'pull_request'
     env:
-      STAGE_DOMAIN: ${{ vars.STAGE_DOMAIN }}
-      STAGE_API_DOMAIN: ${{ vars.STAGE_API_DOMAIN }}
+      BASE_DOMAIN: ${{ vars.BASE_DOMAIN }}
+      API_STAGE_URL: ${{ vars.API_STAGE_URL }}
       API_KEY: ${{ secrets.DOKPLOY_API_KEY }}
       APP_ID: ${{ secrets.STAGE_API_CLIENT_ID }}
     steps:
       - name: Pre-deployment check
         run: |
-          response=$(curl -s "${STAGE_API_DOMAIN}/actuator/health")
+          response=$(curl -s "${API_STAGE_URL}/actuator/health")
           status=$(echo "$response" | jq -r '.status')
           if [ "$status" != "UP" ]; then
             echo "Stage environment is not healthy. Status: $status"
@@ -271,7 +274,7 @@ jobs:
           max_attempts: 3
           command: |
             response=$(curl -X POST \
-              "${STAGE_DOMAIN}/api/application.deploy" \
+              "${BASE_DOMAIN}/api/application.deploy" \
               --max-time 30 \
               -H "accept: application/json" \
               -H "x-api-key: ${API_KEY}" \
@@ -295,7 +298,7 @@ jobs:
           # Wait for deployment to complete
           sleep 30
     
-          response=$(curl -s "${STAGE_API_DOMAIN}/actuator/health")
+          response=$(curl -s "${API_STAGE_URL}/actuator/health")
           status=$(echo "$response" | jq -r '.status')
     
           if [ "$status" != "UP" ]; then
