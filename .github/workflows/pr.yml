@@ -195,16 +195,18 @@ jobs:
     env:
       DEPLOY_DOMAIN: ${{ vars.DEPLOY_DOMAIN }}
       API_KEY: ${{ secrets.DOKPLOY_API_KEY }}
+      SERVER_APPID: ${{ secrets.STAGE_API_CLIENT_ID }}
+      CLIENT_APPID: ${{ secrets.STAGE_WEB_CLIENT_ID }}
     strategy:
       matrix:
         name: [server, client]
         include:
           - name: server
             health_check_url: "${{ vars.API_STAGE_URL }}/actuator/health"
-            app_id: ${{ secrets.STAGE_API_CLIENT_ID }}
+            app_id: ${SERVER_APPID}
           - name: client
             health_check_url: "${{ vars.CLIENT_STAGE_URL }}/"
-            app_id: ${{ secret.STAGE_WEB_CLIENT_ID }}
+            app_id: ${CLIENT_APPID}
     steps:
       - name: Pre-deployment check
         run: |
