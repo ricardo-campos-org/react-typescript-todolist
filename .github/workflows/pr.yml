@@ -110,7 +110,7 @@ jobs:
     if: github.event.pull_request.user.login == 'rmcampos' && github.event_name == 'pull_request'
     env:
       CLIENT_STAGE_URL: ${{ vars.CLIENT_STAGE_URL }}
-      BASE_DOMAIN: ${{ vars.BASE_DOMAIN }}
+      DEPLOY_DOMAIN: ${{ vars.DEPLOY_DOMAIN }}
       API_KEY: ${{ secrets.DOKPLOY_API_KEY }}
       APP_ID: ${{ secrets.STAGE_WEB_CLIENT_ID }}
     steps:
@@ -129,7 +129,7 @@ jobs:
           max_attempts: 3
           command: |
             response=$(curl -X POST \
-              "${BASE_DOMAIN}/api/application.deploy" \
+              "${DEPLOY_DOMAIN}/api/application.deploy" \
               --max-time 30 \
               -H "accept: application/json" \
               -H "x-api-key: ${API_KEY}" \
@@ -252,7 +252,7 @@ jobs:
     needs: client-docker-build
     if: github.event.pull_request.user.login == 'rmcampos' && github.event_name == 'pull_request'
     env:
-      BASE_DOMAIN: ${{ vars.BASE_DOMAIN }}
+      DEPLOY_DOMAIN: ${{ vars.DEPLOY_DOMAIN }}
       API_STAGE_URL: ${{ vars.API_STAGE_URL }}
       API_KEY: ${{ secrets.DOKPLOY_API_KEY }}
       APP_ID: ${{ secrets.STAGE_API_CLIENT_ID }}
@@ -274,7 +274,7 @@ jobs:
           max_attempts: 3
           command: |
             response=$(curl -X POST \
-              "${BASE_DOMAIN}/api/application.deploy" \
+              "${DEPLOY_DOMAIN}/api/application.deploy" \
               --max-time 30 \
               -H "accept: application/json" \
               -H "x-api-key: ${API_KEY}" \
