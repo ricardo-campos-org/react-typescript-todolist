@@ -10,7 +10,6 @@ const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({ children }: 
 
   const setNewPage = (page: string): void => {
     setCurrentPage(page);
-    console.log('page changed to', page);
   };
 
   const contextValue: SidebarContextData = useMemo(() => ({
