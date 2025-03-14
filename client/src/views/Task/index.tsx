@@ -262,7 +262,11 @@ function Task(): React.ReactNode {
                 </Row>
 
                 {task.dueDateFmt && (
-                  <TaskTimeLeft text={task.dueDateFmt} done={task.done} />
+                  <TaskTimeLeft
+                    text={task.dueDateFmt}
+                    done={task.done}
+                    tooltip={task.dueDate}
+                  />
                 )}
                 {task.urls.length > 0 && (
                   <TaskUrl url={task.urls[0]} />

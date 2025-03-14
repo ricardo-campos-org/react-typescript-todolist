@@ -16,8 +16,10 @@ interface Props {
   type?: string;
   name: string;
   placeholder?: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value?: string;
+  valueDate?: Date | null;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeDate?: (date: Date | null) => void;
   data_testid?: string;
 }
 
@@ -39,7 +41,6 @@ function FormInput(props: React.PropsWithChildren<Props>): React.ReactNode {
   const [showingPwd, setShowingPwd] = useState<boolean>(false);
   const [formType, setFormType] = useState<string>(props.type ? props.type : 'text');
   const Icon = Icons[props.iconName];
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   /**
    * Toggle the password visibility.
@@ -83,8 +84,12 @@ function FormInput(props: React.PropsWithChildren<Props>): React.ReactNode {
             {props.type == 'date'
               ? (
                   <DatePicker
-                    selected={selectedDate}
-                    onChange={date => setSelectedDate(date)}
+                    selected={props?.valueDate}
+                    onChange={(date: Date | null) => {
+                      if (props.onChangeDate) {
+                        props.onChangeDate(date);
+                      }
+                    }}
                     dateFormat="MMMM d, yyyy"
                     className="form-control"
                     id="date-input"
@@ -114,7 +119,7 @@ function FormInput(props: React.PropsWithChildren<Props>): React.ReactNode {
                     type={formType}
                     name={props.name}
                     placeholder={props.placeholder ? props.placeholder : ''}
-                    value={props.value}
+                    value={props?.value}
                     onChange={props.onChange}
                     data-testid={props.data_testid}
                   />
