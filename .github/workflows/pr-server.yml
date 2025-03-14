@@ -95,7 +95,7 @@ jobs:
   java-stage-deployments:
     name: Deploy Changes to Stage
     runs-on: ubuntu-latest
-    needs: [java-docker-build, client-docker-build]
+    needs: java-docker-build
     if: github.event.pull_request.user.login == 'rmcampos' && github.event_name == 'pull_request'
     env:
       DEPLOY_DOMAIN: ${{ vars.DEPLOY_DOMAIN }}
