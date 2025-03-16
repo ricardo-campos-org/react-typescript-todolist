@@ -3,7 +3,7 @@ name: PR Server
 on:
   pull_request:
     paths:
-      - 'client/**'
+      - 'server/**'
 
 concurrency:
   group: server-${{ github.event.number }}
