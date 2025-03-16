@@ -117,7 +117,7 @@ jobs:
             status_code=$(echo "$response" | tail -n1)
             echo "Status code: $status_code"
 
-            if [ "$status_code" -ge 400 ]; then
+            if [ "$status_code" -eq 200 ]; then
               body=$(echo "$response" | sed '$d')
               
               echo "Update failed with status code $status_code"
