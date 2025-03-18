@@ -104,7 +104,7 @@ jobs:
       CLIENT_APPID: ${{ secrets.STAGE_WEB_CLIENT_ID }}
     steps:
       - name: Checking cURL version
-        run: echo "cURL version: $(curl --version)"
+        run: curl --version
 
       - name: Pre-deployment check
         run: |

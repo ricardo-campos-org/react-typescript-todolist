@@ -90,7 +90,7 @@ jobs:
         run: docker push ghcr.io/ricardo-campos-org/react-typescript-todolist/client:prod-${{ steps.inspect.outputs.source_pr }}
 
       - name: Checking cURL version
-        run: echo "cURL version: $(curl --version)"
+        run: curl --version
 
       - name: Update image tag to be deployed
         uses: nick-fields/retry@v3.0.2
