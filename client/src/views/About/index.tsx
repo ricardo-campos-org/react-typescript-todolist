@@ -69,7 +69,14 @@ function About(): React.ReactNode {
             </p>
             <p className="poppins-light">
               You can also
-              <a href="https://buy-me-a-coffee-two-nu.vercel.app/" target="_blank" rel="noreferrer"> Buy me a coffee</a>
+              {' '}
+              <a
+                href="https://buy-me-a-coffee-two-nu.vercel.app/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Buy me a coffee
+              </a>
             </p>
           </div>
         </Col>

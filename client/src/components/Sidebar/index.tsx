@@ -122,10 +122,11 @@ function Sidebar(props: React.PropsWithChildren<Props>): React.ReactNode {
       </div>
 
       {props.isMobileOpen && (
-        <div
+        <button
           className="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-md-none"
           style={{ zIndex: 1 }}
           onClick={() => props.setIsMobileOpen(false)}
+          aria-label="Close mobile menu"
         />
       )}
     </>
