@@ -67,7 +67,7 @@ function About(): React.ReactNode {
               </a>
               {t('about_dev_description_two')}
             </p>
-            <p>
+            <p className="poppins-light">
               You can also
               <a href="https://buy-me-a-coffee-two-nu.vercel.app/" target="_blank" rel="noreferrer"> Buy me a coffee</a>
             </p>
