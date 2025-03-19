@@ -4,7 +4,6 @@ import './style.css';
 
 interface Props {
   readonly title: string;
-  readonly highPriority: boolean;
   readonly done: boolean;
   readonly taskUrl: string[];
 }
@@ -14,7 +13,6 @@ interface Props {
  *
  * @param {Props} props - The props for the component.
  * @param {string} [props.title] - The title for the task.
- * @param {boolean} [props.highPriority] - Define if the task is high priority.
  * @param {boolean} [props.done] - Define if the task is completed.
  * @returns {React.ReactNode} The rendered TaskTitle component.
  */

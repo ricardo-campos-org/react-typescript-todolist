@@ -254,7 +254,6 @@ function Task(): React.ReactNode {
                     <Card.Title>
                       <TaskTitle
                         title={task.description}
-                        highPriority={task.highPriority}
                         done={task.done}
                         taskUrl={task.urls}
                       />
