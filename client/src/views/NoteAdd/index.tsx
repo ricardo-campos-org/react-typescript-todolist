@@ -17,6 +17,7 @@ import FormInput from '../../components/FormInput';
 import ModalMarkdown from '../../components/ModalMarkdown';
 import AlertError from '../../components/AlertError';
 import ContentHeader from '../../components/ContentHeader';
+import { FloppyFill } from 'react-bootstrap-icons';
 
 type NoteAction = 'add' | 'edit';
 
@@ -268,17 +269,19 @@ function NoteAdd(): React.ReactNode {
                   />
                 </Form.Group>
 
-                <Button
-                  variant="primary"
+                <button
                   type="submit"
-                  className="mt-3"
+                  className="home-new-item task-note-btn mt-3"
                 >
+                  <FloppyFill size={25} />
                   {t('note_form_submit')}
-                </Button>
+                </button>
+
                 <Button
                   variant="outline-primary"
                   type="button"
-                  className="ms-2 mt-3"
+                  size="lg"
+                  className="ms-2"
                   onClick={() => navigate('/notes')}
                 >
                   Cancel

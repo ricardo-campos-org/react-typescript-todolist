@@ -27,7 +27,7 @@ $dark-text: #343a40;
     position: relative;
     z-index: 2;
     border: none;
-    border-radius: 8px;
+    border-radius: 4px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   }
 
@@ -39,7 +39,7 @@ $dark-text: #343a40;
   }
 
   .form-control {
-    border-radius: 5px;
+    border-radius: 4px;
   }
 
   .btn-primary {

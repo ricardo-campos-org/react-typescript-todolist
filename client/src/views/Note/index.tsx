@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
   Card,
   Col,
   Container,
@@ -14,7 +13,7 @@ import { NoteResponse } from '../../types/NoteResponse';
 import api from '../../api-service/api';
 import ApiConfig from '../../api-service/apiConfig';
 import { translateServerResponse } from '../../utils/TranslatorUtils';
-import { ThreeDotsVertical } from 'react-bootstrap-icons';
+import { PlusCircleFill, ThreeDotsVertical } from 'react-bootstrap-icons';
 import NoteTitle from '../../components/NoteTitle';
 import ModalMarkdown from '../../components/ModalMarkdown';
 import ContentHeader from '../../components/ContentHeader';
@@ -139,6 +138,12 @@ function Note(): React.ReactNode {
     if (cleaned.startsWith('.')) {
       cleaned = cleaned.substring(0, cleaned.length - 1);
     }
+
+    // shorten the line up to 100
+    const max = window.innerWidth / 15;
+    if (cleaned.length > max) {
+      cleaned = cleaned.substring(0, max);
+    }
     return cleaned;
   };
 
@@ -174,7 +179,7 @@ function Note(): React.ReactNode {
       <AlertError errorMessage={errorMessage} />
 
       <Row>
-        <Col xs={12} sm={9}>
+        <Col xs={12} sm={8} lg={9}>
           <Form.Control
             type="text"
             id="search_term"
@@ -185,12 +190,16 @@ function Note(): React.ReactNode {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => filterNotes(e.target.value)}
           />
         </Col>
-        <Col xs={12} sm={3} className="mt-3 mt-sm-0">
+        <Col xs={12} sm={4} lg={3} className="mt-3 mt-sm-0">
           <NavLink to="/notes/new">
-            <div className="d-grid gap-2">
-              <Button variant="primary" size="lg" type="button" className="d-grip">
-                Add note
-              </Button>
+            <div className="d-grid">
+              <button
+                type="button"
+                className="home-new-item task-note-btn"
+              >
+                <PlusCircleFill size={25} />
+                Add Notes
+              </button>
             </div>
           </NavLink>
         </Col>
