@@ -15,7 +15,6 @@ import api from '../../api-service/api';
 import ApiConfig from '../../api-service/apiConfig';
 import { translateServerResponse } from '../../utils/TranslatorUtils';
 import { ThreeDotsVertical } from 'react-bootstrap-icons';
-import TaskUrl from '../../components/TaskUrl';
 import NoteTitle from '../../components/NoteTitle';
 import ModalMarkdown from '../../components/ModalMarkdown';
 import ContentHeader from '../../components/ContentHeader';
@@ -25,7 +24,7 @@ import './style.css';
 /**
  * The Note component is a view that displays a list of notes.
  *
- * @returns {React.ReactNode} The Task component
+ * @returns {React.ReactNode} The Note component
  */
 function Note(): React.ReactNode {
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -91,17 +90,72 @@ function Note(): React.ReactNode {
       return;
     }
 
-    const filteredTasks = savedNotes.filter((note: NoteResponse) => {
+    const filteredNotes = savedNotes.filter((note: NoteResponse) => {
       const anyTitleMatch = note.title.toLowerCase().includes(text.toLowerCase());
       const anyContentMatch = note.description.toLowerCase().includes(text.toLowerCase());
       const anyUrlMatch = note.url?.includes(text.toLowerCase());
       return anyTitleMatch || anyContentMatch || anyUrlMatch;
     });
 
-    setNotes([...filteredTasks]);
+    setNotes([...filteredNotes]);
   };
 
   const handleCloseModal = () => setShowPreviewMd(false);
+
+  const cleanText = (text: string): string => {
+    if (!text) {
+      return text;
+    }
+
+    let cleaned = text.trim();
+    if (cleaned.startsWith('- ')) {
+      cleaned = cleaned.substring(2);
+    }
+    if (cleaned.startsWith('#')) {
+      cleaned = text.replaceAll('#', '').trim();
+    }
+    cleaned = cleaned.replaceAll('`', '');
+    cleaned = cleaned.replaceAll('**', '');
+
+    // check for url pattern
+    if (cleaned.includes('[') && cleaned.includes('](') && cleaned.includes('(')) {
+      cleaned = cleaned.replaceAll(' [', ' ');
+      cleaned = cleaned.replaceAll('](', ' - ');
+      if (cleaned.endsWith(')')) {
+        cleaned = cleaned.substring(0, cleaned.length - 1);
+      }
+      if (cleaned.endsWith('/')) {
+        cleaned = cleaned.substring(0, cleaned.length - 1);
+      }
+    }
+    if (cleaned.endsWith(';')) {
+      cleaned = cleaned.substring(0, cleaned.length - 1);
+    }
+    if (cleaned.endsWith(':')) {
+      cleaned = cleaned.substring(0, cleaned.length - 1);
+    }
+
+    // check for dot line
+    if (cleaned.startsWith('.')) {
+      cleaned = cleaned.substring(0, cleaned.length - 1);
+    }
+    return cleaned;
+  };
+
+  const getFirstRows = (content: string): string => {
+    const lines = content.split('\n');
+    const preview: string[] = [];
+    for (let i = 0; i < 10; i++) {
+      const clean = cleanText(lines[i]);
+      if (clean !== '') {
+        preview.push(clean);
+        if (preview.length === 5) {
+          break;
+        }
+      }
+    }
+    return preview.join('\n');
+  };
 
   useEffect(() => {
     loadNotes();
@@ -145,12 +199,15 @@ function Note(): React.ReactNode {
       <Row className="mt-3">
         {notes.map((note: NoteResponse) => (
           <Col xs={12} key={note.id.toString()}>
-            <Card key={note.id.toString()} className="task-card">
+            <Card key={note.id.toString()} className="mb-3">
               <Card.Body>
                 <Row>
                   <Col xs={10}>
                     <Card.Title>
-                      <NoteTitle title={note.title} />
+                      <NoteTitle
+                        title={note.title}
+                        noteUrl={note.url}
+                      />
                     </Card.Title>
                   </Col>
                   <Col xs={2} className="text-end">
@@ -174,11 +231,12 @@ function Note(): React.ReactNode {
                       </Dropdown.Menu>
                     </Dropdown>
                   </Col>
+                  <Col>
+                    <span className="text-muted span-line-break font-size-14">
+                      {getFirstRows(note.description)}
+                    </span>
+                  </Col>
                 </Row>
-
-                {note.url && note.url.length > 0 && (
-                  <TaskUrl url={note.url} />
-                )}
               </Card.Body>
               <Card.Footer className="task-card-footer">
                 <a
@@ -193,7 +251,7 @@ function Note(): React.ReactNode {
                   data-testid={`preview-markdown-link-${note.id}`}
                 >
                   {' '}
-                  Preview Markdown
+                  Open
                 </a>
               </Card.Footer>
             </Card>

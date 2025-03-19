@@ -93,6 +93,7 @@ function NoteAdd(): React.ReactNode {
   const resetInputs = () => {
     setNoteId(0);
     setNoteTitle('');
+    setNoteUrl('');
     setNoteContent('');
 
     setAction('add');
@@ -156,6 +157,9 @@ function NoteAdd(): React.ReactNode {
         const noteToEdit: NoteResponse = await api.getJSON(`${ApiConfig.notesUrl}/${params.id}`);
         setNoteId(noteToEdit.id);
         setNoteTitle(noteToEdit.title);
+        if (noteToEdit.url) {
+          setNoteUrl(noteToEdit.url);
+        }
         setNoteContent(noteToEdit.description);
         setAction('edit');
       }

@@ -16,7 +16,6 @@ import api from '../../api-service/api';
 import ApiConfig from '../../api-service/apiConfig';
 import { translateServerResponse, translateTaskResponse } from '../../utils/TranslatorUtils';
 import TaskTimeLeft from '../../components/TaskTimeLeft';
-import TaskUrl from '../../components/TaskUrl';
 import TaskTag from '../../components/TaskTag';
 import TaskTitle from '../../components/TaskTitle';
 import ContentHeader from '../../components/ContentHeader';
@@ -225,7 +224,10 @@ function Task(): React.ReactNode {
       <Row className="mt-3">
         {tasks.map((task: TaskResponse) => (
           <Col xs={12} key={task.id.toString()}>
-            <Card key={task.id.toString()} className="task-card">
+            <Card
+              key={task.id.toString()}
+              className={`task-card shadow-lg bg-light ${task.highPriority ? 'high-importance' : 'normal-importance'}`}
+            >
               <Card.Body>
                 <Row>
                   <Col xs={10}>
@@ -234,6 +236,7 @@ function Task(): React.ReactNode {
                         title={task.description}
                         highPriority={task.highPriority}
                         done={task.done}
+                        taskUrl={task.urls}
                       />
                     </Card.Title>
                   </Col>
@@ -267,9 +270,6 @@ function Task(): React.ReactNode {
                     done={task.done}
                     tooltip={task.dueDate}
                   />
-                )}
-                {task.urls.length > 0 && (
-                  <TaskUrl url={task.urls[0]} />
                 )}
               </Card.Body>
               <Card.Footer className="task-card-footer">

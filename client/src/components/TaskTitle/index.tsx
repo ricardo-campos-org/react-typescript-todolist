@@ -1,11 +1,13 @@
 import React from 'react';
 import { Bell, Check2Circle } from 'react-bootstrap-icons';
+import ExternalLinkIcon from '../../assets/icons8-external-link-30.png';
 import './style.css';
 
 interface Props {
   readonly title: string;
   readonly highPriority: boolean;
   readonly done: boolean;
+  readonly taskUrl: string[];
 }
 
 /**
@@ -33,6 +35,11 @@ function TaskTitle(props: React.PropsWithChildren<Props>): React.ReactNode {
           data-testid={`task-title-text-${props.title}`}
         >
           {props.title}
+          {props.taskUrl && props.taskUrl.length > 0 && (
+            <a href={props.taskUrl[0]} target="_blank" rel="noreferrer" className="task-note-external-link">
+              <img src={ExternalLinkIcon} width={20} alt="external link" />
+            </a>
+          )}
         </span>
       </span>
     );
@@ -47,6 +54,11 @@ function TaskTitle(props: React.PropsWithChildren<Props>): React.ReactNode {
         data-testid={`task-title-text-${props.title}`}
       >
         {props.title}
+        {props.taskUrl && props.taskUrl.length > 0 && (
+          <a href={props.taskUrl[0]} target="_blank" rel="noreferrer" className="task-note-external-link">
+            <img src={ExternalLinkIcon} width={20} alt="external link" />
+          </a>
+        )}
       </span>
     </span>
   );

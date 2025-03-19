@@ -1,26 +1,20 @@
-$theme-colors: (
-  'info': tomato,
-  'danger': teal,
-  'primary': #4CD964,
-);
-
+@import './theme.scss';
 @import '~bootstrap/scss/bootstrap';
 
-$primary-color: #4CD964;
 $light-bg: #E6F5E9;
 $dark-text: #343a40;
 
 body {
-  background-color: $light-bg;
+  background-color: #E6F5E9;
 }
 
 a, .btn-link {
-  color: $primary-color;
+  color: map-get($theme-colors, 'primary');
   text-decoration: none;
 }
 
 a:hover, .btn-link:hover {
-  color: $primary-color;
+  color: map-get($theme-colors, 'primary');
 }
 
 .poppins-thin {
@@ -205,4 +199,12 @@ a:hover, .btn-link:hover {
 
 .font-size-14 {
   font-size: 14px;
+}
+
+.task-note-external-link {
+  margin-left: 0.5rem;
+}
+
+.task-note-external-link img {
+  margin-top: -3px;
 }

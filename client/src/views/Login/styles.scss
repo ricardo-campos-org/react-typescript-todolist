@@ -1,7 +1,9 @@
+@import '../../styles/theme.scss';
+/*
 $primary-color: #61cd8d;
 $light-bg: #f8f9fa;
 $dark-text: #343a40;
-
+*/
 .login-page {
   display: flex;
   justify-content: center;
@@ -41,15 +43,15 @@ $dark-text: #343a40;
   }
 
   .btn-primary {
-    background-color: $primary-color;
-    border-color: $primary-color;
+    background-color: map-get($theme-colors, 'primary');
+    border-color: map-get($theme-colors, 'primary');
     &:hover {
-      background-color: darken($primary-color, 10%);
+      background-color: darken(map-get($theme-colors, 'primary'), 10%);
     }
   }
 
   .text-center a {
-    color: $primary-color;
+    color: map-get($theme-colors, 'primary');
     &:hover {
       text-decoration: underline;
     }
