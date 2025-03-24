@@ -74,6 +74,7 @@ class JwtServiceImpl implements JwtService {
         .subject(email)
         .issuedAt(new Date(System.currentTimeMillis()))
         .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+        .claims(claims)
         .signWith(key)
         .compact();
   }
