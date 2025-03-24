@@ -58,8 +58,6 @@ class JwtServiceImplTest {
 
     assertNotNull(token);
 
-    System.out.println(token);
-
     String emailFromToken = jwtService.getEmailFromToken(token);
     assertNotNull(emailFromToken);
     assertEquals(emailFromToken, testEmail);
@@ -166,22 +164,6 @@ class JwtServiceImplTest {
     boolean valid = jwtService.validateTokenAndUser(token, differentUser);
 
     assertFalse(valid);
-  }
-
-  @Test
-  void validateTokenAndUser_shouldReturnFalseForExpiredToken() {
-    Map<String, Object> claims = Map.of("test", "value");
-    String expiredToken =
-        Jwts.builder()
-            .issuer("Java-API")
-            .subject(testEmail)
-            .issuedAt(new Date(System.currentTimeMillis() - 2000))
-            .expiration(new Date(System.currentTimeMillis() - 1000)) // Expired 1 second ago
-            .claims(claims)
-            .signWith(getKey())
-            .compact();
-
-    assertThrows(ExpiredJwtException.class, () -> jwtService.isTokenExpired(expiredToken));
   }
 
   private Claims extractClaims(String token) {

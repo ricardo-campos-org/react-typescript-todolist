@@ -59,7 +59,7 @@ class JwtServiceImpl implements JwtService {
     claims.put("name", user.getName());
 
     List<String> roles = new ArrayList<>();
-    if (user.getAdmin()) {
+    if (Boolean.TRUE.equals(user.getAdmin())) {
       roles.add("admin");
     }
 
