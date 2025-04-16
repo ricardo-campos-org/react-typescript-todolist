@@ -25,7 +25,7 @@ import './styles/custom.scss';
 function App(): React.ReactNode {
   const { signed, checkCurrentAuthUser } = useContext(AuthContext);
   const [theme, setTheme] = useState(() => {
-    return localStorage.getItem('theme') || 'light';
+    return localStorage.getItem('theme') ?? 'light';
   });
 
   /**
