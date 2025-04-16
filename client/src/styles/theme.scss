@@ -13,6 +13,10 @@ $input-border-radius-lg: 0.3rem;
 
 // Light theme overrides
 [data-bs-theme="light"] {
+  /* Landing */
+  --bs-landing-bg: url('../assets/landing-bg.jpg');
+  --bs-bg-overlay: rgba(255, 255, 255, 0.85);
+
   /* Body */
   --bs-custom-body-bg: #E6F5E9; // light green
   --bs-body-bg: rgba(248, 249, 250, 1);
@@ -49,6 +53,10 @@ $input-border-radius-lg: 0.3rem;
 
 // Dark theme overrides
 [data-bs-theme="dark"] {
+  /* Landing */
+  --bs-landing-bg: url('../assets/landing-bg-dark.jpg');
+  --bs-bg-overlay: rgba(0, 0, 0, 0.95);
+
   /* Body */
   --bs-custom-body-bg: #192123; // body background color
   --bs-body-bg: #161a1d; // input background color

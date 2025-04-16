@@ -115,6 +115,13 @@
   margin-top: -3px;
 }
 
+.btn.btn-dark {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1030;
+}
+
 /* Responsive adjustments */
 @media (max-width: 576px) {
   .radio-buttons-wrapper {

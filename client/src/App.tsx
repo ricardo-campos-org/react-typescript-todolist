@@ -104,12 +104,13 @@ function App(): React.ReactNode {
 
   return (
     <>
-      <header className="d-flex justify-content-between p-3">
-        <span></span>
-        <button className="btn btn-outline-secondary" onClick={toggleTheme}>
-          {theme === 'dark' ? '☀ Light Mode' : '🌙 Dark Mode'}
-        </button>
-      </header>
+      <button
+        type="button"
+        className="btn btn-dark"
+        onClick={toggleTheme}
+      >
+        {theme === 'dark' ? '☀ Light Mode' : '🌙 Dark Mode'}
+      </button>
 
       {/* Your routes or content here */}
       <RouterProvider router={browserRouter} />
