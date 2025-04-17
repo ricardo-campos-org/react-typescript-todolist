@@ -16,6 +16,7 @@ import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+/** This class contains methods to handle user session and account deletion. */
 @Service
 @AllArgsConstructor
 public class UserSessionService {

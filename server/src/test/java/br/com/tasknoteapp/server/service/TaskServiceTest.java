@@ -358,7 +358,6 @@ class TaskServiceTest {
     when(taskUrlRepository.findAllById_taskId(taskId)).thenReturn(List.of());
 
     String dueDate = "2026-12-31";
-    String timeLeft = TimeAgoUtil.formatDueDate(LocalDate.parse(dueDate));
 
     TaskEntity savedTask = new TaskEntity();
     savedTask.setDescription("Test task updated");
@@ -378,7 +377,7 @@ class TaskServiceTest {
     assertNotNull(patched);
     assertEquals("Test task updated", patched.description());
     assertTrue(patched.done());
-    assertEquals(timeLeft, patched.dueDateFmt());
+    assertEquals(TimeAgoUtil.formatDueDate(LocalDate.parse(dueDate)), patched.dueDateFmt());
     assertFalse(patched.highPriority());
     assertEquals("test", patched.tag());
     assertTrue(patched.urls().isEmpty());
@@ -411,7 +410,6 @@ class TaskServiceTest {
     doNothing().when(taskUrlRepository).deleteAllById_taskId(taskId);
 
     String dueDate = "2026-12-31";
-    String timeLeft = TimeAgoUtil.formatDueDate(LocalDate.parse(dueDate));
 
     TaskEntity savedTask = new TaskEntity();
     savedTask.setDescription("Test task updated");
@@ -434,7 +432,7 @@ class TaskServiceTest {
     assertNotNull(patched);
     assertEquals("Test task updated", patched.description());
     assertTrue(patched.done());
-    assertEquals(timeLeft, patched.dueDateFmt());
+    assertEquals(TimeAgoUtil.formatDueDate(LocalDate.parse(dueDate)), patched.dueDateFmt());
     assertFalse(patched.highPriority());
     assertEquals("test", patched.tag());
     assertFalse(patched.urls().isEmpty());

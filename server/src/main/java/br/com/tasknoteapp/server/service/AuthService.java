@@ -270,7 +270,7 @@ public class AuthService {
   }
 
   /**
-   * Get the current logged user (based in the JWT Authentication)
+   * Get the current logged user (based in the JWT Authentication).
    *
    * @return An instance of {@link UserEntity} with the current user.
    * @throws UserNotFoundException when the user was not found

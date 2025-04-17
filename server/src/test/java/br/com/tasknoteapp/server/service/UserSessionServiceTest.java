@@ -1,7 +1,10 @@
 package br.com.tasknoteapp.server.service;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyList;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
 
 import br.com.tasknoteapp.server.entity.NotesCreatedEntity;
 import br.com.tasknoteapp.server.entity.UserEntity;
@@ -64,13 +67,13 @@ class UserSessionServiceTest {
     UserResponse response = userSessionService.deleteCurrentUserAccount();
 
     // Assert
+    assert response.userId() == 1L;
+    assert response.email().equals("user@domain.com");
     verify(taskService).deleteTask(task.id());
     verify(noteService).deleteNote(note.id());
     verify(userTasksDoneRepository).deleteAllInBatch(anyList());
     verify(notesCreatedRepository).deleteAll(anyList());
     verify(authService).deleteUserAccount();
-    assert response.userId() == 1L;
-    assert response.email().equals("user@domain.com");
   }
 
   @Test
