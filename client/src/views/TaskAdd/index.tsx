@@ -194,7 +194,7 @@ function TaskAdd(): React.ReactNode {
   }, []);
 
   return (
-    <Container>
+    <Container fluid>
       <ContentHeader
         h1TextRegular="Add"
         h1TextBold="Task"

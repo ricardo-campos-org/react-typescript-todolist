@@ -10,7 +10,16 @@ public interface TaskRepository extends JpaRepository<TaskEntity, Long> {
 
   List<TaskEntity> findAllByUser_id(Long userId);
 
+  // keep going from here
   @Query(
-      "select t from TaskEntity t where upper(t.description) like upper(%?1%) and t.user.id = ?2")
+      """
+      select t
+      from TaskEntity t
+      join TaskUrlEntity tu
+      where (
+        upper(t.description) like upper(%?1%) or
+        upper(t.tag) like upper(%?%)
+        ) and t.user.id = ?2
+      """)
   List<TaskEntity> findAllBySearchTerm(String searchTerm, Long userId);
 }

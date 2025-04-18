@@ -189,7 +189,7 @@ function NoteAdd(): React.ReactNode {
   }, []);
 
   return (
-    <Container>
+    <Container fluid>
       <ContentHeader
         h1TextRegular="Add"
         h1TextBold="Note"

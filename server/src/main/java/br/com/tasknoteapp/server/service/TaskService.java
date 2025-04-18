@@ -221,6 +221,39 @@ public class TaskService {
         .toList();
   }
 
+  /**
+   * Get tasks by a given filter.
+   *
+   * @param filter The filter to get the tasks.
+   * @return {@link List} of {@link TaskResponse} with found records or an empty list.
+   */
+  public List<TaskResponse> getTasksByFilter(String filter) {
+    UserEntity user = getCurrentUser();
+
+    List<TaskEntity> allTasks = taskRepository.findAllByUser_id(user.getId());
+    if (allTasks.isEmpty()) {
+      return List.of();
+    }
+
+    if (filter.equals("all")) {
+      return allTasks.stream()
+        .map((TaskEntity tr) -> TaskResponse.fromEntity(tr, getAllTasksUrls(tr.getId())))
+        .toList();
+    }
+
+    if (filter.equals("high")) {
+      return allTasks.stream()
+        .filter(TaskEntity::getHighPriority)
+        .map((TaskEntity tr) -> TaskResponse.fromEntity(tr, getAllTasksUrls(tr.getId())))
+        .toList();
+    }
+
+    return allTasks.stream()
+        .filter(t -> t.getTag().equals(filter))
+        .map((TaskEntity tr) -> TaskResponse.fromEntity(tr, getAllTasksUrls(tr.getId())))
+        .toList();
+  }
+
   private UserEntity getCurrentUser() {
     Optional<String> currentUserEmail = authUtil.getCurrentUserEmail();
     String email = currentUserEmail.orElseThrow();

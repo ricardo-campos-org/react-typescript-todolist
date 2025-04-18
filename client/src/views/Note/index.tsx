@@ -167,7 +167,7 @@ function Note(): React.ReactNode {
   }, []);
 
   return (
-    <Container>
+    <Container fluid>
       <ContentHeader
         h1TextRegular="All"
         h1TextBold="Notes"

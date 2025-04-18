@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Col, Row } from 'react-bootstrap';
+import { Alert } from 'react-bootstrap';
 
 type Props = {
   errorMessage?: string;
@@ -22,18 +22,14 @@ const AlertError: React.FC<Props> = (props: Props): React.ReactNode => {
   }
 
   return (
-    <Row className="main-margin">
-      <Col xs={12}>
-        <Alert
-          variant="danger"
-          dismissible
-          data-testid={props.dataTestid}
-          onClose={props.onClose}
-        >
-          { props.errorMessage }
-        </Alert>
-      </Col>
-    </Row>
+    <Alert
+      variant="danger"
+      dismissible
+      data-testid={props.dataTestid}
+      onClose={props.onClose}
+    >
+      { props.errorMessage }
+    </Alert>
   );
 };
 

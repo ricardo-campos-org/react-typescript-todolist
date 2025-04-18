@@ -116,7 +116,7 @@ function Account(): React.ReactNode {
   useEffect(() => {}, [user]);
 
   return (
-    <Container>
+    <Container fluid>
       <ContentHeader
         h1TextRegular="My"
         h1TextBold="Account"
