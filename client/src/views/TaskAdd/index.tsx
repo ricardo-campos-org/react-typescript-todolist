@@ -210,7 +210,10 @@ function TaskAdd(): React.ReactNode {
             <Card.Body>
               <Card.Title>{t('task_form_title')}</Card.Title>
 
-              <AlertError errorMessage={errorMessage} data-testid="add-task-error-message" />
+              <AlertError
+                errorMessage={errorMessage}
+                onClose={() => setErrorMessage('')}
+              />
 
               <Form
                 noValidate

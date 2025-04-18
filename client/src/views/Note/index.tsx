@@ -176,7 +176,10 @@ function Note(): React.ReactNode {
         h2GreenText="Them"
       />
 
-      <AlertError errorMessage={errorMessage} />
+      <AlertError
+        errorMessage={errorMessage}
+        onClose={() => setErrorMessage('')}
+      />
 
       <Row>
         <Col xs={12} sm={8} lg={9}>

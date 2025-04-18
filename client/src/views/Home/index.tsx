@@ -124,7 +124,10 @@ function Home(): React.ReactNode {
             <Card.Body>
               <Card.Title>{t('home_card_search_label')}</Card.Title>
 
-              <AlertError errorMessage={errorMessage} />
+              <AlertError
+                errorMessage={errorMessage}
+                onClose={() => setErrorMessage('')}
+              />
 
               <Form noValidate validated={validated} onSubmit={handleSearch}>
                 <InputGroup className="mb-3">

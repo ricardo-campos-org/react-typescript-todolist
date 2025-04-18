@@ -204,7 +204,10 @@ function NoteAdd(): React.ReactNode {
             <Card.Body>
               <Card.Title>{t('note_form_title')}</Card.Title>
 
-              <AlertError errorMessage={errorMessage} />
+              <AlertError
+                errorMessage={errorMessage}
+                onClose={() => setErrorMessage('')}
+              />
 
               <Form
                 noValidate
