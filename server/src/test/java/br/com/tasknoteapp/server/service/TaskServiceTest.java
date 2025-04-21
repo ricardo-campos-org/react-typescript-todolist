@@ -496,13 +496,13 @@ class TaskServiceTest {
     userEntity.setEmail(USER_EMAIL);
     when(authService.findByEmail(USER_EMAIL)).thenReturn(Optional.of(userEntity));
 
-    String searchTerm = "unit";
-
     TaskEntity taskEntity = new TaskEntity();
     taskEntity.setId(1L);
     taskEntity.setDescription("Write unit tests");
     taskEntity.setHighPriority(false);
     taskEntity.setTag("development");
+
+    String searchTerm = "unit";
     when(taskRepository.findAllBySearchTerm(searchTerm.toUpperCase(), USER_ID))
         .thenReturn(List.of(taskEntity));
 
