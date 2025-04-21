@@ -212,6 +212,10 @@ public class TaskService {
 
     log.info("Searching tasks to user {}", user.getId());
 
+    if (Objects.isNull(searchTerm) || searchTerm.isBlank()) {
+      return List.of();
+    }
+
     List<TaskEntity> tasks =
         taskRepository.findAllBySearchTerm(searchTerm.toUpperCase(), user.getId());
     log.info("{} tasks found!", tasks.size());

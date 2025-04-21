@@ -2,6 +2,7 @@ package br.com.tasknoteapp.server.util;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.format.TextStyle;
 import java.util.Locale;
 import org.junit.jupiter.api.Assertions;
@@ -52,5 +53,32 @@ class TimeAgoUtilTest {
       case 3 -> "rd";
       default -> "th";
     };
+  }
+
+  @Test
+  void formatDueDateEdgeCasesTest() {
+    // Test for today
+    LocalDate today = LocalDate.now();
+    String expectedToday = "0 days left" + getFormattedSuffix(today);
+    Assertions.assertEquals(expectedToday, TimeAgoUtil.formatDueDate(today));
+
+    // Test for a past date
+    LocalDate pastDate = LocalDate.now().minusDays(1L);
+    Assertions.assertEquals(
+        "Due" + getFormattedSuffix(pastDate), TimeAgoUtil.formatDueDate(pastDate));
+
+    // Test for a far future date
+    LocalDate farFutureDate = LocalDate.now().plusYears(5L);
+    String expectedFarFuture = "5 years left" + getFormattedSuffix(farFutureDate);
+    Assertions.assertEquals(expectedFarFuture, TimeAgoUtil.formatDueDate(farFutureDate));
+
+    // Test for a leap year date
+    LocalDate leapYearDate = LocalDate.of(2024, 2, 29);
+    if (LocalDate.now().isBefore(leapYearDate)) {
+      Period period = Period.between(LocalDate.now(), leapYearDate);
+      String expectedLeapYear =
+          String.format("%d days left", period.getDays()) + getFormattedSuffix(leapYearDate);
+      Assertions.assertEquals(expectedLeapYear, TimeAgoUtil.formatDueDate(leapYearDate));
+    }
   }
 }

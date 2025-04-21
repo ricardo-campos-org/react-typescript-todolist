@@ -156,4 +156,20 @@ class HomeServiceTest {
     Assertions.assertEquals(7, chartData.size());
     Assertions.assertEquals(firstDay, chartData.get(0).day());
   }
+
+  @Test
+  @DisplayName("Get tasks by filter high priority tasks it should succeed")
+  void getTasksByFilter_highTasks_shouldSucceed() {
+    String filter = "high";
+
+    TaskResponse highTask1 =
+        new TaskResponse(2L, "Task 1", false, true, null, null, null, "tag", List.of());
+    when(taskService.getTasksByFilter(filter)).thenReturn(List.of(highTask1));
+
+    List<TaskResponse> list = homeService.getTasksByFilter(filter);
+
+    Assertions.assertNotNull(list);
+    Assertions.assertEquals(1, list.size());
+    Assertions.assertTrue(list.get(0).highPriority());
+  }
 }
