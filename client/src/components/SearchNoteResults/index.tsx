@@ -37,6 +37,7 @@ export const SearchNoteResults: React.FC<SearchResultsProps> = ({ results, noteA
                           e.stopPropagation();
                           noteAction('open', note);
                         }}
+                        data-testid={`note-home-result-open-${note.id}`}
                       >
                         Open
                       </a>

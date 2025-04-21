@@ -44,6 +44,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results, taskActio
                           e.stopPropagation();
                           taskAction('done', task);
                         }}
+                        data-testid={`task-home-result-done-${task.id}`}
                       >
                         <Check2Square />
                       </a>
@@ -59,6 +60,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results, taskActio
                       </a>
                       <a
                         href="#"
+                        data-testid={`task-home-result-delete-${task.id}`}
                         onClick={(e: React.MouseEvent<Element, MouseEvent>) => {
                           e.preventDefault();
                           e.stopPropagation();

@@ -48,6 +48,7 @@ function Home(): React.ReactNode {
   const [showMarkdownView, setShowMarkdownView] = useState<boolean>(false);
   const [modalTitle, setModalTitle] = useState<string>('');
   const [modalContent, setModalContent] = useState<string>('');
+  const [searchTermValue, setSearchTermValue] = useState<string>('');
 
   /**
    * Handles the error by setting the error message.
@@ -94,21 +95,20 @@ function Home(): React.ReactNode {
     setHasError(false);
 
     const form = event.currentTarget;
-    const textToSearch = form.search_term.value;
-    if (textToSearch.length === 0) {
+    if (searchTermValue.length === 0) {
       form.reset();
       setHasError(false);
       setSearchResults(null);
       return;
     }
 
-    if (textToSearch.length < 3) {
+    if (searchTermValue.length < 3) {
       setErrorMessage(translateServerResponse('Please type at least 3 characters', i18n.language));
       setHasError(true);
       return;
     }
 
-    const searched: boolean = await searchTerm(form.search_term.value);
+    const searched: boolean = await searchTerm(searchTermValue);
     if (searched) {
       form.reset();
     }
@@ -242,6 +242,10 @@ function Home(): React.ReactNode {
                     id="search_term"
                     name="search_term"
                     placeholder="Search tasks & notes"
+                    value={searchTermValue}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      setSearchTermValue(e.target.value);
+                    }}
                   />
                 </InputGroup>
 
