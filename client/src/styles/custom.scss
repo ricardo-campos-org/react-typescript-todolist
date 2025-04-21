@@ -292,6 +292,7 @@ code {
 }
 
 .home-filter {
+  all: unset;
   font-size: 12px;
   padding: 5px 12px;
   border-radius: 4px;
@@ -308,4 +309,14 @@ code {
 .home-filter.home-tag {
   background-color: #E0E0E0;
   color: #212121;
+}
+
+p.search-result-item-title {
+  font-size: 16px;
+  margin-bottom: 0;
+  margin-left: 2px;
+}
+.search-result-item {
+  font-size: 16px;
+
 }

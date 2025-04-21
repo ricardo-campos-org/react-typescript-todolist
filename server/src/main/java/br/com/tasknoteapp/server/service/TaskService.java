@@ -133,9 +133,9 @@ public class TaskService {
     if (!Objects.isNull(patch.done())) {
       taskEntity.setDone(patch.done());
     }
-    
+
     patchDueDate(taskEntity, patch);
-    
+
     taskEntity.setHighPriority(false);
     if (!Objects.isNull(patch.highPriority())) {
       taskEntity.setHighPriority(patch.highPriority());
@@ -230,22 +230,32 @@ public class TaskService {
   public List<TaskResponse> getTasksByFilter(String filter) {
     UserEntity user = getCurrentUser();
 
-    List<TaskEntity> allTasks = taskRepository.findAllByUser_id(user.getId());
+    List<TaskEntity> allTasks =
+        taskRepository.findAllByUser_id(user.getId()).stream()
+            .filter(t -> t.getDone().equals(Boolean.FALSE))
+            .toList();
     if (allTasks.isEmpty()) {
       return List.of();
     }
 
     if (filter.equals("all")) {
       return allTasks.stream()
-        .map((TaskEntity tr) -> TaskResponse.fromEntity(tr, getAllTasksUrls(tr.getId())))
-        .toList();
+          .map((TaskEntity tr) -> TaskResponse.fromEntity(tr, getAllTasksUrls(tr.getId())))
+          .toList();
     }
 
     if (filter.equals("high")) {
       return allTasks.stream()
-        .filter(TaskEntity::getHighPriority)
-        .map((TaskEntity tr) -> TaskResponse.fromEntity(tr, getAllTasksUrls(tr.getId())))
-        .toList();
+          .filter(TaskEntity::getHighPriority)
+          .map((TaskEntity tr) -> TaskResponse.fromEntity(tr, getAllTasksUrls(tr.getId())))
+          .toList();
+    }
+
+    if (filter.equals("untagged")) {
+      return allTasks.stream()
+          .filter(t -> t.getTag() == null || t.getTag().isBlank())
+          .map((TaskEntity tr) -> TaskResponse.fromEntity(tr, getAllTasksUrls(tr.getId())))
+          .toList();
     }
 
     return allTasks.stream()

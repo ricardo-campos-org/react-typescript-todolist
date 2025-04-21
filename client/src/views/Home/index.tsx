@@ -23,6 +23,8 @@ import ContentHeader from '../../components/ContentHeader';
 import AlertError from '../../components/AlertError';
 import { Search } from 'react-bootstrap-icons';
 import HomeFilterButton from '../../components/HomeFilterButton';
+import { SearchResults } from '../../components/SearchResults';
+import { useNavigate } from 'react-router';
 
 /**
  * Home page component.
@@ -34,12 +36,14 @@ import HomeFilterButton from '../../components/HomeFilterButton';
 function Home(): React.ReactNode {
   const { user } = useContext(AuthContext);
   const { i18n, t } = useTranslation();
+  const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [tags, setTags] = useState<string[]>([]);
   const [validated, setValidated] = useState<boolean>(false);
   const [hasError, setHasError] = useState<boolean>(false);
   const [searchResults, setSearchResults] = useState<HomeSearchResponse | null>(null);
   const [name, setName] = useState<string>(user?.name ? user?.name : 'User');
+  const [lastSearch, setLastSearch] = useState<string>('');
 
   /**
    * Handles the error by setting the error message.
@@ -65,6 +69,7 @@ function Home(): React.ReactNode {
     try {
       const response: HomeSearchResponse = await api.getJSON(`${ApiConfig.homeUrl}/search?term=${term}`);
       setSearchResults(response);
+      setLastSearch(`textSearch#${term}`);
       return true;
     }
     catch (e) {
@@ -93,7 +98,7 @@ function Home(): React.ReactNode {
       return;
     }
 
-    if (textToSearch.length <= 3) {
+    if (textToSearch.length < 3) {
       setErrorMessage(translateServerResponse('Please type at least 3 characters', i18n.language));
       setHasError(true);
       return;
@@ -113,6 +118,7 @@ function Home(): React.ReactNode {
         notes: []
       };
       setSearchResults(result);
+      setLastSearch(`tagClick#${filter}`);
     }
     catch (e) {
       handleError(e);
@@ -129,12 +135,61 @@ function Home(): React.ReactNode {
     }
   };
 
+  const reDoLastSearch = () => {
+    if (lastSearch.startsWith('textSearch#')) {
+      searchTerm(lastSearch.substring(11));
+    }
+    else if (lastSearch.startsWith('tagClick#')) {
+      loadTasks(lastSearch.substring(9));
+    }
+  };
+
+  /**
+   * Mark a task as done or undone.
+   *
+   * @param {TaskResponse} task The task to be marked as done or undone.
+   */
+  const markAsDone = async (task: TaskResponse): Promise<void> => {
+    try {
+      const updatedTask = {
+        ...task,
+        done: !task.done
+      };
+      await api.patchJSON(`${ApiConfig.tasksUrl}/${task.id}`, updatedTask);
+      reDoLastSearch();
+    }
+    catch (e) {
+      handleError(e);
+    }
+  };
+
+  /**
+   * Delete a task.
+   *
+   * @param {number} taskIdParam The task ID to be deleted.
+   */
+  const deleteTask = async (taskIdParam: number) => {
+    try {
+      await api.deleteNoContent(`${ApiConfig.tasksUrl}/${taskIdParam}`);
+      reDoLastSearch();
+    }
+    catch (e) {
+      handleError(e);
+    }
+  };
+
   useEffect(() => {
     handleDefaultLang();
     setName(user?.name ? user?.name : 'User');
     loadTags();
   }, [user]);
 
+  useEffect(() => {}, [searchResults]);
+
+  // keep going from here
+  // add task and note and go back to home
+  // search notes
+  // remove old components
   return (
     <Container fluid>
       <ContentHeader
@@ -176,12 +231,12 @@ function Home(): React.ReactNode {
                 <Row className="mt-2">
                   <Col xs={12}>
                     <HomeFilterButton
-                      text="🔥 Only High Priority"
+                      text="🔥 High Priority"
                       type="high"
                       onClick={() => loadTasks('high')}
                     />
                     <HomeFilterButton
-                      text="All pending"
+                      text="All tasks"
                       type="all"
                       onClick={() => loadTasks('all')}
                     />
@@ -207,27 +262,27 @@ function Home(): React.ReactNode {
 
         {searchResults && (
           <Col xs={12}>
-            <p>{t('home_card_search_result_label')}</p>
+
+            <Card className="mt-3">
+              <Card.Body>
+                <SearchResults
+                  results={searchResults.tasks}
+                  taskAction={(action: string, task: TaskResponse) => {
+                    if (action === 'done') {
+                      markAsDone(task);
+                    }
+                    else if (action === 'edit') {
+                      navigate(`/tasks/edit/${task.id}?backTo=home`);
+                    }
+                    else if (action === 'delete') {
+                      deleteTask(task.id);
+                    }
+                  }}
+                />
+              </Card.Body>
+            </Card>
 
             <Accordion defaultActiveKey="0">
-              {searchResults && searchResults.tasks.length > 0 && (
-                searchResults.tasks.map((task: TaskResponse) => (
-                  <Accordion.Item key={task.description} eventKey={task.description}>
-                    <Accordion.Header>
-                      [Task]
-                      {' '}
-                      {task.description}
-                    </Accordion.Header>
-                    <Accordion.Body>
-                      {task.urls.length > 0
-                        ? (
-                            <a href={`${task.urls[0]}`}>{task.urls[0]}</a>
-                          )
-                        : 'No URL!'}
-                    </Accordion.Body>
-                  </Accordion.Item>
-                ))
-              )}
               {searchResults && searchResults.notes.length > 0 && (
                 searchResults.notes.map((note: NoteResponse) => (
                   <Accordion.Item key={note.title} eventKey={note.title}>

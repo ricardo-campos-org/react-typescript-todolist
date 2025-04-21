@@ -170,10 +170,13 @@ public class HomeService {
       if (tagsCount.size() == 5) {
         break;
       }
-      if (!task.tag().isBlank()) {
-        tagsCount.putIfAbsent(task.tag(), 0);
-        tagsCount.put(task.tag(), tagsCount.get(task.tag()) + 1);
+      
+      String tag = task.tag();
+      if (tag.isBlank()) {
+        tag = "untagged";
       }
+      tagsCount.putIfAbsent(tag, 0);
+      tagsCount.put(tag, tagsCount.get(tag) + 1);
     }
 
     Map<String, Integer> sortedDesc = tagsCount.entrySet()

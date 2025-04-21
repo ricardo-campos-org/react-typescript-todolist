@@ -6,7 +6,7 @@ import {
   Form,
   Row
 } from 'react-bootstrap';
-import { useNavigate, useParams } from 'react-router';
+import { useNavigate, useParams, useSearchParams } from 'react-router';
 import TaskNoteRequest from '../../types/TaskNoteRequest';
 import { TaskResponse } from '../../types/TaskResponse';
 import { useTranslation } from 'react-i18next';
@@ -37,6 +37,7 @@ function TaskAdd(): React.ReactNode {
   const [tag, setTag] = useState<string>('');
   const { i18n, t } = useTranslation();
   const params = useParams();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
   /**
@@ -138,7 +139,7 @@ function TaskAdd(): React.ReactNode {
       if (added) {
         form.reset();
         resetInputs();
-        navigate('/tasks');
+        navigate(`/${searchParams.get('backTo')}`);
       }
     }
     else if (action === 'edit') {
@@ -158,7 +159,7 @@ function TaskAdd(): React.ReactNode {
       if (edited) {
         form.reset();
         resetInputs();
-        navigate('/tasks');
+        navigate(`/${searchParams.get('backTo')}`);
       }
     }
   };
@@ -297,7 +298,7 @@ function TaskAdd(): React.ReactNode {
                 <button
                   type="button"
                   className="ms-2 home-new-item-secondary task-note-btn"
-                  onClick={() => navigate('/tasks')}
+                  onClick={() => navigate(`/${searchParams.get('backTo')}`)}
                 >
                   Cancel
                 </button>

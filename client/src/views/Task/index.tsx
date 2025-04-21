@@ -267,7 +267,7 @@ function Task(): React.ReactNode {
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
                         {!task.done && (
-                          <NavLink to={`/tasks/edit/${task.id}`}>
+                          <NavLink to={`/tasks/edit/${task.id}?backTo=tasks`}>
                             <Dropdown.Item as="span">
                               {t('task_table_action_edit')}
                             </Dropdown.Item>
