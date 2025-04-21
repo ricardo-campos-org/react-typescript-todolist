@@ -63,7 +63,7 @@ class TimeAgoUtilTest {
     Assertions.assertEquals(expectedToday, TimeAgoUtil.formatDueDate(today));
 
     // Test for a past date
-    LocalDate pastDate = LocalDate.now().minusDays(1L);
+    LocalDate pastDate = LocalDate.now().minusDays(9L);
     Assertions.assertEquals(
         "Due" + getFormattedSuffix(pastDate), TimeAgoUtil.formatDueDate(pastDate));
 
