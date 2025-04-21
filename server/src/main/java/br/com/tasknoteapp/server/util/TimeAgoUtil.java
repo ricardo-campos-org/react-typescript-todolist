@@ -79,7 +79,7 @@ public class TimeAgoUtil {
     } else if (period.getDays() > 0) {
       sb.append(String.format("%d day left", period.getDays()));
     } else if (period.getDays() == 0) {
-      sb.append(String.format("0 days left", period.getDays()));
+      sb.append("0 days left");
     } else {
       sb.append("Due");
     }

@@ -43,6 +43,8 @@ public class HomeService {
 
   private final NotesCreatedRepository notesCreatedRepository;
 
+  private static final String N_TASKS_FOUND = "{} tasks found!";
+
   /**
    * Get summary for the home page.
    *
@@ -80,7 +82,7 @@ public class HomeService {
     log.info("Searching for {}", term);
 
     List<TaskResponse> tasks = taskService.searchTasks(term);
-    log.info("{} tasks found!", tasks.size());
+    log.info(N_TASKS_FOUND, tasks.size());
 
     List<NoteResponse> notes = noteService.searchNotes(term);
     log.info("{} notes found!", notes.size());
@@ -148,7 +150,7 @@ public class HomeService {
     log.info("Getting tasks by filter for filter: {}", filter);
 
     List<TaskResponse> tasks = taskService.getTasksByFilter(filter);
-    log.info("{} tasks found!", tasks.size());
+    log.info(N_TASKS_FOUND, tasks.size());
 
     return tasks;
   }
@@ -162,7 +164,7 @@ public class HomeService {
     log.info("Getting top tags for the tasks");
 
     List<TaskResponse> tasks = taskService.getTasksByFilter("all");
-    log.info("{} tasks found!", tasks.size());
+    log.info(N_TASKS_FOUND, tasks.size());
 
     Map<String, Integer> tagsCount = new HashMap<>();
     for (TaskResponse task : tasks) {
