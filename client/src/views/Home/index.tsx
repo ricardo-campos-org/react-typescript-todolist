@@ -116,7 +116,7 @@ function Home(): React.ReactNode {
 
   const loadTasks = async (filter: string): Promise<void> => {
     try {
-      const response: TaskResponse[] = await api.getJSON(`${ApiConfig.homeUrl}/tasks/${filter}`);
+      const response: TaskResponse[] = await api.getJSON(`${ApiConfig.homeUrl}/tasks/filter/${filter}`);
       const result: HomeSearchResponse = {
         tasks: response,
         notes: []

@@ -114,7 +114,7 @@ public class HomeController {
    *
    * @returns List of TaskResponse with found tasks.
    */
-  @GetMapping("/tasks/{filter}")
+  @GetMapping("/tasks/filter/{filter}")
   @Operation(
       summary = "Get the tasks given a filter",
       description = "Get the tasks given a filter which can be high | all | tag",
