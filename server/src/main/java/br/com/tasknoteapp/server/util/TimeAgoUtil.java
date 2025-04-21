@@ -95,7 +95,9 @@ public class TimeAgoUtil {
   }
 
   private static String getDaySuffix(int day) {
-    if (day >= 11 && day <= 13) return "th";
+    if (day >= 11 && day <= 13) {
+      return "th";
+    }
     return switch (day % 10) {
       case 1 -> "st";
       case 2 -> "nd";

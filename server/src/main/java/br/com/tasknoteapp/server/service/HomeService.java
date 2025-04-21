@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -170,7 +169,7 @@ public class HomeService {
       if (tagsCount.size() == 5) {
         break;
       }
-      
+
       String tag = task.tag();
       if (tag.isBlank()) {
         tag = "untagged";
@@ -179,15 +178,12 @@ public class HomeService {
       tagsCount.put(tag, tagsCount.get(tag) + 1);
     }
 
-    Map<String, Integer> sortedDesc = tagsCount.entrySet()
-    .stream()
-    .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
-    .collect(Collectors.toMap(
-        Map.Entry::getKey,
-        Map.Entry::getValue,
-        (e1, e2) -> e1,
-        LinkedHashMap::new
-    ));
+    Map<String, Integer> sortedDesc =
+        tagsCount.entrySet().stream()
+            .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+            .collect(
+                Collectors.toMap(
+                    Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 
     return sortedDesc.keySet().stream().toList();
   }
