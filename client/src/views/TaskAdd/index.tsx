@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Card,
   Col,
@@ -16,6 +16,7 @@ import { translateServerResponse } from '../../utils/TranslatorUtils';
 import FormInput from '../../components/FormInput';
 import ContentHeader from '../../components/ContentHeader';
 import AlertError from '../../components/AlertError';
+import SidebarContext from '../../context/SidebarContext';
 
 type TaskAction = 'add' | 'edit';
 
@@ -36,6 +37,7 @@ function TaskAdd(): React.ReactNode {
   const [highPriority, setHighPriority] = useState<boolean>(false);
   const [tag, setTag] = useState<string>('');
   const { i18n, t } = useTranslation();
+  const { setNewPage } = useContext(SidebarContext);
   const params = useParams();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -139,6 +141,7 @@ function TaskAdd(): React.ReactNode {
       if (added) {
         form.reset();
         resetInputs();
+        setNewPage(`/${searchParams.get('backTo')}`);
         navigate(`/${searchParams.get('backTo')}`);
       }
     }
@@ -159,6 +162,7 @@ function TaskAdd(): React.ReactNode {
       if (edited) {
         form.reset();
         resetInputs();
+        setNewPage(`/${searchParams.get('backTo')}`);
         navigate(`/${searchParams.get('backTo')}`);
       }
     }
@@ -298,7 +302,10 @@ function TaskAdd(): React.ReactNode {
                 <button
                   type="button"
                   className="ms-2 home-new-item-secondary task-note-btn"
-                  onClick={() => navigate(`/${searchParams.get('backTo')}`)}
+                  onClick={() => {
+                    setNewPage(`/${searchParams.get('backTo')}`);
+                    navigate(`/${searchParams.get('backTo')}`);
+                  }}
                 >
                   Cancel
                 </button>

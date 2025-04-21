@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  Accordion,
   Card,
   Col,
   Container,
@@ -25,6 +24,8 @@ import { Search } from 'react-bootstrap-icons';
 import HomeFilterButton from '../../components/HomeFilterButton';
 import { SearchResults } from '../../components/SearchResults';
 import { useNavigate } from 'react-router';
+import { SearchNoteResults } from '../../components/SearchNoteResults';
+import ModalMarkdown from '../../components/ModalMarkdown';
 
 /**
  * Home page component.
@@ -44,6 +45,9 @@ function Home(): React.ReactNode {
   const [searchResults, setSearchResults] = useState<HomeSearchResponse | null>(null);
   const [name, setName] = useState<string>(user?.name ? user?.name : 'User');
   const [lastSearch, setLastSearch] = useState<string>('');
+  const [showMarkdownView, setShowMarkdownView] = useState<boolean>(false);
+  const [modalTitle, setModalTitle] = useState<string>('');
+  const [modalContent, setModalContent] = useState<string>('');
 
   /**
    * Handles the error by setting the error message.
@@ -178,6 +182,23 @@ function Home(): React.ReactNode {
     }
   };
 
+  /**
+   * Delete a note.
+   *
+   * @param {number} noteIdParam The note ID to be deleted.
+   */
+  const deleteNote = async (noteIdParam: number) => {
+    try {
+      await api.deleteNoContent(`${ApiConfig.notesUrl}/${noteIdParam}`);
+      reDoLastSearch();
+    }
+    catch (e) {
+      handleError(e);
+    }
+  };
+
+  const handleCloseModal = () => setShowMarkdownView(false);
+
   useEffect(() => {
     handleDefaultLang();
     setName(user?.name ? user?.name : 'User');
@@ -186,10 +207,6 @@ function Home(): React.ReactNode {
 
   useEffect(() => {}, [searchResults]);
 
-  // keep going from here
-  // add task and note and go back to home
-  // search notes
-  // remove old components
   return (
     <Container fluid>
       <ContentHeader
@@ -282,27 +299,26 @@ function Home(): React.ReactNode {
               </Card.Body>
             </Card>
 
-            <Accordion defaultActiveKey="0">
-              {searchResults && searchResults.notes.length > 0 && (
-                searchResults.notes.map((note: NoteResponse) => (
-                  <Accordion.Item key={note.title} eventKey={note.title}>
-                    <Accordion.Header>
-                      [Note]
-                      {' '}
-                      {note.title}
-                    </Accordion.Header>
-                    <Accordion.Body>
-                      <span className="span-line-break">
-                        { note.description }
-                      </span>
-                    </Accordion.Body>
-                  </Accordion.Item>
-                ))
-              )}
-              {searchResults?.tasks.length === 0 && searchResults?.notes.length === 0 && (
-                <h3>{t('home_card_search_empty_result')}</h3>
-              )}
-            </Accordion>
+            <Card className="mt-3">
+              <Card.Body>
+                <SearchNoteResults
+                  results={searchResults.notes}
+                  noteAction={(action: string, note: NoteResponse) => {
+                    if (action === 'edit') {
+                      navigate(`/notes/edit/${note.id}?backTo=home`);
+                    }
+                    else if (action === 'delete') {
+                      deleteNote(note.id);
+                    }
+                    else if (action === 'open') {
+                      setModalTitle(note.title);
+                      setModalContent(note.description);
+                      setShowMarkdownView(true);
+                    }
+                  }}
+                />
+              </Card.Body>
+            </Card>
           </Col>
         )}
       </Row>
@@ -315,6 +331,13 @@ function Home(): React.ReactNode {
           <TaskProgress />
         </Col>
       </Row>
+
+      <ModalMarkdown
+        show={showMarkdownView}
+        onHide={handleCloseModal}
+        title={modalTitle}
+        markdownText={modalContent}
+      />
     </Container>
   );
 }

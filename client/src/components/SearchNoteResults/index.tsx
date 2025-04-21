@@ -1,39 +1,50 @@
 import React from 'react';
-import { TaskResponse } from '../../types/TaskResponse';
 import { ListGroup } from 'react-bootstrap';
 import ExternalLinkIcon from '../../assets/icons8-external-link-30.png';
-import { Check2Square, PencilSquare, Trash } from 'react-bootstrap-icons';
+import { PencilSquare, Trash } from 'react-bootstrap-icons';
+import { NoteResponse } from '../../types/NoteResponse';
 
 interface SearchResultsProps {
-  results: TaskResponse[];
-  taskAction: (action: string, task: TaskResponse) => void;
+  results: NoteResponse[];
+  noteAction: (action: string, task: NoteResponse) => void;
 }
 
-export const SearchResults: React.FC<SearchResultsProps> = ({ results, taskAction }) => {
+export const SearchNoteResults: React.FC<SearchResultsProps> = ({ results, noteAction }) => {
   return (
     <>
       {results.length === 0
         ? (
-            <p className="text-muted fst-italic search-result-item-title">No tasks found</p>
+            <p className="text-muted fst-italic search-result-item-title">No notes found</p>
           )
         : (
             <>
               <p className="text-muted fst-italic search-result-item-title">
                 {results.length}
                 {' '}
-                task(s) found
+                notes(s) found
               </p>
               <ListGroup className="mt-2 d-flex flex-column">
-                {results.map((task: TaskResponse) => (
-                  <ListGroup.Item key={task.id} className="search-result-item d-flex justify-content-between align-items-center">
-                    {task.description}
-                    {task.urls && task.urls.length > 0 && (
-                      <a href={task.urls[0]} target="_blank" rel="noreferrer" className="task-note-external-link">
+                {results.map((note: NoteResponse) => (
+                  <ListGroup.Item key={note.id} className="search-result-item d-flex justify-content-between align-items-center">
+                    {note.title}
+                    <small>
+                      <a
+                        href="#"
+                        className="ms-2"
+                        title="Open note"
+                        onClick={(e: React.MouseEvent<Element, MouseEvent>) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          noteAction('open', note);
+                        }}
+                      >
+                        Open
+                      </a>
+                    </small>
+                    {note.url && note.url.length > 0 && (
+                      <a href={note.url} target="_blank" rel="noreferrer" className="task-note-external-link">
                         <img src={ExternalLinkIcon} width={20} alt="external link" />
                       </a>
-                    )}
-                    {task.dueDateFmt && (
-                      <span className="ms-1" title={task.dueDateFmt}>📅</span>
                     )}
 
                     <div className="d-flex gap-2 ms-auto">
@@ -42,17 +53,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results, taskActio
                         onClick={(e: React.MouseEvent<Element, MouseEvent>) => {
                           e.preventDefault();
                           e.stopPropagation();
-                          taskAction('done', task);
-                        }}
-                      >
-                        <Check2Square />
-                      </a>
-                      <a
-                        href="#"
-                        onClick={(e: React.MouseEvent<Element, MouseEvent>) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          taskAction('edit', task);
+                          noteAction('edit', note);
                         }}
                       >
                         <PencilSquare />
@@ -62,7 +63,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results, taskActio
                         onClick={(e: React.MouseEvent<Element, MouseEvent>) => {
                           e.preventDefault();
                           e.stopPropagation();
-                          taskAction('delete', task);
+                          noteAction('delete', note);
                         }}
                       >
                         <Trash />

@@ -187,7 +187,7 @@ function Task(): React.ReactNode {
           />
         </Col>
         <Col xs={12} sm={4} lg={3} className="mt-3 mt-sm-0">
-          <NavLink to="/tasks/new">
+          <NavLink to="/tasks/new?backTo=tasks">
             <div className="d-grid">
               <button
                 type="button"
