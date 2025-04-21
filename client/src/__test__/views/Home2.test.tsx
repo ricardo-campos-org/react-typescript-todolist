@@ -108,6 +108,20 @@ describe('Home Component', () => {
     expect(screen.getByText('Note 2')).toBeDefined();
   });
 
+  it('handles search functionality with error', async () => {
+    renderComponent();
+
+    const searchInput = screen.getByPlaceholderText('Search tasks & notes');
+    const form = searchInput.closest('form') as HTMLFormElement;
+
+    await act(async () => {
+      fireEvent.change(searchInput, { target: { value: 'a' } });
+      fireEvent.submit(form);
+    });
+    
+    expect(screen.getByText('Please type at least 3 characters')).toBeDefined();
+  });
+
   it('loads tasks based on filter', async () => {
     renderComponent();
 
