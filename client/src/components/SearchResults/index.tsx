@@ -39,17 +39,18 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results, taskActio
                     <div className="d-flex gap-2 ms-auto">
                       <a
                         href="#"
+                        data-testid={`task-home-result-done-${task.id}`}
                         onClick={(e: React.MouseEvent<Element, MouseEvent>) => {
                           e.preventDefault();
                           e.stopPropagation();
                           taskAction('done', task);
                         }}
-                        data-testid={`task-home-result-done-${task.id}`}
                       >
                         <Check2Square />
                       </a>
                       <a
                         href="#"
+                        data-testid={`task-home-result-edit-${task.id}`}
                         onClick={(e: React.MouseEvent<Element, MouseEvent>) => {
                           e.preventDefault();
                           e.stopPropagation();
