@@ -45,6 +45,8 @@ public class UserEntity implements UserDetails {
   @OneToMany(mappedBy = "user")
   private List<TaskEntity> tasks;
 
+  @Column(name = "email_confirmed_at", nullable = true)
+  private LocalDateTime emailConfirmedAt;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -54,6 +54,8 @@ public class AuthService {
 
   private final UserPwdLimitRepository userPwdLimitRepository;
 
+  private final MailgunEmailService mailgunEmailService;
+
   /**
    * Create a new user in the app.
    *
@@ -79,10 +81,13 @@ public class AuthService {
     user.setCreatedAt(LocalDateTime.now());
     userRepository.save(user);
 
+    Optional<String> identification = getGravatarImageUrl(login.email());
+    mailgunEmailService.sendNewUser(user, identification.orElseThrow());
+
     String token = jwtService.generateToken(user);
 
     log.info("User created! ID {}", user.getId());
-    return UserResponseWithToken.fromEntity(user, token, getGravatarImageUrl(login.email()));
+    return UserResponseWithToken.fromEntity(user, token, identification);
   }
 
   /**

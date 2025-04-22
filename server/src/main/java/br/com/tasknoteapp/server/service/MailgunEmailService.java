@@ -1,0 +1,102 @@
+package br.com.tasknoteapp.server.service;
+
+import br.com.tasknoteapp.server.entity.UserEntity;
+import br.com.tasknoteapp.server.templates.MailgunTemplate;
+import br.com.tasknoteapp.server.templates.MailgunTemplateSignUp;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
+
+/** This service handles email messages for Mailgun. */
+@Slf4j
+@Service
+public class MailgunEmailService {
+
+  private final RestTemplate restTemplate;
+  private String domain;
+  private String senderEmail;
+
+  public MailgunEmailService(
+      @Value("${mailgun.api-key}") String apiKey,
+      @Value("${mailgun.domain}") String domain,
+      @Value("${mailgun.sender-email}") String sender,
+      RestTemplateBuilder templateBuilder) {
+    this.domain = domain;
+    this.senderEmail = sender;
+    this.restTemplate =
+        templateBuilder.defaultHeader(HttpHeaders.AUTHORIZATION, basicAuth("api", apiKey)).build();
+  }
+
+  /**
+   * Send new users a message confirming their account.
+   *
+   * @param user The user that should be addressed the message.
+   */
+  public void sendNewUser(UserEntity user, String identification) {
+    log.info("Sending message confirming user email address.");
+
+    String to = user.getEmail();
+    String subject = "TaskNote App confirmation email";
+    String link = "/email-confirmation?identification=%s";
+
+    MailgunTemplateSignUp signUpTemplate = new MailgunTemplateSignUp();
+    signUpTemplate.setConfirmationLink(String.format(link, identification));
+
+    sendEmail(to, subject, signUpTemplate);
+  }
+
+  /**
+   * Send an email message.
+   *
+   * @param to The target email address.
+   * @param subject The message subject.
+   * @param textBody The message text body to be displayed.
+   * @param htmlBody The message html body to be rendered.
+   */
+  private void sendEmail(String to, String subject, MailgunTemplate template) {
+    String url = "https://api.mailgun.net/v3/" + domain + "/messages";
+    String from = "TaskNote App <" + senderEmail + ">";
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+    MultiValueMap<String, String> mailData = new LinkedMultiValueMap<>();
+    mailData.add("from", from);
+    mailData.add("to", to);
+    mailData.add("subject", subject);
+    mailData.add("template", template.getName());
+    mailData.add("h:X-Mailgun-Variables", template.getVariableValuesJson());
+
+    log.info("JSON template variables: {}", template.getVariableValuesJson());
+
+    HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(mailData, headers);
+
+    try {
+      ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
+
+      if (!response.getStatusCode().is2xxSuccessful()) {
+        throw new RuntimeException("Failed to send email: " + response.getStatusCode());
+      }
+
+      log.info("Email message send successfully.");
+    } catch (HttpClientErrorException ex) {
+      ex.printStackTrace();
+    }
+  }
+
+  private String basicAuth(String username, String password) {
+    String auth = username + ":" + password;
+    return "Basic " + Base64.getEncoder().encodeToString(auth.getBytes(StandardCharsets.UTF_8));
+  }
+}

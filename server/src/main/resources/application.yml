@@ -10,6 +10,11 @@ logging:
     level:
         root: ${ROOT_LOG_LEVEL:INFO}
 
+mailgun:
+  api-key: ${MAILGUN_APIKEY:abc123456}
+  domain: tasknoteapp.dev.br
+  sender-email: no-reply@tasknoteapp.dev.br
+
 management:
     endpoint:
         health:

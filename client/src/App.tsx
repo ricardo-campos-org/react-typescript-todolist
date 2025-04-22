@@ -13,6 +13,7 @@ import Landing from './views/Landing';
 import Login from './views/Login';
 import NotFound from './views/NotFound';
 import Register from './views/Register';
+import ConfirmationSuccess from './views/EmailConfirmation';
 import './styles/custom.scss';
 
 /**
@@ -48,6 +49,10 @@ function App(): React.ReactNode {
     {
       path: '/home',
       element: <Navigate to="/login" replace />
+    },
+    {
+      path: '/email-confirmation',
+      element: <ConfirmationSuccess />
     },
     {
       path: '*',

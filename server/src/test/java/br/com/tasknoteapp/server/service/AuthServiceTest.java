@@ -53,6 +53,8 @@ class AuthServiceTest {
 
   @Mock private UserPwdLimitRepository userPwdLimitRepository;
 
+  @Mock private MailgunEmailService mailgunEmailService;
+
   private AuthService authService;
 
   @BeforeEach
@@ -64,7 +66,8 @@ class AuthServiceTest {
             jwtService,
             authenticationManager,
             authUtil,
-            userPwdLimitRepository);
+            userPwdLimitRepository,
+            mailgunEmailService);
   }
 
   @Test
@@ -79,10 +82,11 @@ class AuthServiceTest {
     entity.setId(3L);
     entity.setEmail(request.email());
     entity.setName("User");
-
+    
     when(userRepository.save(any())).thenReturn(entity);
     when(jwtService.generateToken(any())).thenReturn("a1b2c3");
-
+    doNothing().when(mailgunEmailService).sendNewUser(any(), any());
+    
     UserResponseWithToken token = authService.signUpNewUser(request);
 
     Assertions.assertNotNull(token);
