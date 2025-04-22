@@ -24,6 +24,7 @@ import br.com.tasknoteapp.server.util.AuthUtil;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -73,7 +74,7 @@ class AuthServiceTest {
   @Test
   @DisplayName("SignUp new user happy path should succeed")
   void signUpNewUser_happyPath_shouldSucceed() {
-    LoginRequest request = new LoginRequest("email@domain.com", "123456@abcde!");
+    LoginRequest request = new LoginRequest("email@domain.com", "123456@abcde!", "123456@abcde!");
 
     when(userRepository.findByEmail(request.email())).thenReturn(Optional.empty());
     when(authUtil.validatePassword(request.password())).thenReturn(Optional.empty());
@@ -82,23 +83,24 @@ class AuthServiceTest {
     entity.setId(3L);
     entity.setEmail(request.email());
     entity.setName("User");
-    
+    entity.setEmailUuid(UUID.randomUUID());
+
     when(userRepository.save(any())).thenReturn(entity);
     when(jwtService.generateToken(any())).thenReturn("a1b2c3");
-    doNothing().when(mailgunEmailService).sendNewUser(any(), any());
-    
+    doNothing().when(mailgunEmailService).sendNewUser(any());
+
     UserResponseWithToken token = authService.signUpNewUser(request);
 
     Assertions.assertNotNull(token);
-    Assertions.assertFalse(token.token().isBlank());
-    Assertions.assertEquals("a1b2c3", token.token());
+    Assertions.assertNull(token.token());
     Assertions.assertEquals(entity.getEmail(), token.email());
+    Assertions.assertNotNull(entity.getEmailUuid());
   }
 
   @Test
   @DisplayName("SignUp new user with existing email should fail")
   void signUpNewUser_emailExists_shouldFail() {
-    LoginRequest request = new LoginRequest("email@domain.com", "123456@abcde!");
+    LoginRequest request = new LoginRequest("email@domain.com", "123456@abcde!", "123456@abcde!");
 
     UserEntity existing = new UserEntity();
     when(userRepository.findByEmail(request.email())).thenReturn(Optional.of(existing));
@@ -113,7 +115,7 @@ class AuthServiceTest {
   @Test
   @DisplayName("SignUp new user with bad password should fail")
   void signUpNewUser_badPassword_shouldFail() {
-    LoginRequest request = new LoginRequest("email@domain.com", "123456");
+    LoginRequest request = new LoginRequest("email@domain.com", "123456", "123456");
 
     when(userRepository.findByEmail(request.email())).thenReturn(Optional.empty());
     when(authUtil.validatePassword(request.password())).thenReturn(Optional.of("Bad password"));
@@ -185,7 +187,7 @@ class AuthServiceTest {
   @Test
   @DisplayName("SignIn user happy path should succeed")
   void signInUser_happyPath_shouldSucceed() {
-    LoginRequest request = new LoginRequest("email@domain.com", "123456");
+    LoginRequest request = new LoginRequest("email@domain.com", "123456", "123456");
 
     UserEntity existing = new UserEntity();
     existing.setId(919L);
@@ -208,7 +210,7 @@ class AuthServiceTest {
   @Test
   @DisplayName("SignIn wrong user or password should fail")
   void signInUser_wrongUserOrPassword_shouldFail() {
-    LoginRequest request = new LoginRequest("email@domain.com", "123456");
+    LoginRequest request = new LoginRequest("email@domain.com", "123456", "123456");
 
     when(userRepository.findByEmail(request.email())).thenReturn(Optional.empty());
 
@@ -222,7 +224,7 @@ class AuthServiceTest {
   @Test
   @DisplayName("SignIn max login attempt should fail")
   void signInUser_maxLoginAttempt_shouldFail() {
-    LoginRequest request = new LoginRequest("email@domain.com", "123456");
+    LoginRequest request = new LoginRequest("email@domain.com", "123456", "123456");
 
     UserEntity existing = new UserEntity();
     existing.setId(919L);
@@ -246,7 +248,7 @@ class AuthServiceTest {
   @Test
   @DisplayName("SignIn bad credentials should fail")
   void signInUser_badCredentials_shouldFail() {
-    LoginRequest request = new LoginRequest("email@domain.com", "123456");
+    LoginRequest request = new LoginRequest("email@domain.com", "123456", "123456");
 
     UserEntity existing = new UserEntity();
     existing.setId(919L);

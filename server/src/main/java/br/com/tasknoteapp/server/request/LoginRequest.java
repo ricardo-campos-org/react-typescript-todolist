@@ -25,11 +25,18 @@ public class LoginRequest {
   @NotNull
   String password;
 
+  @Schema(description = "User password again.")
+  String passwordAgain;
+
   public String email() {
     return email.trim().toLowerCase();
   }
 
   public String password() {
     return password;
+  }
+
+  public String passwordAgain() {
+    return passwordAgain;
   }
 }

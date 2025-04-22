@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 import AuthContext from '../../context/AuthContext';
 import { translateServerResponse } from '../../utils/TranslatorUtils';
 import { handleDefaultLang } from '../../lang-service/LangHandler';
+import FormInput from '../FormInput';
 
 /**
  * @returns {React.ReactNode} The form component for Login and Register pages.
@@ -29,6 +30,10 @@ function LoginForm({ prefix }: { prefix: string }): React.ReactNode {
   const [validated, setValidated] = useState<boolean>(false);
   const [formInvalid, setFormInvalid] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const [successMessage, setSuccessMessage] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [passwordAgain, setPasswordAgain] = useState<string>('');
 
   /**
    * Navigates to the specified page.
@@ -57,15 +62,24 @@ function LoginForm({ prefix }: { prefix: string }): React.ReactNode {
       return;
     }
 
+    if (password !== passwordAgain) {
+      setFormInvalid(true);
+      setErrorMessage(translateServerResponse('Please fill in your username and password!', i18n.language));
+    }
+
     setFormInvalid(false);
     try {
       if (prefix === 'login') {
-        await signIn(form.email.value, form.password.value);
+        await signIn(email, password);
+        goTo('/home');
       }
       else {
-        await register(form.email.value, form.password.value);
+        await register(email, password, passwordAgain);
+        setEmail('');
+        setPassword('');
+        setPasswordAgain('');
+        setSuccessMessage('Please confirm your email before proceeding.');
       }
-      goTo('/home');
     }
     catch (e) {
       setFormInvalid(true);
@@ -98,27 +112,51 @@ function LoginForm({ prefix }: { prefix: string }): React.ReactNode {
                   )
                 : null}
 
-              <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label>{t(`${prefix}_email_label`)}</Form.Label>
-                  <Form.Control
-                    required
-                    type="email"
-                    name="email"
-                    placeholder={t(`${prefix}_email_placeholder`)}
-                    data-testid={`${prefix}_email_input`}
-                  />
-                </Form.Group>
+              {successMessage.length > 1 && (
+                <Alert variant="success">
+                  { successMessage }
+                </Alert>
+              )}
 
-                <Form.Group className="mb-3" controlId="formBasicPassword">
-                  <Form.Label>{t(`${prefix}_password_label`)}</Form.Label>
-                  <Form.Control
-                    required
+              <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                <FormInput
+                  labelText="Email"
+                  iconName="At"
+                  required={true}
+                  name="email"
+                  placeholder={t(`${prefix}_email_placeholder`)}
+                  value={email}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    setEmail(e.target.value);
+                  }}
+                />
+
+                <FormInput
+                  labelText="Password"
+                  iconName="Lock"
+                  required={true}
+                  type="password"
+                  name="password"
+                  value={password}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    setPassword(e.target.value);
+                  }}
+                  data_testid="account-password-login"
+                />
+
+                {prefix === 'register' && (
+                  <FormInput
+                    labelText="Repeat password"
+                    iconName="Lock"
+                    required={true}
                     type="password"
-                    name="password"
-                    placeholder={t(`${prefix}_password_placeholder`)}
+                    name="passwordAgain"
+                    value={passwordAgain}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      setPasswordAgain(e.target.value);
+                    }}
                   />
-                </Form.Group>
+                )}
 
                 <Button
                   variant="primary"

@@ -8,6 +8,8 @@ const ApiConfig = {
 
   registerUrl: `${server}/auth/sign-up`,
 
+  confirmUrl: `${server}/auth/email-confirmation`,
+
   refreshTokenUrl: `${server}/rest/user-sessions/refresh`,
 
   deleteAccountUrl: `${server}/rest/user-sessions/delete-account`,

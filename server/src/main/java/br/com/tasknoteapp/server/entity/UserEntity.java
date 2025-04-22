@@ -10,6 +10,7 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -47,6 +48,9 @@ public class UserEntity implements UserDetails {
 
   @Column(name = "email_confirmed_at", nullable = true)
   private LocalDateTime emailConfirmedAt;
+
+  @Column(name = "email_uuid", columnDefinition = "uuid", nullable = true, unique = true)
+  private UUID emailUuid;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

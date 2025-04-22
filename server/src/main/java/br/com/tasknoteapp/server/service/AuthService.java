@@ -3,6 +3,7 @@ package br.com.tasknoteapp.server.service;
 import br.com.tasknoteapp.server.entity.UserEntity;
 import br.com.tasknoteapp.server.entity.UserPwdLimitEntity;
 import br.com.tasknoteapp.server.exception.BadPasswordException;
+import br.com.tasknoteapp.server.exception.BadUuidException;
 import br.com.tasknoteapp.server.exception.EmailAlreadyExistsException;
 import br.com.tasknoteapp.server.exception.InvalidCredentialsException;
 import br.com.tasknoteapp.server.exception.MaxLoginLimitAttemptException;
@@ -15,6 +16,7 @@ import br.com.tasknoteapp.server.request.UserPatchRequest;
 import br.com.tasknoteapp.server.response.UserResponse;
 import br.com.tasknoteapp.server.response.UserResponseWithToken;
 import br.com.tasknoteapp.server.util.AuthUtil;
+import br.com.tasknoteapp.server.util.UuidUtil;
 import jakarta.transaction.Transactional;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -25,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
@@ -62,6 +65,7 @@ public class AuthService {
    * @param login User details with email and password.
    * @return Token
    */
+  @Transactional
   public UserResponseWithToken signUpNewUser(LoginRequest login) {
     log.info("Signing up new user! {}", login.email());
 
@@ -74,20 +78,24 @@ public class AuthService {
       throw new BadPasswordException(passwordValidation.get());
     }
 
+    if (Objects.isNull(login.passwordAgain()) || !login.password().equals(login.passwordAgain())) {
+      throw new BadPasswordException("The passwords should match");
+    }
+
+    UUID emailUuid = new UuidUtil().generateEmailUUID(login.email());
+
     UserEntity user = new UserEntity();
     user.setEmail(login.email());
     user.setPassword(passwordEncoder.encode(login.password()));
     user.setAdmin(login.email().equals("ricardompcampos@gmail.com"));
     user.setCreatedAt(LocalDateTime.now());
+    user.setEmailUuid(emailUuid);
     userRepository.save(user);
 
-    Optional<String> identification = getGravatarImageUrl(login.email());
-    mailgunEmailService.sendNewUser(user, identification.orElseThrow());
-
-    String token = jwtService.generateToken(user);
+    mailgunEmailService.sendNewUser(user);
 
     log.info("User created! ID {}", user.getId());
-    return UserResponseWithToken.fromEntity(user, token, identification);
+    return UserResponseWithToken.fromEntity(user, null, getGravatarImageUrl(login.email()));
   }
 
   /**
@@ -287,6 +295,34 @@ public class AuthService {
     }
     String email = currentUserEmail.get();
     return findByEmail(email);
+  }
+
+  /**
+   * Confirm a user account.
+   *
+   * @param identification The UUID generated when registering.
+   * @throws BadUuidException if bad identification
+   */
+  public void confirmUserAccount(String identification) {
+    log.info("Confirming user email account");
+    UUID uuid = null;
+
+    try {
+      uuid = UUID.fromString(identification);
+    } catch (IllegalArgumentException ex) {
+      throw new BadUuidException();
+    }
+
+    Optional<UserEntity> userOptional = userRepository.findByEmailUuid(uuid);
+    if (userOptional.isEmpty()) {
+      throw new UserNotFoundException();
+    }
+
+    UserEntity user = userOptional.get();
+    user.setEmailConfirmedAt(LocalDateTime.now());
+
+    userRepository.save(user);
+    log.info("User email address confirmed: {}", identification);
   }
 
   private Optional<String> getGravatarImageUrl(String email) {

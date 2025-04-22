@@ -5,6 +5,7 @@ import br.com.tasknoteapp.server.templates.MailgunTemplate;
 import br.com.tasknoteapp.server.templates.MailgunTemplateSignUp;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -24,6 +25,7 @@ import org.springframework.web.client.RestTemplate;
 public class MailgunEmailService {
 
   private final RestTemplate restTemplate;
+  private final String targetEnv;
   private String domain;
   private String senderEmail;
 
@@ -31,9 +33,11 @@ public class MailgunEmailService {
       @Value("${mailgun.api-key}") String apiKey,
       @Value("${mailgun.domain}") String domain,
       @Value("${mailgun.sender-email}") String sender,
+      @Value("${br.com.tasknote.server.target-env}") String targetEnv,
       RestTemplateBuilder templateBuilder) {
     this.domain = domain;
     this.senderEmail = sender;
+    this.targetEnv = targetEnv;
     this.restTemplate =
         templateBuilder.defaultHeader(HttpHeaders.AUTHORIZATION, basicAuth("api", apiKey)).build();
   }
@@ -43,15 +47,15 @@ public class MailgunEmailService {
    *
    * @param user The user that should be addressed the message.
    */
-  public void sendNewUser(UserEntity user, String identification) {
+  public void sendNewUser(UserEntity user) {
     log.info("Sending message confirming user email address.");
 
     String to = user.getEmail();
     String subject = "TaskNote App confirmation email";
-    String link = "/email-confirmation?identification=%s";
+    String link = getBaseUrl() + "/email-confirmation?identification=%s";
 
     MailgunTemplateSignUp signUpTemplate = new MailgunTemplateSignUp();
-    signUpTemplate.setConfirmationLink(String.format(link, identification));
+    signUpTemplate.setConfirmationLink(String.format(link, user.getEmailUuid().toString()));
 
     sendEmail(to, subject, signUpTemplate);
   }
@@ -98,5 +102,13 @@ public class MailgunEmailService {
   private String basicAuth(String username, String password) {
     String auth = username + ":" + password;
     return "Basic " + Base64.getEncoder().encodeToString(auth.getBytes(StandardCharsets.UTF_8));
+  }
+
+  private String getBaseUrl() {
+    if ("development".equals(targetEnv) || Objects.isNull(targetEnv)) {
+      return "http://localhost:5000";
+    }
+    String stage = targetEnv.equals("stage") ? "stage." : "";
+    return String.format("https://%s%s", stage, domain);
   }
 }
