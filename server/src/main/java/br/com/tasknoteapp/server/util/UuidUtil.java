@@ -5,7 +5,7 @@ import java.util.UUID;
 
 /** This class provides method to handle UUIDs. */
 public class UuidUtil {
-  private final UUID NAMESPACE_URL = UUID.fromString("6ba7b811-9dad-11d1-80b4-00c04fd430c8");
+  private final UUID namespaceUrl = UUID.fromString("6ba7b811-9dad-11d1-80b4-00c04fd430c8");
 
   /**
    * Generated a unique UUID to a given email.
@@ -13,11 +13,11 @@ public class UuidUtil {
    * @param email The email to create the UUID.
    * @return The generated UUID.
    */
-  public UUID generateEmailUUID(String email) {
-    return generateUUIDFromName(NAMESPACE_URL, email.toLowerCase().trim());
+  public UUID generateEmailUuid(String email) {
+    return generateUuidFromName(namespaceUrl, email.toLowerCase().trim());
   }
 
-  private UUID generateUUIDFromName(UUID namespace, String name) {
+  private UUID generateUuidFromName(UUID namespace, String name) {
     // SHA-1 digest of namespace UUID + name
     byte[] namespaceBytes = toBytes(namespace);
     byte[] nameBytes = name.getBytes(StandardCharsets.UTF_8);
@@ -34,7 +34,7 @@ public class UuidUtil {
     sha1[8] &= 0x3f;
     sha1[8] |= 0x80;
 
-    return bytesToUUID(sha1);
+    return bytesToUuid(sha1);
   }
 
   private byte[] toBytes(UUID uuid) {
@@ -57,7 +57,7 @@ public class UuidUtil {
     }
   }
 
-  private UUID bytesToUUID(byte[] hash) {
+  private UUID bytesToUuid(byte[] hash) {
     long msb = 0;
     long lsb = 0;
     for (int i = 0; i < 8; i++) {

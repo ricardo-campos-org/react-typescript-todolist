@@ -44,7 +44,8 @@ class AuthenticationControllerTest {
         """
         {
           "email": "user@domain.com",
-          "password": "abcde123456"
+          "password": "abcde123456",
+          "passwordAgain": "abcde123456"
         }
         """;
 
@@ -55,11 +56,7 @@ class AuthenticationControllerTest {
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(jsonString))
-        .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.userId").value(response.userId()))
-        .andExpect(jsonPath("$.email").value(response.email()))
-        .andExpect(jsonPath("$.admin").value(response.admin()))
-        .andExpect(jsonPath("$.token").value(token))
+        .andExpect(status().isNoContent())
         .andReturn();
   }
 
@@ -78,7 +75,8 @@ class AuthenticationControllerTest {
         """
         {
           "email": "user@domain..com",
-          "password": "abcde123456"
+          "password": "abcde123456",
+          "passwordAgain": "abcde123456"
         }
         """;
 
@@ -104,7 +102,8 @@ class AuthenticationControllerTest {
         """
         {
           "email": "user@domain.com",
-          "password": "abcde123456"
+          "password": "abcde123456",
+          "passwordAgain": "abcde123456"
         }
         """;
 
@@ -134,7 +133,8 @@ class AuthenticationControllerTest {
         """
         {
           "email": "user@domain.com",
-          "password": "abcde123456"
+          "password": "abcde123456",
+          "passwordAgain": "abcde123456"
         }
         """;
 

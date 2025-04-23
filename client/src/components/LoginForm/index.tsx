@@ -196,6 +196,7 @@ function LoginForm({ prefix }: { prefix: string }): React.ReactNode {
                     required={true}
                     name="email"
                     placeholder={t(`${prefix}_email_placeholder`)}
+                    data_testid={`${prefix}_email_input`}
                     value={email}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       setEmail(e.target.value);

@@ -7,6 +7,7 @@ import br.com.tasknoteapp.server.exception.BadUuidException;
 import br.com.tasknoteapp.server.exception.EmailAlreadyExistsException;
 import br.com.tasknoteapp.server.exception.InvalidCredentialsException;
 import br.com.tasknoteapp.server.exception.MaxLoginLimitAttemptException;
+import br.com.tasknoteapp.server.exception.ResetExpiredException;
 import br.com.tasknoteapp.server.exception.UserForbiddenException;
 import br.com.tasknoteapp.server.exception.UserNotFoundException;
 import br.com.tasknoteapp.server.repository.UserPwdLimitRepository;
@@ -84,7 +85,7 @@ public class AuthService {
       throw new BadPasswordException("The passwords should match");
     }
 
-    UUID emailUuid = new UuidUtil().generateEmailUUID(login.email());
+    UUID emailUuid = new UuidUtil().generateEmailUuid(login.email());
 
     UserEntity user = new UserEntity();
     user.setEmail(login.email());
@@ -394,14 +395,14 @@ public class AuthService {
 
     Optional<UserEntity> userOptional = userRepository.findByResetToken(request.token());
     if (userOptional.isEmpty()) {
-      throw new RuntimeException("null");
+      throw new UserNotFoundException();
     }
 
     LocalDateTime requestTime = userOptional.get().getResetPasswordExpiration();
     boolean isMoreThan2Hours =
         Duration.between(LocalDateTime.now(), requestTime).abs().toHours() > 2;
     if (isMoreThan2Hours) {
-      throw new RuntimeException("null");
+      throw new ResetExpiredException();
     }
 
     Optional<String> passwordValidation = authUtil.validatePassword(request.password());

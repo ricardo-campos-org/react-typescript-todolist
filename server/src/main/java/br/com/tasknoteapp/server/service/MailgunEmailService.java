@@ -31,6 +31,15 @@ public class MailgunEmailService {
   private String domain;
   private String senderEmail;
 
+  /**
+   * Creates an instance of the Mail service class.
+   *
+   * @param apiKey The api key to send emails with.
+   * @param domain The domain to send email from.
+   * @param sender The from option.
+   * @param targetEnv The environment.
+   * @param templateBuilder The template builder.
+   */
   public MailgunEmailService(
       @Value("${mailgun.api-key}") String apiKey,
       @Value("${mailgun.domain}") String domain,

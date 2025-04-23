@@ -13,6 +13,11 @@ public interface MailgunTemplate {
 
   Map<String, Object> getVariables();
 
+  /**
+   * Default method to get variables in JSON format.
+   *
+   * @return The JSON String representation.
+   */
   default String getVariableValuesJson() {
     StringBuilder sb = new StringBuilder("{");
     for (Map.Entry<String, Object> entry : getVariables().entrySet()) {

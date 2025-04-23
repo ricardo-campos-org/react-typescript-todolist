@@ -94,6 +94,12 @@ public class AuthenticationController {
     return ResponseEntity.ok().body(response);
   }
 
+  /**
+   * Send a confirmation email to the user.
+   *
+   * @param confirmation The request containing the user uuid.
+   * @return No content 204 http code.
+   */
   @PostMapping(path = "/email-confirmation", consumes = "application/json")
   @Operation(
       summary = "Send a confirmation email to the user",
@@ -111,6 +117,12 @@ public class AuthenticationController {
     return ResponseEntity.noContent().build();
   }
 
+  /**
+   * Re-Send a confirmation email to the user.
+   *
+   * @param request The request containing user's email.
+   * @return No content 204 http code.
+   */
   @PostMapping(path = "/resend-email-confirmation", consumes = "application/json")
   @Operation(
       summary = "Re-Send a confirmation email to the user",
@@ -128,9 +140,15 @@ public class AuthenticationController {
     return ResponseEntity.noContent().build();
   }
 
+  /**
+   * Request a user's password reset.
+   *
+   * @param request The request containing user's email.
+   * @return No content 204 http code.
+   */
   @PostMapping(path = "/password-reset", consumes = "application/json")
   @Operation(
-      summary = "Request the user password",
+      summary = "Request a user's password reset",
       description = "Request the user password reset if there's a user",
       responses = {
         @ApiResponse(responseCode = "204", description = "User password requested"),
@@ -144,6 +162,12 @@ public class AuthenticationController {
     return ResponseEntity.noContent().build();
   }
 
+  /**
+   * Confirm the user password change request.
+   *
+   * @param request The request containing the token and the new password.
+   * @return No content 204 http code.
+   */
   @PostMapping(path = "/complete-password-reset", consumes = "application/json")
   @Operation(
       summary = "Confirm the password reset",
