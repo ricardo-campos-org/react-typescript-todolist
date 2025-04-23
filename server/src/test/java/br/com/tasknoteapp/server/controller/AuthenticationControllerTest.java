@@ -32,7 +32,7 @@ class AuthenticationControllerTest {
   @Test
   @DisplayName("Sign up happy path should succeed")
   void signup_happyPath_shouldSucceed() throws Exception {
-    LoginRequest request = new LoginRequest("user@domain.com", "abcde123456");
+    LoginRequest request = new LoginRequest("user@domain.com", "abcde123456", "abcde123456");
     final String token = "xaxbxcxdx1x2x3A@";
 
     UserResponseWithToken response =
@@ -66,7 +66,7 @@ class AuthenticationControllerTest {
   @Test
   @DisplayName("Sign up bad email request should fail")
   void signup_badEmailRequest_shouldFail() throws Exception {
-    LoginRequest request = new LoginRequest("user@domain..com", "abcde123456");
+    LoginRequest request = new LoginRequest("user@domain..com", "abcde123456", "abcde123456");
     final String token = "xaxbxcxdx1x2x3@A";
 
     UserResponseWithToken response =
@@ -96,7 +96,7 @@ class AuthenticationControllerTest {
   @Test
   @DisplayName("Sign up email already exists should fail")
   void signup_userAlreadyExists_shouldFail() throws Exception {
-    LoginRequest request = new LoginRequest("user@domain.com", "abcde123456");
+    LoginRequest request = new LoginRequest("user@domain.com", "abcde123456", "abcde123456");
 
     when(authService.signUpNewUser(request)).thenThrow(new EmailAlreadyExistsException());
 
@@ -122,7 +122,7 @@ class AuthenticationControllerTest {
   @Test
   @DisplayName("Sign in happy path should succeed")
   void signin_happyPath_shouldSucceed() throws Exception {
-    LoginRequest request = new LoginRequest("user@domain.com", "abcde123456");
+    LoginRequest request = new LoginRequest("user@domain.com", "abcde123456", "abcde123456");
     final String token = "xaxbxcxdx1x2x3A@";
 
     UserResponseWithToken response =
@@ -156,7 +156,7 @@ class AuthenticationControllerTest {
   @Test
   @DisplayName("Sign in invalid credentials should fail")
   void signIn_invalidCredentials_shouldFail() throws Exception {
-    LoginRequest request = new LoginRequest("user@domain.com", "abcde123456");
+    LoginRequest request = new LoginRequest("user@domain.com", "abcde123456", "abcde123456");
 
     when(authService.signInUser(request)).thenReturn(null);
 

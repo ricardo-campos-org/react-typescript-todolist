@@ -19,6 +19,8 @@ import AuthContext from '../../context/AuthContext';
 import { translateServerResponse } from '../../utils/TranslatorUtils';
 import { handleDefaultLang } from '../../lang-service/LangHandler';
 import FormInput from '../FormInput';
+import api from '../../api-service/api';
+import ApiConfig from '../../api-service/apiConfig';
 
 /**
  * @returns {React.ReactNode} The form component for Login and Register pages.
@@ -34,6 +36,8 @@ function LoginForm({ prefix }: { prefix: string }): React.ReactNode {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [passwordAgain, setPasswordAgain] = useState<string>('');
+  const [secondsLeft, setSecondsLeft] = useState<number>(0);
+  const [isResendEnabled, setIsResendEnabled] = useState(true);
 
   /**
    * Navigates to the specified page.
@@ -75,11 +79,32 @@ function LoginForm({ prefix }: { prefix: string }): React.ReactNode {
       }
       else {
         await register(email, password, passwordAgain);
-        setEmail('');
+        // Do not clear the email, because user might request to resend
         setPassword('');
         setPasswordAgain('');
         setSuccessMessage('Please confirm your email before proceeding.');
+        setSecondsLeft(30);
+        setIsResendEnabled(false);
       }
+    }
+    catch (e) {
+      setFormInvalid(true);
+      if (typeof e === 'string') {
+        setErrorMessage(translateServerResponse(e, i18n.language));
+      }
+      else if (e instanceof Error) {
+        setErrorMessage(translateServerResponse(e.message, i18n.language));
+      }
+    }
+  };
+
+  const handleResend = async () => {
+    try {
+      await api.postJSON(ApiConfig.resendConfirmUrl, { email });
+
+      setSuccessMessage('Confirmation email re-sent! Please check the spam folder.');
+      setSecondsLeft(30);
+      setIsResendEnabled(false);
     }
     catch (e) {
       setFormInvalid(true);
@@ -95,6 +120,16 @@ function LoginForm({ prefix }: { prefix: string }): React.ReactNode {
   useEffect(() => {
     handleDefaultLang();
   }, [formInvalid]);
+
+  useEffect(() => {
+    if (secondsLeft > 0) {
+      const timer = setTimeout(() => setSecondsLeft(prev => prev - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+    else {
+      setIsResendEnabled(true);
+    }
+  }, [secondsLeft]);
 
   return (
     <Container as="main" fluid className="login-page">
@@ -113,9 +148,21 @@ function LoginForm({ prefix }: { prefix: string }): React.ReactNode {
                 : null}
 
               {successMessage.length > 1 && (
-                <Alert variant="success">
-                  { successMessage }
-                </Alert>
+                <>
+                  <Alert variant="success">
+                    { successMessage }
+                  </Alert>
+
+                  <div className="text-center">
+                    <Button
+                      variant="outline-secondary"
+                      onClick={handleResend}
+                      disabled={!isResendEnabled}
+                    >
+                      {isResendEnabled ? 'Resend Confirmation Email' : `Resend in ${secondsLeft}s`}
+                    </Button>
+                  </div>
+                </>
               )}
 
               <Form noValidate validated={validated} onSubmit={handleSubmit}>

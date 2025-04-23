@@ -5,6 +5,7 @@ import br.com.tasknoteapp.server.exception.InvalidCredentialsException;
 import br.com.tasknoteapp.server.exception.UserNotFoundException;
 import br.com.tasknoteapp.server.request.EmailConfirmationRequest;
 import br.com.tasknoteapp.server.request.LoginRequest;
+import br.com.tasknoteapp.server.request.ResendConfirmationRequest;
 import br.com.tasknoteapp.server.response.UserResponseWithToken;
 import br.com.tasknoteapp.server.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -55,8 +56,7 @@ public class AuthenticationController {
             description = "Email already in use",
             content = @Content(schema = @Schema(implementation = Void.class)))
       })
-  public ResponseEntity<UserResponseWithToken> signUp(
-      @RequestBody @Valid LoginRequest loginRequest) {
+  public ResponseEntity<Void> signUp(@RequestBody @Valid LoginRequest loginRequest) {
     authService.signUpNewUser(loginRequest);
     return ResponseEntity.noContent().build();
   }
@@ -95,8 +95,8 @@ public class AuthenticationController {
 
   @PostMapping(path = "/email-confirmation", consumes = "application/json")
   @Operation(
-      summary = "SigIn an existing user",
-      description = "SigIn an existing user given his email and password",
+      summary = "Send a confirmation email to the user",
+      description = "After the registration sends the user a confirmation email",
       responses = {
         @ApiResponse(responseCode = "204", description = "User successfully logged in"),
         @ApiResponse(
@@ -107,6 +107,23 @@ public class AuthenticationController {
   public ResponseEntity<Void> confirmEmailAddress(
       @RequestBody @Valid EmailConfirmationRequest confirmation) {
     authService.confirmUserAccount(confirmation.identification());
+    return ResponseEntity.noContent().build();
+  }
+
+  @PostMapping(path = "/resend-email-confirmation", consumes = "application/json")
+  @Operation(
+      summary = "Re-Send a confirmation email to the user",
+      description = "Allow users to resend the confirmation email",
+      responses = {
+        @ApiResponse(responseCode = "204", description = "User successfully logged in"),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Wrong or missing information",
+            content = @Content(schema = @Schema(implementation = Void.class))),
+      })
+  public ResponseEntity<Void> resendEmailConfirmation(
+      @RequestBody @Valid ResendConfirmationRequest request) {
+    authService.resendEmailConfirmation(request.email());
     return ResponseEntity.noContent().build();
   }
 }

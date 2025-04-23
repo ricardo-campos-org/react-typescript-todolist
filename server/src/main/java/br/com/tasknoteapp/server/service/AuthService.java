@@ -325,6 +325,26 @@ public class AuthService {
     log.info("User email address confirmed: {}", identification);
   }
 
+  /**
+   * Re-send the confirm email to the user.
+   *
+   * @param email The email to re-send.
+   */
+  public void resendEmailConfirmation(String email) {
+    log.info("Re-sending the confirmation email");
+
+    Optional<UserEntity> userOptional = userRepository.findByEmail(email);
+    if (userOptional.isEmpty()) {
+      throw new UserNotFoundException();
+    }
+
+    UserEntity user = userOptional.get();
+
+    mailgunEmailService.sendNewUser(user);
+
+    log.info("Confirmation email re-sent!");
+  }
+
   private Optional<String> getGravatarImageUrl(String email) {
     email = email.toLowerCase().trim();
     log.info("Current user email: {}", email);
