@@ -5,6 +5,7 @@ import br.com.tasknoteapp.server.exception.InvalidCredentialsException;
 import br.com.tasknoteapp.server.exception.UserNotFoundException;
 import br.com.tasknoteapp.server.request.EmailConfirmationRequest;
 import br.com.tasknoteapp.server.request.LoginRequest;
+import br.com.tasknoteapp.server.request.PasswordResetRequest;
 import br.com.tasknoteapp.server.request.ResendConfirmationRequest;
 import br.com.tasknoteapp.server.response.UserResponseWithToken;
 import br.com.tasknoteapp.server.service.AuthService;
@@ -115,7 +116,7 @@ public class AuthenticationController {
       summary = "Re-Send a confirmation email to the user",
       description = "Allow users to resend the confirmation email",
       responses = {
-        @ApiResponse(responseCode = "204", description = "User successfully logged in"),
+        @ApiResponse(responseCode = "204", description = "User email confirmation resent"),
         @ApiResponse(
             responseCode = "400",
             description = "Wrong or missing information",
@@ -124,6 +125,39 @@ public class AuthenticationController {
   public ResponseEntity<Void> resendEmailConfirmation(
       @RequestBody @Valid ResendConfirmationRequest request) {
     authService.resendEmailConfirmation(request.email());
+    return ResponseEntity.noContent().build();
+  }
+
+  @PostMapping(path = "/password-reset", consumes = "application/json")
+  @Operation(
+      summary = "Request the user password",
+      description = "Request the user password reset if there's a user",
+      responses = {
+        @ApiResponse(responseCode = "204", description = "User password requested"),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Wrong or missing information",
+            content = @Content(schema = @Schema(implementation = Void.class))),
+      })
+  public ResponseEntity<Void> passwordReset(@RequestBody @Valid ResendConfirmationRequest request) {
+    authService.resetPasswordForUser(request.email());
+    return ResponseEntity.noContent().build();
+  }
+
+  @PostMapping(path = "/complete-password-reset", consumes = "application/json")
+  @Operation(
+      summary = "Confirm the password reset",
+      description = "Confirm and set the new password for the user",
+      responses = {
+        @ApiResponse(responseCode = "204", description = "User password reset completed"),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Wrong or missing information",
+            content = @Content(schema = @Schema(implementation = Void.class))),
+      })
+  public ResponseEntity<Void> completePasswordReset(
+      @RequestBody @Valid PasswordResetRequest request) {
+    authService.confirmResetPasswordForUser(request);
     return ResponseEntity.noContent().build();
   }
 }

@@ -2,6 +2,8 @@ package br.com.tasknoteapp.server.service;
 
 import br.com.tasknoteapp.server.entity.UserEntity;
 import br.com.tasknoteapp.server.templates.MailgunTemplate;
+import br.com.tasknoteapp.server.templates.MailgunTemplateResetPwd;
+import br.com.tasknoteapp.server.templates.MailgunTemplateResetPwdConfirm;
 import br.com.tasknoteapp.server.templates.MailgunTemplateSignUp;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -61,6 +63,40 @@ public class MailgunEmailService {
   }
 
   /**
+   * Send a password reset link.
+   *
+   * @param user The user that should be addressed the message.
+   */
+  public void sendResetPassword(UserEntity user) {
+    log.info("Sending message with password reset link");
+
+    String to = user.getEmail();
+    String subject = "TaskNote App password reset";
+    String link = getBaseUrl() + "/finish-reset-password?token=%s";
+
+    MailgunTemplateResetPwd resetTemplate = new MailgunTemplateResetPwd();
+    resetTemplate.setResetLink(String.format(link, user.getResetToken()));
+
+    sendEmail(to, subject, resetTemplate);
+  }
+
+  /**
+   * Send a confirmation for the password change.
+   *
+   * @param user The user that should be addressed the message.
+   */
+  public void sendPasswordResetConfirmation(UserEntity user) {
+    log.info("Sending message with password reset confirmation");
+
+    String to = user.getEmail();
+    String subject = "TaskNote App password confirmation";
+
+    MailgunTemplateResetPwdConfirm resetTemplate = new MailgunTemplateResetPwdConfirm();
+
+    sendEmail(to, subject, resetTemplate);
+  }
+
+  /**
    * Send an email message.
    *
    * @param to The target email address.
@@ -80,9 +116,10 @@ public class MailgunEmailService {
     mailData.add("to", to);
     mailData.add("subject", subject);
     mailData.add("template", template.getName());
-    mailData.add("h:X-Mailgun-Variables", template.getVariableValuesJson());
-
-    log.info("JSON template variables: {}", template.getVariableValuesJson());
+    if (!template.getVariables().isEmpty()) {
+      mailData.add("h:X-Mailgun-Variables", template.getVariableValuesJson());
+      log.info("JSON template variables: {}", template.getVariableValuesJson());
+    }
 
     HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(mailData, headers);
 

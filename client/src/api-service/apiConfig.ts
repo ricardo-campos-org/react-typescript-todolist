@@ -10,6 +10,10 @@ const ApiConfig = {
 
   confirmUrl: `${server}/auth/email-confirmation`,
 
+  resetPwdUrl: `${server}/auth/password-reset`,
+
+  completeResetPwdUrl: `${server}/auth/complete-password-reset`,
+
   resendConfirmUrl: `${server}/auth/resend-email-confirmation`,
 
   refreshTokenUrl: `${server}/rest/user-sessions/refresh`,

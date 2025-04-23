@@ -12,10 +12,12 @@ import br.com.tasknoteapp.server.exception.UserNotFoundException;
 import br.com.tasknoteapp.server.repository.UserPwdLimitRepository;
 import br.com.tasknoteapp.server.repository.UserRepository;
 import br.com.tasknoteapp.server.request.LoginRequest;
+import br.com.tasknoteapp.server.request.PasswordResetRequest;
 import br.com.tasknoteapp.server.request.UserPatchRequest;
 import br.com.tasknoteapp.server.response.UserResponse;
 import br.com.tasknoteapp.server.response.UserResponseWithToken;
 import br.com.tasknoteapp.server.util.AuthUtil;
+import br.com.tasknoteapp.server.util.TokenUtil;
 import br.com.tasknoteapp.server.util.UuidUtil;
 import jakarta.transaction.Transactional;
 import java.nio.charset.StandardCharsets;
@@ -133,31 +135,35 @@ public class AuthService {
   public UserResponseWithToken signInUser(LoginRequest login) {
     log.info("Signing in user! {}", login.email());
 
-    Optional<UserEntity> user = findByEmail(login.email());
-    if (user.isEmpty()) {
+    Optional<UserEntity> userOptional = findByEmail(login.email());
+    if (userOptional.isEmpty()) {
       throw new InvalidCredentialsException();
     }
 
-    checkLoginAttemptLimit(user.get().getId());
+    checkLoginAttemptLimit(userOptional.get().getId());
+
+    UserEntity user = userOptional.get();
+    user.setResetToken(null);
+    user.setResetPasswordExpiration(null);
 
     try {
       authenticationManager.authenticate(
           new UsernamePasswordAuthenticationToken(login.email(), login.password()));
 
-      String token = jwtService.generateToken(user.get());
+      String token = jwtService.generateToken(user);
 
       log.info("User authenticated! Token {}", token);
 
-      userPwdLimitRepository.deleteAllForUser(user.get().getId());
-      return UserResponseWithToken.fromEntity(
-          user.get(), token, getGravatarImageUrl(login.email()));
+      userPwdLimitRepository.deleteAllForUser(user.getId());
+      userRepository.save(user);
+      return UserResponseWithToken.fromEntity(user, token, getGravatarImageUrl(login.email()));
     } catch (BadCredentialsException e) {
-      log.error("BadCredentialsException when logging in user {}", user.get().getId());
+      log.error("BadCredentialsException when logging in user {}", user.getId());
 
       // store attempt
       UserPwdLimitEntity pwdLimit = new UserPwdLimitEntity();
       pwdLimit.setWhenHappened(LocalDateTime.now());
-      pwdLimit.setUser(user.get());
+      pwdLimit.setUser(user);
       userPwdLimitRepository.save(pwdLimit);
 
       return null;
@@ -271,6 +277,10 @@ public class AuthService {
         throw new BadPasswordException(passwordValidation.get());
       }
 
+      if (!patchRequest.password().equals(patchRequest.passwordAgain())) {
+        throw new BadPasswordException("The passwords should match");
+      }
+
       currentUser.setPassword(passwordEncoder.encode(patchRequest.password()));
       shouldUpdate = true;
     }
@@ -303,6 +313,7 @@ public class AuthService {
    * @param identification The UUID generated when registering.
    * @throws BadUuidException if bad identification
    */
+  @Transactional
   public void confirmUserAccount(String identification) {
     log.info("Confirming user email account");
     UUID uuid = null;
@@ -343,6 +354,74 @@ public class AuthService {
     mailgunEmailService.sendNewUser(user);
 
     log.info("Confirmation email re-sent!");
+  }
+
+  /**
+   * Request the password reset for the user.
+   *
+   * @param email The user email.
+   */
+  @Transactional
+  public void resetPasswordForUser(String email) {
+    log.info("Requesting password reset for email {}", email);
+
+    Optional<UserEntity> userOptional = userRepository.findByEmail(email);
+    if (userOptional.isEmpty()) {
+      log.info("No user found with this email {}", email);
+      return;
+    }
+
+    String resetToken = new TokenUtil().generateToken();
+
+    UserEntity user = userOptional.get();
+    user.setResetToken(resetToken);
+    user.setResetPasswordExpiration(LocalDateTime.now().plusHours(2L));
+
+    userRepository.save(user);
+    mailgunEmailService.sendResetPassword(user);
+
+    log.info("Password reset request succeeded");
+  }
+
+  /**
+   * Confirm the password reset and recreate the password for the user.
+   *
+   * @param request The token and new passwords.
+   */
+  @Transactional
+  public void confirmResetPasswordForUser(PasswordResetRequest request) {
+    log.info("Saving new password for token {}", request.token());
+
+    Optional<UserEntity> userOptional = userRepository.findByResetToken(request.token());
+    if (userOptional.isEmpty()) {
+      throw new RuntimeException("null");
+    }
+
+    LocalDateTime requestTime = userOptional.get().getResetPasswordExpiration();
+    boolean isMoreThan2Hours =
+        Duration.between(LocalDateTime.now(), requestTime).abs().toHours() > 2;
+    if (isMoreThan2Hours) {
+      throw new RuntimeException("null");
+    }
+
+    Optional<String> passwordValidation = authUtil.validatePassword(request.password());
+    if (passwordValidation.isPresent()) {
+      throw new BadPasswordException(passwordValidation.get());
+    }
+
+    if (!request.password().equals(request.passwordAgain())) {
+      throw new BadPasswordException("The passwords should match");
+    }
+
+    UserEntity user = userOptional.get();
+    user.setResetToken(null);
+    user.setResetPasswordExpiration(null);
+    user.setPassword(passwordEncoder.encode(request.password()));
+
+    userRepository.save(user);
+    mailgunEmailService.sendPasswordResetConfirmation(user);
+
+    log.info("New password set for token {}", request.token());
   }
 
   private Optional<String> getGravatarImageUrl(String email) {

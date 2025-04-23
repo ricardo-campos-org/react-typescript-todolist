@@ -52,6 +52,12 @@ public class UserEntity implements UserDetails {
   @Column(name = "email_uuid", columnDefinition = "uuid", nullable = true, unique = true)
   private UUID emailUuid;
 
+  @Column(name = "reset_password_expiration", nullable = true)
+  private LocalDateTime resetPasswordExpiration;
+
+  @Column(name = "reset_token", nullable = true)
+  private String resetToken;
+
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return List.of();

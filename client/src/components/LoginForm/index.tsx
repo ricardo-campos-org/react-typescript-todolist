@@ -13,7 +13,7 @@ import {
   Form,
   Row
 } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router';
+import { Link, useNavigate, useSearchParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import AuthContext from '../../context/AuthContext';
 import { translateServerResponse } from '../../utils/TranslatorUtils';
@@ -29,6 +29,7 @@ function LoginForm({ prefix }: { prefix: string }): React.ReactNode {
   const { signIn, register } = useContext(AuthContext);
   const { i18n, t } = useTranslation();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [validated, setValidated] = useState<boolean>(false);
   const [formInvalid, setFormInvalid] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -62,11 +63,16 @@ function LoginForm({ prefix }: { prefix: string }): React.ReactNode {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       setFormInvalid(true);
-      setErrorMessage(translateServerResponse('Please fill in your username and password!', i18n.language));
+      if (prefix !== 'reset') {
+        setErrorMessage(translateServerResponse('Please fill in your username and password!', i18n.language));
+      }
+      else {
+        setErrorMessage(translateServerResponse('Please fill in your email', i18n.language));
+      }
       return;
     }
 
-    if (password !== passwordAgain) {
+    if (password !== passwordAgain && prefix === 'register') {
       setFormInvalid(true);
       setErrorMessage(translateServerResponse('Please fill in your username and password!', i18n.language));
     }
@@ -77,7 +83,7 @@ function LoginForm({ prefix }: { prefix: string }): React.ReactNode {
         await signIn(email, password);
         goTo('/home');
       }
-      else {
+      else if (prefix === 'register') {
         await register(email, password, passwordAgain);
         // Do not clear the email, because user might request to resend
         setPassword('');
@@ -85,6 +91,15 @@ function LoginForm({ prefix }: { prefix: string }): React.ReactNode {
         setSuccessMessage('Please confirm your email before proceeding.');
         setSecondsLeft(30);
         setIsResendEnabled(false);
+      }
+      else if (prefix === 'reset') {
+        await api.postJSON(ApiConfig.resetPwdUrl, { email });
+        setSuccessMessage('If the email address you entered is associated with an account, you will receive a password reset link shortly.');
+      }
+      else if (prefix === 'complete_reset') {
+        const token = searchParams.get('token');
+        await api.postJSON(ApiConfig.completeResetPwdUrl, { token, password, passwordAgain });
+        goTo('/home');
       }
     }
     catch (e) {
@@ -147,7 +162,7 @@ function LoginForm({ prefix }: { prefix: string }): React.ReactNode {
                   )
                 : null}
 
-              {successMessage.length > 1 && (
+              {successMessage.length > 1 && prefix === 'register' && (
                 <>
                   <Alert variant="success">
                     { successMessage }
@@ -165,33 +180,45 @@ function LoginForm({ prefix }: { prefix: string }): React.ReactNode {
                 </>
               )}
 
+              {successMessage.length > 1 && prefix !== 'register' && (
+                <>
+                  <Alert variant="success">
+                    { successMessage }
+                  </Alert>
+                </>
+              )}
+
               <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                <FormInput
-                  labelText="Email"
-                  iconName="At"
-                  required={true}
-                  name="email"
-                  placeholder={t(`${prefix}_email_placeholder`)}
-                  value={email}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    setEmail(e.target.value);
-                  }}
-                />
+                {prefix !== 'complete_reset' && (
+                  <FormInput
+                    labelText="Email"
+                    iconName="At"
+                    required={true}
+                    name="email"
+                    placeholder={t(`${prefix}_email_placeholder`)}
+                    value={email}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      setEmail(e.target.value);
+                    }}
+                  />
+                )}
 
-                <FormInput
-                  labelText="Password"
-                  iconName="Lock"
-                  required={true}
-                  type="password"
-                  name="password"
-                  value={password}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    setPassword(e.target.value);
-                  }}
-                  data_testid="account-password-login"
-                />
+                {prefix !== 'reset' && (
+                  <FormInput
+                    labelText="Password"
+                    iconName="Lock"
+                    required={true}
+                    type="password"
+                    name="password"
+                    value={password}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      setPassword(e.target.value);
+                    }}
+                    data_testid="account-password-login"
+                  />
+                )}
 
-                {prefix === 'register' && (
+                {(prefix === 'register' || prefix === 'complete_reset') && (
                   <FormInput
                     labelText="Repeat password"
                     iconName="Lock"
@@ -215,12 +242,8 @@ function LoginForm({ prefix }: { prefix: string }): React.ReactNode {
               </Form>
 
               <div className="text-center mt-3">
-                {prefix === 'login'
-                  ? (
-                      `${t('login_account')} `
-                    )
-                  : `${t('register_account')} `}
-                <Link to={prefix === 'login' ? '/register' : '/login'} className="text-decoration-none">
+                {t(`${prefix}_account`)}
+                <Link to={prefix === 'login' ? '/register' : '/login'} className="text-decoration-none ms-2">
                   {t(`${prefix}_go_other`)}
                 </Link>
               </div>
@@ -229,6 +252,13 @@ function LoginForm({ prefix }: { prefix: string }): React.ReactNode {
                 <Link to="/" className="text-decoration-none">
                   {t(`${prefix}_back_home`)}
                 </Link>
+              </div>
+              <div className="text-center mt-3">
+                {prefix === 'login' && (
+                  <Link to="/reset-password" className="text-decoration-none ms-2">
+                    Forgot your password?
+                  </Link>
+                )}
               </div>
             </Card.Body>
           </Card>
