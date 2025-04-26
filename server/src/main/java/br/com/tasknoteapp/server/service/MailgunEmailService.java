@@ -141,7 +141,7 @@ public class MailgunEmailService {
 
       log.info("Email message send successfully.");
     } catch (HttpClientErrorException ex) {
-      ex.printStackTrace();
+      log.error("Unable to send email: {} - {}", ex.getMessage(), ex.getCause());
     }
   }
 
