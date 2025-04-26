@@ -1,6 +1,7 @@
 package br.com.tasknoteapp.server.service;
 
 import br.com.tasknoteapp.server.entity.UserEntity;
+import br.com.tasknoteapp.server.exception.MailServiceException;
 import br.com.tasknoteapp.server.templates.MailgunTemplate;
 import br.com.tasknoteapp.server.templates.MailgunTemplateResetPwd;
 import br.com.tasknoteapp.server.templates.MailgunTemplateResetPwdConfirm;
@@ -136,7 +137,7 @@ public class MailgunEmailService {
       ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
 
       if (!response.getStatusCode().is2xxSuccessful()) {
-        throw new RuntimeException("Failed to send email: " + response.getStatusCode());
+        throw new MailServiceException("Failed to send email: " + response.getStatusCode());
       }
 
       log.info("Email message send successfully.");

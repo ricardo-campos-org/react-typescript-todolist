@@ -1,5 +1,6 @@
 package br.com.tasknoteapp.server.util;
 
+import br.com.tasknoteapp.server.exception.BadAlgorithmException;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
@@ -53,7 +54,7 @@ public class UuidUtil {
     try {
       return java.security.MessageDigest.getInstance("SHA-1").digest(input);
     } catch (Exception e) {
-      throw new RuntimeException("SHA-1 algorithm not available", e);
+      throw new BadAlgorithmException("SHA-1 algorithm not available");
     }
   }
 
