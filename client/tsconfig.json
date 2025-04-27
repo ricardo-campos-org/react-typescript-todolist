@@ -2,7 +2,6 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Node 20",
   "compilerOptions": {
-    "types": ["vitest"],
     "module": "ESNext",
     "target": "ESNext",
     "jsx": "react-jsx",

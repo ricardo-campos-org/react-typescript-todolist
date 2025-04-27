@@ -230,6 +230,7 @@ function LoginForm({ prefix }: { prefix: string }): React.ReactNode {
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       setPasswordAgain(e.target.value);
                     }}
+                    data_testid={`account-repeat-password-${prefix}`}
                   />
                 )}
 
@@ -237,6 +238,7 @@ function LoginForm({ prefix }: { prefix: string }): React.ReactNode {
                   variant="primary"
                   type="submit"
                   className="w-100"
+                  role="button"
                 >
                   {t(`${prefix}_btn_submit`)}
                 </Button>
