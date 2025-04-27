@@ -5,7 +5,7 @@ import ApiConfig from '../../api-service/apiConfig';
 
 type Status = 'loading' | 'success' | 'error';
 
-const ConfirmationSuccess: React.FC = () => {
+const EmailConfirmation: React.FC = () => {
   const [status, setStatus] = useState<Status>('loading');
   const [errorMessage, setErrorMessage] = useState<string>('');
 
@@ -89,4 +89,4 @@ const ConfirmationSuccess: React.FC = () => {
   );
 };
 
-export default ConfirmationSuccess;
+export default EmailConfirmation;

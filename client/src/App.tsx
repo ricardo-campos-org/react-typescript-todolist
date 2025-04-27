@@ -13,10 +13,10 @@ import Landing from './views/Landing';
 import Login from './views/Login';
 import NotFound from './views/NotFound';
 import Register from './views/Register';
-import ConfirmationSuccess from './views/EmailConfirmation';
-import './styles/custom.scss';
+import EmailConfirmation from './views/EmailConfirmation';
 import ResetPassword from './views/ResetPassword';
 import CompleteResetPassword from './views/CompleteResetPassword';
+import './styles/custom.scss';
 
 /**
  * The main application component that sets up routing based on the
@@ -54,7 +54,7 @@ function App(): React.ReactNode {
     },
     {
       path: '/email-confirmation',
-      element: <ConfirmationSuccess />
+      element: <EmailConfirmation />
     },
     {
       // The reset-password is where the password reset workflow starts

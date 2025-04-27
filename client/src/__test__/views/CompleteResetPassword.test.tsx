@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { beforeEach, describe, expect, test, vi, Mock } from 'vitest';
 import { useNavigate } from 'react-router';
 import AuthContext from '../../context/AuthContext';
 import CompleteResetPassword from '../../views/CompleteResetPassword';
@@ -17,6 +17,14 @@ vi.mock('../../components/LoginForm', () => ({
     <div data-testid="login-form">LoginForm with prefix: {prefix}</div>
   )
 }));
+
+vi.mock('react-router', () => {
+  return {
+    useNavigate: vi.fn(),
+  };
+});
+
+const mockedUseNavigate = useNavigate as unknown as Mock;
 
 const authContextMock = {
   signed: true,
@@ -42,7 +50,7 @@ describe('CompleteResetPassword Component', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    (useNavigate as vi.Mock).mockReturnValue(mockNavigate);
+    mockedUseNavigate.mockReturnValue(mockNavigate);
   });
 
   test('calls checkCurrentAuthUser with the correct pathname', () => {
