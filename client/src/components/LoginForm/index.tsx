@@ -181,11 +181,9 @@ function LoginForm({ prefix }: { prefix: string }): React.ReactNode {
               )}
 
               {successMessage.length > 1 && prefix !== 'register' && (
-                <>
-                  <Alert variant="success">
-                    { successMessage }
-                  </Alert>
-                </>
+                <Alert variant="success">
+                  { successMessage }
+                </Alert>
               )}
 
               <Form noValidate validated={validated} onSubmit={handleSubmit}>
@@ -238,7 +236,6 @@ function LoginForm({ prefix }: { prefix: string }): React.ReactNode {
                   variant="primary"
                   type="submit"
                   className="w-100"
-                  role="button"
                 >
                   {t(`${prefix}_btn_submit`)}
                 </Button>

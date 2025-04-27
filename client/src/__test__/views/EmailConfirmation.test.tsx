@@ -85,7 +85,7 @@ describe('EmailConfirmation Component', () => {
     await waitFor(() => {
       const successMessage = screen.getByText('✅ Email Confirmed');
       expect(successMessage).toBeDefined();
-      expect(successMessage.classList.contains('mb-3'));
+      expect(successMessage.classList.contains('mb-3')).toBe(true);
     });
   });
 
@@ -96,7 +96,7 @@ describe('EmailConfirmation Component', () => {
     await waitFor(() => {
       const errorMessage = screen.getByText('❌ Oops!');
       expect(errorMessage).toBeDefined();
-      expect(errorMessage.classList.contains('mb-3'));
+      expect(errorMessage.classList.contains('mb-3')).toBe(true);
     });
   });
 
@@ -107,7 +107,7 @@ describe('EmailConfirmation Component', () => {
     await waitFor(() => {
       const loginButton = screen.getByText('Go to Login');
       expect(loginButton).toBeDefined();
-      expect(loginButton.classList.contains('btn-success'));
+      expect(loginButton.classList.contains('btn-success')).toBe(true);
     });
   });
 

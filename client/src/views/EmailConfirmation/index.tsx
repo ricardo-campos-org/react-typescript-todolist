@@ -56,7 +56,7 @@ const EmailConfirmation: React.FC = () => {
 
         {status === 'loading' && (
           <>
-            <div className="spinner-border text-success mb-3" role="status"></div>
+            <div className="spinner-border text-success mb-3" role="output"></div>
             <p>Confirming your email address...</p>
           </>
         )}
