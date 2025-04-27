@@ -5,6 +5,7 @@ import { vi, describe, test, expect, beforeEach } from 'vitest';
 import api from '../../api-service/api';
 import EmailConfirmation from '../../views/EmailConfirmation';
 import { MemoryRouter } from 'react-router';
+import ApiConfig from '../../api-service/apiConfig';
 
 // Mock api.postJSON
 vi.mock('../../api-service/api');
@@ -73,7 +74,7 @@ describe('EmailConfirmation Component', () => {
     renderFn();
 
     await waitFor(() => {
-      expect(mockedPostJSON).toHaveBeenCalledWith('http://localhost:8585/auth/email-confirmation', { identification: 'test-id' });
+      expect(mockedPostJSON).toHaveBeenCalledWith(ApiConfig.confirmUrl, { identification: 'test-id' });
     });
   });
 
