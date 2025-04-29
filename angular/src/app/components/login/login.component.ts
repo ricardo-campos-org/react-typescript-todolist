@@ -1,20 +1,25 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { LoginCredentials } from '../../models/credentials';
 import { CommonModule } from '@angular/common';
 
 interface LoginForm {
-  username: FormControl<string>;
+  email: FormControl<string>;
   password: FormControl<string>;
 }
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, CommonModule],
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    RouterLink
+  ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrl: './login.component.css',
 })
 export class LoginComponent {
   
@@ -27,7 +32,7 @@ export class LoginComponent {
     private router: Router
   ) {
     this.loginForm = this.fb.group<LoginForm>({
-      username: this.fb.control('', { validators: [Validators.required, Validators.email], nonNullable: true }),
+      email: this.fb.control('', { validators: [Validators.required, Validators.email], nonNullable: true }),
       password: this.fb.control('', { validators: [Validators.required, Validators.minLength(6)], nonNullable: true })
     });
   }
@@ -36,8 +41,6 @@ export class LoginComponent {
     if (this.loginForm.invalid) return;
 
     this.errorMessage = null;
-
-    // TODO NEXT: replace username field by email
 
     const credentials: LoginCredentials = this.loginForm.value as LoginCredentials;
 

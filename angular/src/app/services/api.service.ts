@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { LoginCredentials } from '../models/credentials';
+import { LoginCredentials, RegisterCredentials } from '../models/credentials';
 import { environment } from '../environments/environment';
 
 @Injectable({ providedIn: 'root' })
@@ -13,6 +13,10 @@ export class ApiService {
 
   login(credentials: LoginCredentials): Observable<any> {
     return this.http.post(`${this.baseUrl}/auth/sign-in`, credentials);
+  }
+
+  register(credentials: RegisterCredentials): Observable<any> {
+    return this.http.put(`${this.baseUrl}/auth/sign-up`, credentials);
   }
 
   refreshToken(refreshToken: string): Observable<any> {
