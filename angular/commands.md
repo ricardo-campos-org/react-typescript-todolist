@@ -18,3 +18,8 @@ ng generate component components/register --standalone
 ```sh
 ng generate component components/home
 ```
+
+## Create the Auth Service
+```sh
+ng generate service services/auth
+```

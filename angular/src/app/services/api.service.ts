@@ -22,4 +22,13 @@ export class ApiService {
   refreshToken(refreshToken: string): Observable<any> {
     return this.http.post(`${this.baseUrl}/auth/refresh-token`, { refreshToken });
   }
+
+  getHomeTags(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.baseUrl}/rest/home/tasks/tags`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+  }
 }
