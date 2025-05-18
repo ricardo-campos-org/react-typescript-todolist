@@ -19,6 +19,10 @@ export class ApiService {
     return this.http.put(`${this.baseUrl}/auth/sign-up`, credentials);
   }
 
+  resendEmailConfirmation(payload: { email: string }): Observable<any> {
+    return this.http.post(`${this.baseUrl}/auth/resend-email-confirmation`, payload);
+  }
+
   refreshToken(refreshToken: string): Observable<any> {
     return this.http.post(`${this.baseUrl}/auth/refresh-token`, { refreshToken });
   }

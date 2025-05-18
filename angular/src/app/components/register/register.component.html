@@ -1,6 +1,24 @@
 <h1>Register</h1>
 
-<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+<div *ngIf="errorMessage" class="error-message">
+  {{ errorMessage }}
+</div>
+
+<div *ngIf="successMessage" class="success-message">
+  {{ successMessage }}
+  
+  <div *ngIf="isRegistered" class="resend-section">
+    <button 
+      [disabled]="!isResendEnabled" 
+      (click)="resendConfirmation()" 
+      class="resend-button">
+      {{ isResendEnabled ? 'Resend confirmation email' : 'Resend available in ' + secondsLeft + 's' }}
+    </button>
+  </div>
+</div>
+<br>
+
+<form *ngIf="!isRegistered" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
   <label for="email">Email</label><br>
   <input type="email" formControlName="email" required /><br>
   <div *ngIf="registerForm.controls.email.invalid && registerForm.controls.email.touched" class="error">
@@ -20,10 +38,7 @@
   </div>
 
   <br>
-  <input type="submit" value="Create account" [disabled]="registerForm.invalid">
-  <div *ngIf="errorMessage" class="error-message">
-    {{ errorMessage }}
-  </div>
+  <input type="submit" value="Create account">
 </form>
 
 <p>

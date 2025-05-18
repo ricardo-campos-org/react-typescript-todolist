@@ -1,5 +1,10 @@
 <h1>Login</h1>
 
+<div *ngIf="errorMessage" class="error-message">
+  {{ errorMessage }}
+</div>
+<br>
+
 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
   <label for="email">Email</label><br>
   <input type="email" formControlName="email" required /><br>
@@ -14,10 +19,7 @@
   </div>
 
   <br>
-  <input type="submit" value="Login" [disabled]="loginForm.invalid">
-  <div *ngIf="errorMessage" class="error-message">
-    {{ errorMessage }}
-  </div>
+  <input type="submit" value="Login">
 </form>
 
 <p>

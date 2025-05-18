@@ -18,8 +18,7 @@ interface LoginForm {
     CommonModule,
     RouterLink
   ],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css',
+  templateUrl: './login.component.html'
 })
 export class LoginComponent {
   
@@ -38,7 +37,10 @@ export class LoginComponent {
   }
   
   onSubmit(): void {
-    if (this.loginForm.invalid) return;
+    if (this.loginForm.invalid) {
+      this.errorMessage = 'Form is invalid. Please review';
+      return;
+    }
 
     this.errorMessage = null;
 
@@ -49,15 +51,14 @@ export class LoginComponent {
         localStorage.setItem('token', response.token);
         this.router.navigate(['/home']);
       },
-      error: (error) => {
-        console.log(error);
-        console.log(typeof(error));
-        
-        let errorMsg = error.error.errorMessage;
-        if (error.error.fields && error.error.fields.length > 0) {
-          errorMsg += " " + error.error.fields[0].fieldName + " " + error.error.fields[0].fieldMessage;
+      error: (err) => {
+        if ('error' in err && 'status' in err) {
+          const { error, status } = err;
+
+          if ('message' in error) {
+            this.errorMessage = `${status} - ${error.error}! ${error.message}`;
+          }
         }
-        this.errorMessage = errorMsg;
       }
     });
   }
