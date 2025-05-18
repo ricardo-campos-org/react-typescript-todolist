@@ -23,6 +23,10 @@ export class ApiService {
     return this.http.post(`${this.baseUrl}/auth/resend-email-confirmation`, payload);
   }
 
+  confirmEmail(identification: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/auth/email-confirmation`, { identification });
+  }
+
   refreshToken(refreshToken: string): Observable<any> {
     return this.http.post(`${this.baseUrl}/auth/refresh-token`, { refreshToken });
   }

@@ -1,1 +1,16 @@
-<p>email-confirmation works!</p>
+<div *ngIf="status === 'loading'">
+  <p>Confirming your email address...</p>
+</div>
+
+<div *ngIf="status === 'error'">
+  <p>{{ errorMessage }}</p>
+</div>
+
+<div *ngIf="status === 'success'">
+  <h1>Email Confirmed</h1>
+  <p>
+    Thank you! Your email address has been successfully confirmed.
+    You can now return to the TaskNote app and log in.
+  </p>
+  <a routerLink="/">Go to Login</a>
+</div>
