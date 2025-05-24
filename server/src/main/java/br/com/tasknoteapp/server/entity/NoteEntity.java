@@ -1,5 +1,7 @@
 package br.com.tasknoteapp.server.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -40,4 +42,7 @@ public class NoteEntity {
 
   @Column(name = "tag", nullable = true, length = 30)
   private String tag;
+
+  @Column(name = "last_update")
+  private LocalDateTime lastUpdate;
 }

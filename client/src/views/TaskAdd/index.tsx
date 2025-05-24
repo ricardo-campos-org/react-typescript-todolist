@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Card,
   Col,
@@ -6,7 +6,7 @@ import {
   Form,
   Row
 } from 'react-bootstrap';
-import { useNavigate, useParams, useSearchParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import TaskNoteRequest from '../../types/TaskNoteRequest';
 import { TaskResponse } from '../../types/TaskResponse';
 import { useTranslation } from 'react-i18next';
@@ -16,7 +16,6 @@ import { translateServerResponse } from '../../utils/TranslatorUtils';
 import FormInput from '../../components/FormInput';
 import ContentHeader from '../../components/ContentHeader';
 import AlertError from '../../components/AlertError';
-import SidebarContext from '../../context/SidebarContext';
 
 type TaskAction = 'add' | 'edit';
 
@@ -37,9 +36,7 @@ function TaskAdd(): React.ReactNode {
   const [highPriority, setHighPriority] = useState<boolean>(false);
   const [tag, setTag] = useState<string>('');
   const { i18n, t } = useTranslation();
-  const { setNewPage } = useContext(SidebarContext);
   const params = useParams();
-  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
   /**
@@ -141,8 +138,7 @@ function TaskAdd(): React.ReactNode {
       if (added) {
         form.reset();
         resetInputs();
-        setNewPage(`/${searchParams.get('backTo')}`);
-        navigate(`/${searchParams.get('backTo')}`);
+        navigate('/home');
       }
     }
     else if (action === 'edit') {
@@ -162,8 +158,7 @@ function TaskAdd(): React.ReactNode {
       if (edited) {
         form.reset();
         resetInputs();
-        setNewPage(`/${searchParams.get('backTo')}`);
-        navigate(`/${searchParams.get('backTo')}`);
+        navigate('/home');
       }
     }
   };
@@ -303,8 +298,7 @@ function TaskAdd(): React.ReactNode {
                   type="button"
                   className="ms-2 home-new-item-secondary task-note-btn"
                   onClick={() => {
-                    setNewPage(`/${searchParams.get('backTo')}`);
-                    navigate(`/${searchParams.get('backTo')}`);
+                    navigate('/home');
                   }}
                 >
                   Cancel

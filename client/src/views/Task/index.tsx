@@ -187,7 +187,7 @@ function Task(): React.ReactNode {
           />
         </Col>
         <Col xs={12} sm={4} lg={3} className="mt-3 mt-sm-0">
-          <NavLink to="/tasks/new?backTo=tasks">
+          <NavLink to="/tasks/new">
             <div className="d-grid">
               <button
                 type="button"
@@ -267,7 +267,7 @@ function Task(): React.ReactNode {
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
                         {!task.done && (
-                          <NavLink to={`/tasks/edit/${task.id}?backTo=tasks`}>
+                          <NavLink to={`/tasks/edit/${task.id}`}>
                             <Dropdown.Item as="span">
                               {t('task_table_action_edit')}
                             </Dropdown.Item>
@@ -293,7 +293,7 @@ function Task(): React.ReactNode {
                 )}
               </Card.Body>
               <Card.Footer className="task-card-footer">
-                <TaskTag tag={task.tag} lastUpdate={task.lastUpdate} />
+                <TaskTag tag={task.tag} lastUpdate={task.lastUpdate} taskOrNote="task" />
               </Card.Footer>
             </Card>
           </Col>
