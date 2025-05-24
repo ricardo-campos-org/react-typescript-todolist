@@ -127,7 +127,6 @@ function Home(): React.ReactNode {
         return anyTitleMatch || anyContentMatch || anyUrlMatch;
       });
 
-      // TODO: add tags to notes and filter
       if (tagToFilter === 'untagged') {
         filteredNotes = filteredNotes.filter((note: NoteResponse) => !note.tag);
       }
@@ -167,7 +166,15 @@ function Home(): React.ReactNode {
     try {
       const tasksFetched: TaskResponse[] = await api.getJSON(ApiConfig.tasksUrl);
       const translated = translateTaskResponse(tasksFetched, i18n.language);
-      translated.sort((t1, t2) => t1.highPriority === t2.highPriority ? 0 : t1.highPriority ? -1 : 1);
+      translated.sort((t1, t2) => {
+        if (t1.highPriority === t2.highPriority) {
+          return 0;
+        }
+        if (t1.highPriority) {
+          return -1;
+        }
+        return 1;
+      });
       setSavedTasks([...translated]);
       setTasks([...translated]);
       setSelectedOption('everything');
