@@ -33,7 +33,6 @@ function Sidebar(props: React.PropsWithChildren<Props>): React.ReactNode {
   };
 
   const isHomeSelected = (): string => {
-    console.log('currentPage', currentPage);
     const isHomeSelection: boolean = currentPage === '/home'
       || currentPage == '/tasks/new'
       || currentPage.includes('/tasks/edit')

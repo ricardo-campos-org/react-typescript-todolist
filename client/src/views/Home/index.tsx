@@ -107,7 +107,6 @@ function Home(): React.ReactNode {
    */
   const filterTasksAndNotes = (text: string, radioFilter?: string): void => {
     setFilterText(text);
-    console.log(`filterTasksAndNotes - text=[${text}], radioFilter=[${radioFilter}]`);
 
     if (!text && !radioFilter) {
       setNotes([...savedNotes]);
