@@ -235,47 +235,53 @@ function TaskAdd(): React.ReactNode {
                   }}
                 />
 
-                {/* Task URL */}
-                <FormInput
-                  labelText={t('task_form_url_label')}
-                  iconName="At"
-                  required={false}
-                  type="text"
-                  name="url"
-                  placeholder={t('task_form_url_placeholder')}
-                  value={taskUrl}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    setTaskUrl(e.target.value);
-                  }}
-                />
-
-                {/* Due date */}
-                <FormInput
-                  labelText={t('task_form_duedate_label')}
-                  iconName="CalendarCheck"
-                  required={false}
-                  type="date"
-                  name="dueDate"
-                  placeholder={t('task_form_duedate_placeholder')}
-                  valueDate={dueDate}
-                  onChangeDate={(date: Date | null) => {
-                    setDueDate(date);
-                  }}
-                />
-
-                {/* Tag */}
-                <FormInput
-                  labelText="Tags"
-                  iconName="Hash"
-                  required={false}
-                  type="text"
-                  name="tag"
-                  placeholder="my-tag"
-                  value={tag}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    setTag(e.target.value);
-                  }}
-                />
+                <Row>
+                  <Col xs={12} sm={12} xxl={6}>
+                    {/* Task URL */}
+                    <FormInput
+                      labelText={t('task_form_url_label')}
+                      iconName="At"
+                      required={false}
+                      type="text"
+                      name="url"
+                      placeholder={t('task_form_url_placeholder')}
+                      value={taskUrl}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        setTaskUrl(e.target.value);
+                      }}
+                    />
+                  </Col>
+                  <Col xs={12} sm={6} xxl={3}>
+                    {/* Due date */}
+                    <FormInput
+                      labelText={t('task_form_duedate_label')}
+                      iconName="CalendarCheck"
+                      required={false}
+                      type="date"
+                      name="dueDate"
+                      placeholder={t('task_form_duedate_placeholder')}
+                      valueDate={dueDate}
+                      onChangeDate={(date: Date | null) => {
+                        setDueDate(date);
+                      }}
+                    />
+                  </Col>
+                  <Col xs={12} sm={6} xxl={3}>
+                    {/* Tag */}
+                    <FormInput
+                      labelText="Tag"
+                      iconName="Hash"
+                      required={false}
+                      type="text"
+                      name="tag"
+                      placeholder="my-tag (Optional)"
+                      value={tag}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        setTag(e.target.value);
+                      }}
+                    />
+                  </Col>
+                </Row>
 
                 <Form.Check
                   type="switch"

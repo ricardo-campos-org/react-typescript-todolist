@@ -31,6 +31,7 @@ function NoteAdd(): React.ReactNode {
   const [noteTitle, setNoteTitle] = useState<string>('');
   const [noteContent, setNoteContent] = useState<string>('');
   const [noteUrl, setNoteUrl] = useState<string>('');
+  const [noteTag, setNoteTag] = useState<string>('');
   const [action, setAction] = useState<NoteAction>('add');
   const [showPreviewMd, setShowPreviewMd] = useState<boolean>(false);
   const { i18n, t } = useTranslation();
@@ -94,6 +95,7 @@ function NoteAdd(): React.ReactNode {
     setNoteTitle('');
     setNoteUrl('');
     setNoteContent('');
+    setNoteTag('');
 
     setAction('add');
     setValidated(false);
@@ -121,7 +123,7 @@ function NoteAdd(): React.ReactNode {
         title: noteTitle,
         description: noteContent,
         url: noteUrl,
-        tag: '', // FIXME
+        tag: noteTag,
         lastUpdate: ''
       };
 
@@ -138,7 +140,7 @@ function NoteAdd(): React.ReactNode {
         title: noteTitle,
         description: noteContent,
         url: noteUrl,
-        tag: '', // FIXME
+        tag: noteTag,
         lastUpdate: ''
       };
 
@@ -162,6 +164,9 @@ function NoteAdd(): React.ReactNode {
         setNoteTitle(noteToEdit.title);
         if (noteToEdit.url) {
           setNoteUrl(noteToEdit.url);
+        }
+        if (noteToEdit.tag) {
+          setNoteTag(noteToEdit.tag);
         }
         setNoteContent(noteToEdit.description);
         setAction('edit');
@@ -233,19 +238,38 @@ function NoteAdd(): React.ReactNode {
                   }}
                 />
 
-                {/* Note URL */}
-                <FormInput
-                  labelText={t('task_form_url_label')}
-                  iconName="At"
-                  required={false}
-                  type="text"
-                  name="url"
-                  placeholder={t('task_form_url_placeholder')}
-                  value={noteUrl}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    setNoteUrl(e.target.value);
-                  }}
-                />
+                <Row>
+                  <Col xs={12} xl={9}>
+                    {/* Note URL */}
+                    <FormInput
+                      labelText={t('task_form_url_label')}
+                      iconName="At"
+                      required={false}
+                      type="text"
+                      name="url"
+                      placeholder={t('task_form_url_placeholder')}
+                      value={noteUrl}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        setNoteUrl(e.target.value);
+                      }}
+                    />
+                  </Col>
+                  <Col xs={12} xl={3}>
+                    {/* Tag */}
+                    <FormInput
+                      labelText="Tag"
+                      iconName="Hash"
+                      required={false}
+                      type="text"
+                      name="tag"
+                      placeholder="my-tag (Optional)"
+                      value={noteTag}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        setNoteTag(e.target.value);
+                      }}
+                    />
+                  </Col>
+                </Row>
 
                 <Form.Group controlId="form_noteDescription">
                   <Form.Label>

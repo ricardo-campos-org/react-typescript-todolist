@@ -31,6 +31,22 @@ function Sidebar(props: React.PropsWithChildren<Props>): React.ReactNode {
     setNewPage('/home');
     signOut();
   };
+
+  const isHomeSelected = (): string => {
+    console.log('currentPage', currentPage);
+    const isHomeSelection: boolean = currentPage === '/home'
+      || currentPage == '/tasks/new'
+      || currentPage.includes('/tasks/edit')
+      || currentPage == '/notes/new'
+      || currentPage.includes('/notes/edit');
+
+    if (isHomeSelection) {
+      return 'selected';
+    }
+
+    return '';
+  };
+
   useEffect(() => {}, [user, currentPage]);
 
   return (
@@ -53,7 +69,7 @@ function Sidebar(props: React.PropsWithChildren<Props>): React.ReactNode {
 
         <Nav className="flex-column p-3 plus-jakarta-sans-thin">
           <NavLink to="/home" className="mb-2" onClick={() => setNewPage('/home')}>
-            <div className={`sidebar-nav ${currentPage === '/home' ? 'selected' : ''}`}>
+            <div className={`sidebar-nav ${isHomeSelected()}`}>
               <StarFill />
               Home
             </div>

@@ -167,13 +167,8 @@ function Home(): React.ReactNode {
   const loadAllTasks = async () => {
     try {
       const tasksFetched: TaskResponse[] = await api.getJSON(ApiConfig.tasksUrl);
-      tasksFetched.sort((t1, t2) => {
-        if (t1.done === t2.done) {
-          return 0;
-        }
-        return t1.done ? 1 : -1;
-      });
       const translated = translateTaskResponse(tasksFetched, i18n.language);
+      translated.sort((t1, t2) => t1.highPriority === t2.highPriority ? 0 : t1.highPriority ? -1 : 1);
       setSavedTasks([...translated]);
       setTasks([...translated]);
       setSelectedOption('everything');
@@ -372,7 +367,7 @@ function Home(): React.ReactNode {
       <Row className="mt-3">
         {tasks.map((task: TaskResponse) => (
           <Col xs={12} key={task.id.toString()}>
-            <Card key={task.id.toString()} className="task-card">
+            <Card key={task.id.toString()} className={`task-card ${task.highPriority ? 'high-importance' : ''}`}>
               <Card.Body>
                 <Row>
                   <Col xs={10}>
