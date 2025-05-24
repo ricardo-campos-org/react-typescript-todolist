@@ -12,7 +12,6 @@ import br.com.tasknoteapp.server.request.NoteRequest;
 import br.com.tasknoteapp.server.response.NoteResponse;
 import br.com.tasknoteapp.server.util.AuthUtil;
 import jakarta.transaction.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
