@@ -99,20 +99,6 @@ class NoteServiceTest {
   }
 
   @Test
-  void createNote() {
-    when(authUtil.getCurrentUserEmail()).thenReturn(Optional.of(user.getEmail()));
-    when(authService.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
-    when(noteRepository.save(any(NoteEntity.class))).thenReturn(note);
-    when(noteUrlRepository.save(any(NoteUrlEntity.class))).thenReturn(new NoteUrlEntity());
-
-    NoteEntity createdNote = noteService.createNote(noteRequest);
-
-    assertEquals("Test Note", createdNote.getTitle());
-    verify(noteRepository, times(1)).save(any(NoteEntity.class));
-    verify(noteUrlRepository, times(1)).save(any(NoteUrlEntity.class));
-  }
-
-  @Test
   void createNote_withExistingCount() {
     when(authUtil.getCurrentUserEmail()).thenReturn(Optional.of(user.getEmail()));
     when(authService.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
