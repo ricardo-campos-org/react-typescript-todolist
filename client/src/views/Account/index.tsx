@@ -152,7 +152,7 @@ function Account(): React.ReactNode {
                   iconName="Person"
                   required={false}
                   name="name"
-                  placeholder={user?.name ? user.name : 'Your name'}
+                  placeholder={user?.name ?? 'Your name'}
                   value={userName}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     setUserName(e.target.value);
