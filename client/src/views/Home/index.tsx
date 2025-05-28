@@ -264,7 +264,7 @@ function Home(): React.ReactNode {
 
   useEffect(() => {
     handleDefaultLang();
-    setName(user?.name ? user?.name : 'User');
+    setName(user?.name ?? 'User');
     loadTags();
     loadAllTasks();
     loadAllNotes();
