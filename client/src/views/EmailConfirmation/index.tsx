@@ -71,7 +71,7 @@ const EmailConfirmation: React.FC = () => {
 
         {status === 'success' && (
           <>
-            <h1 className="mb-4">{t('email_confirmation_success')}</h1>
+            <h1 className="mb-4" data-testid="email-confirm-success-msg">{t('email_confirmation_success')}</h1>
 
             <p className="mb-4">{t('email_confirmation_success_text')}</p>
             <Link to="/login" className="btn btn-success px-4 py-2"style={{ fontWeight: 'bold', borderRadius: '6px' }}>
@@ -83,7 +83,7 @@ const EmailConfirmation: React.FC = () => {
         {status === 'error' && (
           <>
             <h1 className="mb-3">❌ Oops!</h1>
-            <p className="mb-4">
+            <p className="mb-4" data-testid="email-confirm-error-msg">
               { errorMessage }
             </p>
           </>
