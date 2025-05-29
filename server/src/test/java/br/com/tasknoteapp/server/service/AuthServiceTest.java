@@ -393,7 +393,8 @@ class AuthServiceTest {
 
     when(userRepository.save(any())).thenReturn(existing);
 
-    UserPatchRequest patchRequest = new UserPatchRequest("Kong", "newemail@domain.com", null, null, null);
+    UserPatchRequest patchRequest =
+        new UserPatchRequest("Kong", "newemail@domain.com", null, null, null);
     UserResponse response = authService.patchUserInfo(patchRequest);
 
     Assertions.assertNotNull(response);

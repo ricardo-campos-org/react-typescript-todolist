@@ -67,7 +67,7 @@ public class AuthService {
   /**
    * Create a new user in the app.
    *
-   * @param login User details with email and password.
+   * @param newUser User details with email and password.
    * @return Token
    */
   @Transactional

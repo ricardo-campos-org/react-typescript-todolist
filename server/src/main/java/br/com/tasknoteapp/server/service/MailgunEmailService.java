@@ -116,15 +116,14 @@ public class MailgunEmailService {
   public void sendEmailChangedNotification(UserEntity user, String oldEmail) {
     log.info("Sending message with changed email notification");
 
-    String to = user.getEmail();
-    String subject = "TaskNote App email changed notification";
-
     MailgunTemplateEmailChanged emailChanged = new MailgunTemplateEmailChanged();
     emailChanged.setEmailFrom(oldEmail);
     emailChanged.setEmailTo(user.getEmail());
     emailChanged.setCarbonCopy(oldEmail);
 
-    sendEmail(to, subject, emailChanged);
+    String subject = "TaskNote App email changed notification";
+
+    sendEmail(user.getEmail(), subject, emailChanged);
   }
 
   /**

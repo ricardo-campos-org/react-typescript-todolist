@@ -103,7 +103,8 @@ class AuthenticationControllerTest {
         {
           "email": "user@domain.com",
           "password": "abcde123456",
-          "passwordAgain": "abcde123456"
+          "passwordAgain": "abcde123456",
+          "lang": "en"
         }
         """;
 
@@ -134,7 +135,8 @@ class AuthenticationControllerTest {
         {
           "email": "user@domain.com",
           "password": "abcde123456",
-          "passwordAgain": "abcde123456"
+          "passwordAgain": "abcde123456",
+          "lang": "en"
         }
         """;
 
