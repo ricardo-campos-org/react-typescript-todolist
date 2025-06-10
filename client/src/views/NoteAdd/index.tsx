@@ -157,7 +157,7 @@ function NoteAdd(): React.ReactNode {
    * Checks if the URL is for editing a task and loads the task data if it is.
    */
   const checkEditUrl = async (): Promise<void> => {
-    if (params.id) {
+    if (params?.id) {
       try {
         const noteToEdit: NoteResponse = await api.getJSON(`${ApiConfig.notesUrl}/${params.id}`);
         setNoteFromServer(noteToEdit);
@@ -172,22 +172,23 @@ function NoteAdd(): React.ReactNode {
   const checkCloneUrl = async (): Promise<void> => {
     const { search } = window.location;
 
-    if (search && search.substring(0, 1) === '?' && search.includes('cloneFrom=')) {
-      const index = search.indexOf('=');
-      if (search.length - index > 4) {
-        console.warn('Something weird is going on!');
+    if (!search || !search.startsWith('?') || !search.includes('cloneFrom=')) {
+      return;
+    }
+
+    const index = search.indexOf('=');
+    if (search.length - index > 4) {
+      return;
+    }
+
+    const idToClone = search.substring(index + 1);
+    if (idToClone && !isNaN(parseInt(idToClone))) {
+      try {
+        const noteToClone: NoteResponse = await api.getJSON(`${ApiConfig.notesUrl}/${idToClone}`);
+        setNoteFromServer(noteToClone);
       }
-      else {
-        const idToClone = search.substring(index + 1);
-        if (idToClone && !isNaN(parseInt(idToClone))) {
-          try {
-            const noteToClone: NoteResponse = await api.getJSON(`${ApiConfig.notesUrl}/${idToClone}`);
-            setNoteFromServer(noteToClone);
-          }
-          catch (e) {
-            handleError(e);
-          }
-        }
+      catch (e) {
+        handleError(e);
       }
     }
   };

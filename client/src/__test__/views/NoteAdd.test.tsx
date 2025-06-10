@@ -35,16 +35,17 @@ vi.mock('react-i18next', () => ({
   I18nextProvider: ({ children }: any) => children,
 }));
 
-vi.mock("react-router-dom", async () => {
-  const actual = await vi.importActual<any>("react-router-dom");
+vi.mock('react-router', async () => {
+  const actual = await vi.importActual<any>('react-router');
 
   return {
     ...actual,
     useSearchParams: vi.fn(),
+    useParams: vi.fn()
   };
 });
 
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useParams } from 'react-router';
 
 const authContextMock = {
   signed: true,
@@ -81,6 +82,7 @@ vi.mock('../../utils/TranslatorUtils', () => ({
 }));
 
 const mockedApi = vi.mocked(api);
+const mockedUseParams = vi.mocked(useParams);
 
 describe('NoteAdd Component', () => {
   const renderNoteAdd = () => {
@@ -101,6 +103,7 @@ describe('NoteAdd Component', () => {
     // Reset mock between tests
     (useSearchParams as unknown as ReturnType<typeof vi.fn>).mockReset();
     vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   it('should render the NoteAdd component', () => {
@@ -157,14 +160,40 @@ describe('NoteAdd Component', () => {
     expect(getByText('Them')).toBeDefined();
   });
 
-  it('should render a cloned task', async () => {
+  it('should render a note to edit', async () => {
+    mockedUseParams.mockReturnValue({ id: '1' });
+
+    const toEdit: NoteResponse = {
+      id: 1,
+      title: 'Note one',
+      description: 'Description of note one',
+      url: 'http://notes.domain.com',
+      tag: 'dev',
+      lastUpdate: '3 minutes ago',
+    };
+  
+    vi.spyOn(api, 'getJSON').mockResolvedValue(toEdit);
+
+    const { getByLabelText, getByTestId } = renderNoteAdd();
+
+    await waitFor(() => {
+      const noteTitle = getByLabelText('note_form_title_label') as HTMLInputElement;
+      const noteUrl = getByLabelText('task_form_url_label') as HTMLInputElement;
+      const noteContentInput = getByTestId('note-content-input-area') as HTMLAreaElement;
+      expect(noteTitle.value).toBe(toEdit.title);
+      expect(noteUrl.value).toBe(toEdit.url);
+      expect(noteContentInput.innerHTML).toBe(toEdit.description);
+    });
+  });
+
+  it('should render a cloned note', async () => {
     window.history.pushState({}, '', '?cloneFrom=123');
 
     const toClone: NoteResponse = {
       id: 11,
       title: 'Old title',
       description: 'Old description',
-      url: null,
+      url: 'http://notes.domain.com',
       tag: 'dev',
       lastUpdate: '1 minute ago',
     };
@@ -174,11 +203,27 @@ describe('NoteAdd Component', () => {
     const { getByLabelText, getByTestId } = renderNoteAdd();
 
     await waitFor(() => {
-      // expect(getByText('Old title')).toBeDefined();
       const noteTitle = getByLabelText('note_form_title_label') as HTMLInputElement;
+      const noteUrl = getByLabelText('task_form_url_label') as HTMLInputElement;
       const noteContentInput = getByTestId('note-content-input-area') as HTMLAreaElement;
-      expect(noteTitle.value).toBe('Old title');
-      expect(noteContentInput.innerHTML).toBe('Old description');
+      expect(noteTitle.value).toBe(toClone.title);
+      expect(noteUrl.value).toBe(toClone.url);
+      expect(noteContentInput.innerHTML).toBe(toClone.description);
+    });
+  });
+
+  it('should not render a cloned note when user is trying to mess up', async () => {
+    window.history.pushState({}, '', '?cloneFrom=12345');
+
+    const { getByLabelText, getByTestId } = renderNoteAdd();
+
+    await waitFor(() => {
+      const noteTitle = getByLabelText('note_form_title_label') as HTMLInputElement;
+      const noteUrl = getByLabelText('task_form_url_label') as HTMLInputElement;
+      const noteContentInput = getByTestId('note-content-input-area') as HTMLAreaElement;
+      expect(noteTitle.value).toBe('');
+      expect(noteUrl.value).toBe('');
+      expect(noteContentInput.innerHTML).toBe('');
     });
   });
 });

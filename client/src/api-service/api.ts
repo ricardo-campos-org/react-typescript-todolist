@@ -52,7 +52,7 @@ function handleError(httpStatusCode: number) {
 
 async function handleResponse(response: Response) {
   // Successful responses
-  if (response && response.ok) {
+  if (response?.ok) {
     const codesToIgnore: number[] = [204];
     if (codesToIgnore.includes(response.status)) {
       return;
