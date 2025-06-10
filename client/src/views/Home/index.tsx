@@ -453,6 +453,11 @@ function Home(): React.ReactNode {
                             {t('task_table_action_edit')}
                           </Dropdown.Item>
                         </NavLink>
+                        <NavLink to={`/notes/new?cloneFrom=${note.id}`}>
+                          <Dropdown.Item as="span">
+                            {t('task_table_action_clone')}
+                          </Dropdown.Item>
+                        </NavLink>
                         <Dropdown.Item
                           as="button"
                           onClick={() => deleteNote(note.id)}

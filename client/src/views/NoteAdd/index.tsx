@@ -160,21 +160,50 @@ function NoteAdd(): React.ReactNode {
     if (params.id) {
       try {
         const noteToEdit: NoteResponse = await api.getJSON(`${ApiConfig.notesUrl}/${params.id}`);
-        setNoteId(noteToEdit.id);
-        setNoteTitle(noteToEdit.title);
-        if (noteToEdit.url) {
-          setNoteUrl(noteToEdit.url);
-        }
-        if (noteToEdit.tag) {
-          setNoteTag(noteToEdit.tag);
-        }
-        setNoteContent(noteToEdit.description);
+        setNoteFromServer(noteToEdit);
         setAction('edit');
       }
       catch (e) {
         handleError(e);
       }
     }
+  };
+
+  const checkCloneUrl = async (): Promise<void> => {
+    const { search } = window.location;
+
+    if (search && search.substring(0, 1) === '?' && search.includes('cloneFrom=')) {
+      const index = search.indexOf('=');
+      if (search.length - index > 3) {
+        console.warn('Something weird is going on!');
+      }
+      else {
+        const idToClone = search.substring(index + 1);
+        if (idToClone && !isNaN(parseInt(idToClone))) {
+          console.log('Clone id', idToClone);
+
+          try {
+            const noteToClone: NoteResponse = await api.getJSON(`${ApiConfig.notesUrl}/${idToClone}`);
+            setNoteFromServer(noteToClone);
+          }
+          catch (e) {
+            handleError(e);
+          }
+        }
+      }
+    }
+  };
+
+  const setNoteFromServer = (noteContent: NoteResponse) => {
+    setNoteId(noteContent.id);
+    setNoteTitle(noteContent.title);
+    if (noteContent.url) {
+      setNoteUrl(noteContent.url);
+    }
+    if (noteContent.tag) {
+      setNoteTag(noteContent.tag);
+    }
+    setNoteContent(noteContent.description);
   };
 
   /**
@@ -195,6 +224,7 @@ function NoteAdd(): React.ReactNode {
 
   useEffect(() => {
     checkEditUrl();
+    checkCloneUrl();
   }, []);
 
   return (
