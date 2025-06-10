@@ -174,14 +174,12 @@ function NoteAdd(): React.ReactNode {
 
     if (search && search.substring(0, 1) === '?' && search.includes('cloneFrom=')) {
       const index = search.indexOf('=');
-      if (search.length - index > 3) {
+      if (search.length - index > 4) {
         console.warn('Something weird is going on!');
       }
       else {
         const idToClone = search.substring(index + 1);
         if (idToClone && !isNaN(parseInt(idToClone))) {
-          console.log('Clone id', idToClone);
-
           try {
             const noteToClone: NoteResponse = await api.getJSON(`${ApiConfig.notesUrl}/${idToClone}`);
             setNoteFromServer(noteToClone);

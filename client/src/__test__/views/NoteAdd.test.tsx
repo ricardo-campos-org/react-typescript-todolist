@@ -12,7 +12,13 @@ import { NoteResponse } from '../../types/NoteResponse';
 import SidebarContext from '../../context/SidebarContext';
 import { beforeEach } from 'node:test';
 
-vi.mock('../../api-service/api');
+// Mock the entire api module
+vi.mock('../../api-service/api', () => ({
+  default: {
+    postJSON: vi.fn(),
+    getJSON: vi.fn(),
+  }
+}));
 
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
@@ -48,7 +54,8 @@ const authContextMock = {
     email: 'test@example.com',
     admin: false,
     createdAt: new Date(),
-    gravatarImageUrl: 'http://url.com'
+    gravatarImageUrl: 'http://url.com',
+    lang: 'en'
   },
   checkCurrentAuthUser: vi.fn(),
   signIn: vi.fn(),
@@ -62,6 +69,18 @@ const sidebarContextMock = {
   currentPage: '/home',
   setNewPage: vi.fn()
 };
+
+// Mock the lang handler
+vi.mock('../../lang-service/LangHandler', () => ({
+  handleDefaultLang: vi.fn()
+}));
+
+// Mock the translator utils
+vi.mock('../../utils/TranslatorUtils', () => ({
+  translateServerResponse: (message: string) => message
+}));
+
+const mockedApi = vi.mocked(api);
 
 describe('NoteAdd Component', () => {
   const renderNoteAdd = () => {
@@ -81,6 +100,7 @@ describe('NoteAdd Component', () => {
   beforeEach(() => {
     // Reset mock between tests
     (useSearchParams as unknown as ReturnType<typeof vi.fn>).mockReset();
+    vi.clearAllMocks();
   });
 
   it('should render the NoteAdd component', () => {
@@ -135,5 +155,30 @@ describe('NoteAdd Component', () => {
     expect(getByText('Save your notes in plain text or Markdown format')).toBeDefined();
     expect(getByText('Create, Filter, and Easily Find')).toBeDefined();
     expect(getByText('Them')).toBeDefined();
+  });
+
+  it('should render a cloned task', async () => {
+    window.history.pushState({}, '', '?cloneFrom=123');
+
+    const toClone: NoteResponse = {
+      id: 11,
+      title: 'Old title',
+      description: 'Old description',
+      url: null,
+      tag: 'dev',
+      lastUpdate: '1 minute ago',
+    };
+  
+    vi.spyOn(api, 'getJSON').mockResolvedValue(toClone);
+
+    const { getByLabelText, getByTestId } = renderNoteAdd();
+
+    await waitFor(() => {
+      // expect(getByText('Old title')).toBeDefined();
+      const noteTitle = getByLabelText('note_form_title_label') as HTMLInputElement;
+      const noteContentInput = getByTestId('note-content-input-area') as HTMLAreaElement;
+      expect(noteTitle.value).toBe('Old title');
+      expect(noteContentInput.innerHTML).toBe('Old description');
+    });
   });
 });
