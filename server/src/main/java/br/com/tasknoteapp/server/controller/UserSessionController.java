@@ -64,8 +64,7 @@ public class UserSessionController {
             description = "Unauthorized. Access Denied",
             content = @Content(schema = @Schema(implementation = Void.class)))
       })
-  public ResponseEntity<UserResponse> deleteAccount()
-  {
+  public ResponseEntity<UserResponse> deleteAccount() {
           UserResponse deleted = userSessionService.deleteCurrentUserAccount();
           return ResponseEntity.ok(deleted);
   }
