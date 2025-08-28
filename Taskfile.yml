@@ -1,0 +1,44 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  GREETING: Hello, World!
+
+tasks:
+  default:
+    cmds:
+      - echo "{{.GREETING}}"
+    silent: true
+
+  check-server-dotenv:
+    cmds:
+      - bash tools/run-create-env.sh "back"
+    generates:
+      - server/.env
+
+  check-client-dotenv:
+    cmds:
+      - bash tools/run-create-env.sh "front"
+    generates:
+      - client/.env
+
+  docker-build-server:
+    cmds:
+      - docker build --no-cache --build-arg BUILD="v999-$(date '+%Y-%m-%d-%H%M%S')" --build-arg SOURCE_PR="v999-123456789-$(date '+%Y-%m-%d-%H%M%S')" -t server:candidate ./server
+
+  docker-up-server:
+    deps: [check-server-dotenv]
+    preconditions:
+      - docker images server:candidate | grep -q server
+    vars:
+      DB_IP:
+        sh: tools/get-db-docker-ip.sh
+    cmds:
+      - echo "DB_IP is {{.DB_IP}}"
+      - docker run -p 8585:8585 --rm --name server --env-file server/.env -e POSTGRES_HOST={{.DB_IP}} server:candidate
+
+  docker-up-db:
+    deps: [check-server-dotenv]
+    cmds:
+      - docker run -d -p 5432:5432 --rm --name db --env-file server/.env postgres:15.8-bookworm
