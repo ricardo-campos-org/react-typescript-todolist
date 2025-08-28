@@ -6,39 +6,54 @@ vars:
   GREETING: Hello, World!
 
 tasks:
-  default:
-    cmds:
-      - echo "{{.GREETING}}"
-    silent: true
-
-  check-server-dotenv:
-    cmds:
-      - bash tools/run-create-env.sh "back"
-    generates:
-      - server/.env
-
-  check-client-dotenv:
-    cmds:
-      - bash tools/run-create-env.sh "front"
-    generates:
-      - client/.env
+  docker-build-client:
+    desc: Build the Client docker image, generating the client:candidate artifact
+    cmd: docker build --no-cache --build-arg VITE_BUILD="v999-$(date '+%Y-%m-%d-%H%M%S')" --build-arg SOURCE_PR="v999-123456789-$(date '+%Y-%m-%d-%H%M%S')" -t ghcr.io/ricardo-campos-org/react-typescript-todolist/client:candidate ./client
 
   docker-build-server:
-    cmds:
-      - docker build --no-cache --build-arg BUILD="v999-$(date '+%Y-%m-%d-%H%M%S')" --build-arg SOURCE_PR="v999-123456789-$(date '+%Y-%m-%d-%H%M%S')" -t server:candidate ./server
+    desc: Build the Server docker image, generating the server:candidate artifact
+    cmd: docker build --no-cache --build-arg BUILD="v999-$(date '+%Y-%m-%d-%H%M%S')" --build-arg SOURCE_PR="v999-123456789-$(date '+%Y-%m-%d-%H%M%S')" -t ghcr.io/ricardo-campos-org/react-typescript-todolist/server:candidate ./server
+
+  docker-up-client:
+    desc: Build the docker image if needed and start the service
+    cmd: docker compose -f docker-compose.local.yml up -d client
 
   docker-up-server:
-    deps: [check-server-dotenv]
-    preconditions:
-      - docker images server:candidate | grep -q server
-    vars:
-      DB_IP:
-        sh: tools/get-db-docker-ip.sh
-    cmds:
-      - echo "DB_IP is {{.DB_IP}}"
-      - docker run -p 8585:8585 --rm --name server --env-file server/.env -e POSTGRES_HOST={{.DB_IP}} server:candidate
+    desc: Build the server image, if required, and start it
+    cmd: docker compose -f docker-compose.local.yml up -d server
 
   docker-up-db:
-    deps: [check-server-dotenv]
-    cmds:
-      - docker run -d -p 5432:5432 --rm --name db --env-file server/.env postgres:15.8-bookworm
+    desc: Start the database container
+    cmd: docker compose -f docker-compose.local.yml up -d db
+
+  docker-up:
+    desc: Build server and client images, if required, and start them
+    cmd: docker compose -f docker-compose.local.yml up -d
+
+  docker-stop:
+    desc: Stop all the containers
+    cmd: docker compose -f docker-compose.local.yml stop
+
+  docker-tierdown:
+    desc: Stop and remove all the containers
+    cmd: docker compose -f docker-compose.local.yml down --remove-orphans
+
+  dev-run-client:
+    desc: Run the frontend client locally inside docker
+    cmd: docker compose -f docker-compose.dev.yml up -d client
+
+  dev-run-server:
+    desc: Run the backend service locally inside docker
+    cmd: docker compose -f docker-compose.dev.yml up -d server
+
+  dev-run:
+    desc: Run both client and server locally inside docker
+    cmd: docker compose -f docker-compose.dev.yml up -d
+
+  dev-stop:
+    desc: Stop dev containers
+    cmd: docker compose -f docker-compose.dev.yml stop
+
+  dev-tierdown:
+    desc: Stop and remove all dev containers
+    cmd: docker compose -f docker-compose.dev.yml down --remove-orphans

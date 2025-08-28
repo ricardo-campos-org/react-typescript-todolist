@@ -1,5 +1,6 @@
 package br.com.tasknoteapp.server.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import br.com.tasknoteapp.server.entity.UserEntity;
 import br.com.tasknoteapp.server.entity.UserPwdLimitEntity;
 import br.com.tasknoteapp.server.exception.BadLanguageException;
@@ -104,7 +105,9 @@ public class AuthService {
     user.setLang(newUser.lang());
     userRepository.save(user);
 
-    mailgunEmailService.sendNewUser(user);
+    if (hasValidMailgunApiKey()) {
+      mailgunEmailService.sendNewUser(user);
+    }
 
     log.info("User created! ID {}", user.getId());
     return UserResponseWithToken.fromEntity(user, null, getGravatarImageUrl(newUser.email()));
@@ -486,5 +489,15 @@ public class AuthService {
         throw new MaxLoginLimitAttemptException();
       }
     }
+  }
+
+  //@Value("${mailgun.api-key}") public String apiKey;
+  //
+
+  private final org.springframework.core.env.Environment environment;
+
+  private boolean hasValidMailgunApiKey() {
+    log.info("apiKey is {}", environment.getProperty("MAILGUN_APIKEY"));
+    return false;
   }
 }
