@@ -34,6 +34,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -59,6 +60,8 @@ class AuthServiceTest {
 
   @Mock private MailgunEmailService mailgunEmailService;
 
+  @Mock private Environment environment;
+
   private AuthService authService;
 
   @BeforeEach
@@ -71,7 +74,8 @@ class AuthServiceTest {
             authenticationManager,
             authUtil,
             userPwdLimitRepository,
-            mailgunEmailService);
+            mailgunEmailService,
+            environment);
   }
 
   @Test

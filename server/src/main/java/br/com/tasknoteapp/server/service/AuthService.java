@@ -1,6 +1,5 @@
 package br.com.tasknoteapp.server.service;
 
-import org.springframework.beans.factory.annotation.Value;
 import br.com.tasknoteapp.server.entity.UserEntity;
 import br.com.tasknoteapp.server.entity.UserPwdLimitEntity;
 import br.com.tasknoteapp.server.exception.BadLanguageException;
@@ -36,6 +35,7 @@ import java.util.Optional;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -64,6 +64,8 @@ public class AuthService {
   private final UserPwdLimitRepository userPwdLimitRepository;
 
   private final MailgunEmailService mailgunEmailService;
+
+  private final Environment environment;
 
   /**
    * Create a new user in the app.
@@ -308,7 +310,7 @@ public class AuthService {
       userRepository.save(currentUser);
     }
 
-    if (emailChanged) {
+    if (emailChanged && hasValidMailgunApiKey()) {
       // send email to older and new account
       log.info("Email changed from {} to {}", email, patchRequest.email());
       mailgunEmailService.sendEmailChangedNotification(currentUser, email);
@@ -376,7 +378,9 @@ public class AuthService {
 
     UserEntity user = userOptional.get();
 
-    mailgunEmailService.sendNewUser(user);
+    if (hasValidMailgunApiKey()) {
+      mailgunEmailService.sendNewUser(user);
+    }
 
     log.info("Confirmation email re-sent!");
   }
@@ -403,7 +407,9 @@ public class AuthService {
     user.setResetPasswordExpiration(LocalDateTime.now().plusHours(2L));
 
     userRepository.save(user);
-    mailgunEmailService.sendResetPassword(user);
+    if (hasValidMailgunApiKey()) {
+      mailgunEmailService.sendResetPassword(user);
+    }
 
     log.info("Password reset request succeeded");
   }
@@ -444,7 +450,9 @@ public class AuthService {
     user.setPassword(passwordEncoder.encode(request.password()));
 
     userRepository.save(user);
-    mailgunEmailService.sendPasswordResetConfirmation(user);
+    if (hasValidMailgunApiKey()) {
+      mailgunEmailService.sendPasswordResetConfirmation(user);
+    }
 
     log.info("New password set for token {}", request.token());
   }
@@ -491,13 +499,8 @@ public class AuthService {
     }
   }
 
-  //@Value("${mailgun.api-key}") public String apiKey;
-  //
-
-  private final org.springframework.core.env.Environment environment;
-
   private boolean hasValidMailgunApiKey() {
-    log.info("apiKey is {}", environment.getProperty("MAILGUN_APIKEY"));
-    return false;
+    String apiKey = environment.getProperty("MAILGUN_APIKEY");
+    return Optional.ofNullable(apiKey).isPresent() && !"invalid-api-key-only-placeholder".equals(apiKey);
   }
 }
