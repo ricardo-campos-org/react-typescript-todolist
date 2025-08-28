@@ -1,13 +1,15 @@
 ---
 
 services:
-  client:
-    container_name: client
-    image: node:20.18-bookworm
+  tasknote-web:
+    container_name: tasknote-web
+    image: node:22.14-bookworm-slim
     ports: 
       - "5000:5000"
     entrypoint: sh -c "npm i --no-update-notifier && npm start"
-    user: root
+    environment:
+      VITE_BACKEND_SERVER: http://localhost:8585
+      VITE_BUILD: nightly
     volumes: 
       - "./client:/app"
     working_dir: /app
@@ -29,7 +31,7 @@ services:
       POSTGRES_USER: tasknoteuser
       POSTGRES_PASSWORD: default
       POSTGRES_PORT: 5432
-      CORS_ALLOWED_ORIGINS: http://localhost:5000
+      CORS_ALLOWED_ORIGINS: http://localhost:5000, http://tasknote-web:5000
       SERVER_SERVLET_CONTEXT_PATH: /
       TARGET_ENV: development
       SECURITY_KEY: this-is-a-very-long-security-key-for-dev

@@ -6,54 +6,54 @@ vars:
   GREETING: Hello, World!
 
 tasks:
-  docker-build-client:
-    desc: Build the Client docker image, generating the client:candidate artifact
-    cmd: docker build --no-cache --build-arg VITE_BUILD="v999-$(date '+%Y-%m-%d-%H%M%S')" --build-arg SOURCE_PR="v999-123456789-$(date '+%Y-%m-%d-%H%M%S')" -t ghcr.io/ricardo-campos-org/react-typescript-todolist/client:candidate ./client
+  docker-build-tasknote-web:
+    desc: Build the tasknote-web prod-ready docker image, tagging it as candidate
+    cmd: docker build --no-cache --build-arg VITE_BUILD="v999-$(date '+%Y-%m-%d-%H%M%S')" --build-arg SOURCE_PR="v999-123456789-$(date '+%Y-%m-%d-%H%M%S')" -t ghcr.io/ricardo-campos-org/react-typescript-todolist/tasknote-web:candidate ./client
 
   docker-build-server:
-    desc: Build the Server docker image, generating the server:candidate artifact
+    desc: Build the server prod-ready docker image, tagging it as candidate
     cmd: docker build --no-cache --build-arg BUILD="v999-$(date '+%Y-%m-%d-%H%M%S')" --build-arg SOURCE_PR="v999-123456789-$(date '+%Y-%m-%d-%H%M%S')" -t ghcr.io/ricardo-campos-org/react-typescript-todolist/server:candidate ./server
 
-  docker-up-client:
-    desc: Build the docker image if needed and start the service
-    cmd: docker compose -f docker-compose.local.yml up -d client
+  prod-up-tasknote-web:
+    desc: Speed up the tasknote-web prod-like image, building it if required
+    cmd: docker compose -f docker-compose.prod.yml up -d tasknote-web
 
-  docker-up-server:
-    desc: Build the server image, if required, and start it
-    cmd: docker compose -f docker-compose.local.yml up -d server
+  prod-up-server:
+    desc: Speed up the server prod-like image, building it if required
+    cmd: docker compose -f docker-compose.prod.yml up -d server
 
-  docker-up-db:
+  prod-up-db:
     desc: Start the database container
-    cmd: docker compose -f docker-compose.local.yml up -d db
+    cmd: docker compose -f docker-compose.prod.yml up -d db
 
-  docker-up:
-    desc: Build server and client images, if required, and start them
-    cmd: docker compose -f docker-compose.local.yml up -d
+  prod-up:
+    desc: Speed up the prod-like images for both server and tasknote-web, building them if required
+    cmd: docker compose -f docker-compose.prod.yml up -d
 
-  docker-stop:
-    desc: Stop all the containers
-    cmd: docker compose -f docker-compose.local.yml stop
+  prod-stop:
+    desc: Stop prod containers
+    cmd: docker compose -f docker-compose.prod.yml stop
 
-  docker-tierdown:
-    desc: Stop and remove all the containers
-    cmd: docker compose -f docker-compose.local.yml down --remove-orphans
+  prod-tier-down:
+    desc: Stop and remove prod containers
+    cmd: docker compose -f docker-compose.prod.yml down --remove-orphans
 
-  dev-run-client:
-    desc: Run the frontend client locally inside docker
-    cmd: docker compose -f docker-compose.dev.yml up -d client
+  dev-run-tasknote-web:
+    desc: Get the tasknote-web up and running locally inside docker ready for development
+    cmd: docker compose -f docker-compose.dev.yml up -d tasknote-web
 
   dev-run-server:
-    desc: Run the backend service locally inside docker
+    desc: Get the server up and running locally inside docker ready for development
     cmd: docker compose -f docker-compose.dev.yml up -d server
 
   dev-run:
-    desc: Run both client and server locally inside docker
+    desc: Get both tasknote-web and server up and running locally inside docker ready for development
     cmd: docker compose -f docker-compose.dev.yml up -d
 
   dev-stop:
     desc: Stop dev containers
     cmd: docker compose -f docker-compose.dev.yml stop
 
-  dev-tierdown:
-    desc: Stop and remove all dev containers
+  dev-tier-down:
+    desc: Stop and remove dev containers
     cmd: docker compose -f docker-compose.dev.yml down --remove-orphans
