@@ -87,7 +87,9 @@ jobs:
           echo "source_pr=$SOURCE_PR" >> $GITHUB_OUTPUT
 
       - name: Re-tag the image
-        run: docker tag ghcr.io/ricardo-campos-org/react-typescript-todolist/server:candidate ghcr.io/ricardo-campos-org/react-typescript-todolist/server:prod-${{ steps.inspect.outputs.source_pr }}
+        run: |
+          docker tag ghcr.io/ricardo-campos-org/react-typescript-todolist/server:candidate ghcr.io/ricardo-campos-org/react-typescript-todolist/server:prod-${{ steps.inspect.outputs.source_pr }}
+          docker tag ghcr.io/ricardo-campos-org/react-typescript-todolist/server:candidate ghcr.io/ricardo-campos-org/react-typescript-todolist/server:latest
 
       - name: Push new tag
         run: docker push ghcr.io/ricardo-campos-org/react-typescript-todolist/server:prod-${{ steps.inspect.outputs.source_pr }}
