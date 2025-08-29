@@ -20,14 +20,14 @@ services:
       retries: 3
       start_period: 10s
 
-  server:
-    container_name: server
+  tasknote-api:
+    container_name: tasknote-api
     depends_on:
-      db:
+      tasknote-db:
         condition: service_started
     environment:
       POSTGRES_DB: tasknote
-      POSTGRES_HOST: db
+      POSTGRES_HOST: tasknote-db
       POSTGRES_USER: tasknoteuser
       POSTGRES_PASSWORD: default
       POSTGRES_PORT: 5432
@@ -60,13 +60,13 @@ services:
       - "./schemaspy/output:/output"
       - "./schemaspy/postgres.properties:/schemaspy.properties"
     depends_on:
-      db:
+      tasknote-db:
         condition: service_healthy
-      server:
+      tasknote-api:
         condition: service_healthy
 
-  db:
-    container_name: db
+  tasknote-db:
+    container_name: tasknote-db
     image: postgres:15.8-bookworm
     environment:
       POSTGRES_DB: tasknote

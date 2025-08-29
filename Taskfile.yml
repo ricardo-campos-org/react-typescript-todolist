@@ -6,28 +6,28 @@ vars:
   GREETING: Hello, World!
 
 tasks:
-  docker-build-tasknote-web:
+  docker-build-web:
     desc: Build the tasknote-web prod-ready docker image, tagging it as candidate
     cmd: docker build --no-cache --build-arg VITE_BUILD="v999-$(date '+%Y-%m-%d-%H%M%S')" --build-arg SOURCE_PR="v999-123456789-$(date '+%Y-%m-%d-%H%M%S')" -t ghcr.io/ricardo-campos-org/react-typescript-todolist/tasknote-web:candidate ./client
 
-  docker-build-server:
-    desc: Build the server prod-ready docker image, tagging it as candidate
-    cmd: docker build --no-cache --build-arg BUILD="v999-$(date '+%Y-%m-%d-%H%M%S')" --build-arg SOURCE_PR="v999-123456789-$(date '+%Y-%m-%d-%H%M%S')" -t ghcr.io/ricardo-campos-org/react-typescript-todolist/server:candidate ./server
+  docker-build-api:
+    desc: Build the tasknote-api prod-ready docker image, tagging it as candidate
+    cmd: docker build --no-cache --build-arg BUILD="v999-$(date '+%Y-%m-%d-%H%M%S')" --build-arg SOURCE_PR="v999-123456789-$(date '+%Y-%m-%d-%H%M%S')" -t ghcr.io/ricardo-campos-org/react-typescript-todolist/tasknote-api:candidate ./server
 
-  prod-up-tasknote-web:
+  prod-up-web:
     desc: Speed up the tasknote-web prod-like image, building it if required
     cmd: docker compose -f docker-compose.prod.yml up -d tasknote-web
 
-  prod-up-server:
-    desc: Speed up the server prod-like image, building it if required
-    cmd: docker compose -f docker-compose.prod.yml up -d server
+  prod-up-api:
+    desc: Speed up the tasknote-api prod-like image, building it if required
+    cmd: docker compose -f docker-compose.prod.yml up -d tasknote-api
 
   prod-up-db:
     desc: Start the database container
-    cmd: docker compose -f docker-compose.prod.yml up -d db
+    cmd: docker compose -f docker-compose.prod.yml up -d tasknote-db
 
   prod-up:
-    desc: Speed up the prod-like images for both server and tasknote-web, building them if required
+    desc: Speed up the prod-like images for both tasknote-api and tasknote-web, building them if required
     cmd: docker compose -f docker-compose.prod.yml up -d
 
   prod-stop:
@@ -38,16 +38,20 @@ tasks:
     desc: Stop and remove prod containers
     cmd: docker compose -f docker-compose.prod.yml down --remove-orphans
 
-  dev-run-tasknote-web:
+  dev-run-web:
     desc: Get the tasknote-web up and running locally inside docker ready for development
     cmd: docker compose -f docker-compose.dev.yml up -d tasknote-web
 
-  dev-run-server:
-    desc: Get the server up and running locally inside docker ready for development
-    cmd: docker compose -f docker-compose.dev.yml up -d server
+  dev-run-api:
+    desc: Get the tasknote-api up and running locally inside docker ready for development
+    cmd: docker compose -f docker-compose.dev.yml up -d tasknote-api
+
+  dev-run-db:
+    desc: Get the tasknote-db up and running locally inside docker ready for development
+    cmd: docker compose -f docker-compose.dev.yml up -d tasknote-db
 
   dev-run:
-    desc: Get both tasknote-web and server up and running locally inside docker ready for development
+    desc: Get both tasknote-web and tasknote-api up and running locally inside docker ready for development
     cmd: docker compose -f docker-compose.dev.yml up -d
 
   dev-stop:

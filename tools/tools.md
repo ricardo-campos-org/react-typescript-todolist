@@ -36,7 +36,7 @@ docker build --no-cache \
 
 That's it!
 
-**Server - Backend REST API:**
+**Tasknote-api - Backend REST API:**
 
 For the backend there's a Dockerfile ready, just run (from the project root):
 
@@ -44,7 +44,7 @@ For the backend there's a Dockerfile ready, just run (from the project root):
 docker build --no-cache \
  --build-arg BUILD="v999-$(date '+%Y-%m-%d-%H%M%S')" \
  --build-arg SOURCE_PR="v999-123456789-$(date '+%Y-%m-%d-%H%M%S')" \
- -t server:candidate \
+ -t tasknote-api:candidate \
  ./server
 ```
 
@@ -63,18 +63,18 @@ docker run -d -p 5432:5432 --rm \
   postgres:15.8-bookworm
 ```
 
-**Server:**
+**Tasknote-api:**
 
 ```bash
 docker run -d -p 8585:8585 --rm \
-  --name server \
+  --name tasknote-api \
   -e POSTGRES_DB=$POSTGRES_DB \
   -e POSTGRES_USER=$POSTGRES_USER \
   -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD \
   -e POSTGRES_PORT=$POSTGRES_PORT \
   -e POSTGRES_HOST=$POSTGRES_HOST \
   -e CORS_ALLOWED_ORIGINS=$CORS_ALLOWED_ORIGINS \
-  ghcr.io/ricardo-campos-org/react-typescript-todolist/server:<PR-Number>
+  ghcr.io/ricardo-campos-org/react-typescript-todolist/tasknote-api:<PR-Number>
 ```
 
 Build Cloud Native: `./mvnw -B package -Pnative -DskipTests`
@@ -96,12 +96,12 @@ echo $CR_PAT | docker login ghcr.io -u RMCampos --password-stdin
 
 ```sh
 docker pull ghcr.io/ricardo-campos-org/react-typescript-todolist/tasknote-web:50
-docker pull ghcr.io/ricardo-campos-org/react-typescript-todolist/server:50
+docker pull ghcr.io/ricardo-campos-org/react-typescript-todolist/tasknote-api:50
 ```
 
 **Pushing images:**
 ```sh
-docker push ghcr.io/ricardo-campos-org/react-typescript-todolist/server:316
+docker push ghcr.io/ricardo-campos-org/react-typescript-todolist/tasknote-api:316
 ```
 
 - Get container IP
@@ -115,7 +115,7 @@ docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' db
 docker inspect --format "{{json .State.Health}}" container_name_or_id | jq
 
 # Or to see it live
-while true; do clear; docker inspect --format "{{json .State.Health}}" server | jq; sleep 1; done
+while true; do clear; docker inspect --format "{{json .State.Health}}" tasknote-api | jq; sleep 1; done
 ```
 
 - Extract Env value from docker image (without running)
