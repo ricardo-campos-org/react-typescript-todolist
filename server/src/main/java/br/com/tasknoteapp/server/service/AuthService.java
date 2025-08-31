@@ -501,6 +501,7 @@ public class AuthService {
 
   private boolean hasValidMailgunApiKey() {
     String apiKey = environment.getProperty("MAILGUN_APIKEY");
-    return Optional.ofNullable(apiKey).isPresent() && !"invalid-api-key-only-placeholder".equals(apiKey);
+    return Optional.ofNullable(apiKey).isPresent()
+        && !"invalid-api-key-only-placeholder".equals(apiKey);
   }
 }

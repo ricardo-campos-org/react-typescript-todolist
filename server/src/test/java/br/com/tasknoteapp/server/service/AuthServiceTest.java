@@ -513,6 +513,7 @@ class AuthServiceTest {
     existing.setId(919L);
     existing.setEmail(email);
     when(userRepository.findByEmail(email)).thenReturn(Optional.of(existing));
+    when(environment.getProperty("MAILGUN_APIKEY")).thenReturn("abc");
 
     doNothing().when(mailgunEmailService).sendNewUser(existing);
 
@@ -544,6 +545,7 @@ class AuthServiceTest {
 
     doNothing().when(mailgunEmailService).sendResetPassword(any());
     when(userRepository.save(any())).thenReturn(existing);
+    when(environment.getProperty("MAILGUN_APIKEY")).thenReturn("abc");
 
     Assertions.assertDoesNotThrow(() -> authService.resetPasswordForUser(email));
     verify(userRepository, times(1)).save(existing);
@@ -578,6 +580,7 @@ class AuthServiceTest {
 
     when(userRepository.findByResetToken(token)).thenReturn(Optional.of(user));
     when(authUtil.validatePassword(newPassword)).thenReturn(Optional.empty());
+    when(environment.getProperty("MAILGUN_APIKEY")).thenReturn("abc");
 
     PasswordResetRequest request = new PasswordResetRequest(token, newPassword, newPassword);
 
