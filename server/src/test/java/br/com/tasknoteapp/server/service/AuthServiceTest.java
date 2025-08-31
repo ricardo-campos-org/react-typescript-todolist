@@ -522,6 +522,22 @@ class AuthServiceTest {
   }
 
   @Test
+  @DisplayName("Resend email confirmation no mailgun api key should succeed")
+  void resendEmailConfirmation_noMailgunApiKey_shouldSucceed() {
+    String email = "user@domain.com";
+
+    UserEntity existing = new UserEntity();
+    existing.setId(919L);
+    existing.setEmail(email);
+    when(userRepository.findByEmail(email)).thenReturn(Optional.of(existing));
+
+    doNothing().when(mailgunEmailService).sendNewUser(existing);
+
+    Assertions.assertDoesNotThrow(() -> authService.resendEmailConfirmation(email));
+    verify(mailgunEmailService, times(0)).sendNewUser(existing);
+  }
+
+  @Test
   @DisplayName("Resend email confirmation with non-existent email should fail")
   void resendEmailConfirmation_nonExistentEmail_shouldFail() {
     String email = "nonexistent@domain.com";
@@ -588,6 +604,34 @@ class AuthServiceTest {
 
     verify(userRepository, times(1)).save(user);
     verify(mailgunEmailService, times(1)).sendPasswordResetConfirmation(user);
+    Assertions.assertNull(user.getResetToken());
+    Assertions.assertNull(user.getResetPasswordExpiration());
+    Assertions.assertNotNull(user.getPassword());
+  }
+
+  @Test
+  @DisplayName("Confirm reset password no mailgun api token should succeed")
+  void confirmResetPasswordForUser_noMailgunApiToken_shouldSucceed() {
+    String token = "validToken";
+    UserEntity user = new UserEntity();
+    user.setResetToken(token);
+    user.setResetPasswordExpiration(LocalDateTime.now().plusMinutes(30));
+
+    String newPassword = "NewPassword@123";
+
+    String encodedPassword = "hash@abcxasd123!";
+    when(passwordEncoder.encode(newPassword)).thenReturn(encodedPassword);
+    user.setPassword(encodedPassword);
+
+    when(userRepository.findByResetToken(token)).thenReturn(Optional.of(user));
+    when(authUtil.validatePassword(newPassword)).thenReturn(Optional.empty());
+
+    PasswordResetRequest request = new PasswordResetRequest(token, newPassword, newPassword);
+
+    Assertions.assertDoesNotThrow(() -> authService.confirmResetPasswordForUser(request));
+
+    verify(userRepository, times(1)).save(user);
+    verify(mailgunEmailService, times(0)).sendPasswordResetConfirmation(user);
     Assertions.assertNull(user.getResetToken());
     Assertions.assertNull(user.getResetPasswordExpiration());
     Assertions.assertNotNull(user.getPassword());
