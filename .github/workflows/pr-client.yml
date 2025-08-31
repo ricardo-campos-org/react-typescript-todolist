@@ -1,4 +1,6 @@
 name: PR Tasknote-web
+permissions:
+  contents: read
 
 on:
   pull_request:
@@ -48,6 +50,9 @@ jobs:
 
   tasknote-web-docker-build:
     name: Build Tasknote-web Docker image
+    permissions:
+      contents: read
+      packages: write
     runs-on: ubuntu-latest
     needs: tasknote-web-code-checks
     env:
