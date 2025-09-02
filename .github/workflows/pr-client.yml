@@ -32,7 +32,7 @@ jobs:
       - name: Unit tests
         run: cd client && npm run test:coverage
       - name: SonarCloud Scan
-        uses: SonarSource/sonarqube-scan-action@v5.3.0
+        uses: SonarSource/sonarqube-scan-action@v5.3.1
         with:
           projectBaseDir: client
           args: >
