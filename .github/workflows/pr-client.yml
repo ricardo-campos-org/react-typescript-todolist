@@ -16,7 +16,7 @@ jobs:
     name: Tasknote-web Code Checks
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - uses: actions/setup-node@v6
@@ -59,7 +59,7 @@ jobs:
       VITE_BUILD: tasknote-web:${{ github.event.number }}
       VITE_BACKEND_SERVER: ${{ secrets.SERVER_ADDRESS }}/server
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: docker/setup-buildx-action@v3
         name: Set up Docker Buildx
       
