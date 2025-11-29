@@ -33,7 +33,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -41,26 +40,27 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 class AuthServiceTest {
 
-  @Mock private UserRepository userRepository;
+  @MockitoBean private UserRepository userRepository;
 
-  @Mock private PasswordEncoder passwordEncoder;
+  @MockitoBean private PasswordEncoder passwordEncoder;
 
-  @Mock private JwtService jwtService;
+  @MockitoBean private JwtService jwtService;
 
-  @Mock private AuthenticationManager authenticationManager;
+  @MockitoBean private AuthenticationManager authenticationManager;
 
-  @Mock private AuthUtil authUtil;
+  @MockitoBean private AuthUtil authUtil;
 
-  @Mock private UserPwdLimitRepository userPwdLimitRepository;
+  @MockitoBean private UserPwdLimitRepository userPwdLimitRepository;
 
-  @Mock private MailgunEmailService mailgunEmailService;
+  @MockitoBean private MailgunEmailService mailgunEmailService;
 
-  @Mock private Environment environment;
+  @MockitoBean private Environment environment;
 
   private AuthService authService;
 

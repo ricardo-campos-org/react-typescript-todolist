@@ -42,10 +42,20 @@
     <jacoco.output.data>${project.build.directory}/coverage-reports</jacoco.output.data>
     <timestamp>${maven.build.timestamp}</timestamp>
     <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
-    <hibernate.version>6.6.37.Final</hibernate.version>
     <sonar.organization>ricardo-campos-org</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
   </properties>
+
+  <!-- Dependency Management -->
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.antlr</groupId>
+        <artifactId>antlr4-runtime</artifactId>
+        <version>4.13.2</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <!-- Profiles -->
   <profiles>
@@ -133,6 +143,14 @@
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-health</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-restclient</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <optional>true</optional>
@@ -163,8 +181,18 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-test</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-webmvc-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security-test</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -201,24 +229,6 @@
 
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.hibernate.orm.tooling</groupId>
-        <artifactId>hibernate-enhance-maven-plugin</artifactId>
-        <version>${hibernate.version}</version>
-        <executions>
-          <execution>
-            <id>enhance</id>
-            <goals>
-              <goal>enhance</goal>
-            </goals>
-            <configuration>
-              <enableLazyInitialization>true</enableLazyInitialization>
-              <enableDirtyTracking>true</enableDirtyTracking>
-              <enableAssociationManagement>true</enableAssociationManagement>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>

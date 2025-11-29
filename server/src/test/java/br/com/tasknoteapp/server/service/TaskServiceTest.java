@@ -33,19 +33,19 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.mockito.Mock;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 class TaskServiceTest {
 
-  @Mock TaskRepository taskRepository;
+  @MockitoBean TaskRepository taskRepository;
 
-  @Mock AuthService authService;
+  @MockitoBean AuthService authService;
 
-  @Mock AuthUtil authUtil;
+  @MockitoBean AuthUtil authUtil;
 
-  @Mock TaskUrlRepository taskUrlRepository;
+  @MockitoBean TaskUrlRepository taskUrlRepository;
 
   private static final Long USER_ID = 123L;
 
@@ -55,9 +55,7 @@ class TaskServiceTest {
 
   @BeforeEach
   void setup() {
-    taskService =
-        new TaskService(
-            taskRepository, authService, authUtil, taskUrlRepository);
+    taskService = new TaskService(taskRepository, authService, authUtil, taskUrlRepository);
   }
 
   @Test
